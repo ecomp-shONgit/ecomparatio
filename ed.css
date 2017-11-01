@@ -1,0 +1,705 @@
+/* 2016/2017 ecomparatio Frontendstyling, Prof. Charlotte Schubert Alte Geschichte Leipzig */
+
+/*
+GPLv3 copyrigth
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/*main*/
+#intome{
+    font-family:Helvetica;
+}
+
+/*MENU SECTION*/
+.cklickableW{
+	cursor: pointer;
+	color: white;
+}
+
+.clickableED{
+	cursor: pointer;
+	color: white;
+}
+
+.clickablesec{
+	cursor: pointer;
+	color:white;
+}
+
+.clickable{
+	cursor: pointer;
+}
+
+.offlmenu{
+    color:black;
+}
+
+#alledmenu{
+      	margin:0px;
+		padding-top: 10px;
+		padding-bottom: 0px;
+		padding-left: 0px;
+		padding-right: 0px;
+		background: #D8413E;/*#7b6d68;*/
+        overflow: auto;
+}
+
+#alledmenu span{
+	background: #D8413E;/*#7b6d68;*/
+	padding-top:0px;
+	padding-bottom:0px;
+	padding-left:10px;
+	padding-right:10px;
+	margin:0px;
+	display:inline;
+}
+
+.fm{
+    color: #0c393f;
+}
+
+#edmenu{
+      background: #8AC2D1;/*#aca18e;*/
+      padding-top:10px;
+      overflow: auto;
+      height: auto;
+}
+
+#edmenu div{
+      background: #8AC2D1;/*#aca18e;*/
+      float:left;
+      margin:10px;
+      margin-top:0px;
+}
+
+#edmenu div:hover{
+	color: #D8413E;
+}
+
+#viewmenu{
+	margin-bottom: 8px;
+	font-size: 70%;
+}
+
+#viewmenu span{
+	padding-right:2px;
+      padding-left:2px;
+      margin-right:3px;
+	border: 1px solid #8AC2D1;/*#aca18e;*/
+	background:#D8413E;/*#7b6d68;*/
+      border-bottom-right-radius:2px;
+      border-bottom-left-radius:2px;
+}
+
+#viewmenu span:hover{
+	color: #8AC2D1;
+}
+
+#viewmenu span sup{
+      font-size: 50%;
+      color:black;
+}
+
+#inpmenu{
+    background: #D8413E;/*#7b6d68;*/
+}
+
+
+
+/*REFERENCE SECTION AND OVERLAY AND HELP CONTAINER SECTION*/
+#bigO{
+    display:none;
+}
+.overlay{
+    z-index: 23;
+    border: 1px dotted green; 
+    background: rgba(102, 102, 0, 0.7);
+    color: rgba(102, 102, 0, 0);
+    cursor: pointer;
+	 border-radius:8px;
+      border-bottom: 2px solid rgb(102, 102, 0);
+	border-left: 2px solid rgb(102, 102, 0);
+}
+.overlay sup {
+	font-size:40%;
+      font-family:Helvetica;
+}
+
+.overlay:hover{
+    background: rgba(102, 102, 0, 1);
+    color:white;
+}
+.ooverlay{
+    z-index: 24;
+    border: 1px dotted green; 
+    background: rgba(102, 102, 10, 0.5);
+    color: rgba(102, 102, 0, 0);
+    cursor: pointer;
+	border-radius:8px;
+      border-bottom: 2px solid rgb(102, 102, 0);
+	border-left: 2px solid rgb(102, 102, 0);
+}
+.ooverlay:hover{
+    background: rgba(102, 102, 10, 1);
+    color:white;
+}
+.ooverlay sup {
+	font-size:40%;
+      font-family:Helvetica;
+}
+#hilfe{
+	
+	width:auto;
+	padding:0px;
+	margin:0px;
+	color:white;
+	font-size: 100%;
+	background:#B02F2C;
+}
+
+#hilfe2{
+	
+	width:auto;
+	padding:0px;
+	margin:0px;
+	color:white;
+	font-size: 100%;
+	background:#B02F2C;
+}
+
+#hilfe2 div{
+	color:white;
+	border-right: 1px solid black;
+	margin: 5px;
+}
+
+#hilfe2 div sup{
+		font-size: 60%;
+      color:white;
+}
+#hilfe3{
+    background:gray;
+	width:auto;
+	padding:0px;
+	margin:0px;
+	color:white;
+	font-size: 100%;
+	background:#B02F2C;
+}
+
+#hilfe3 div{
+	color:white;
+	border-right: 1px solid black;
+	margin: 5px;
+    
+	
+	width:auto;
+}
+
+#hilfe3 div sup{
+      font-size: 60%;
+      color:black;
+      padding:2px;
+}
+
+#hilfe3 div:hover{
+	color:black;
+}
+
+#hilfe2 div:hover{
+	color:black;
+}
+#hilfe4{
+	width:auto;
+	padding:0px;
+	margin:0px;
+	font-size: 100%;
+	background:#B02F2C;
+}
+
+#hilfe4 span{
+	border-right: 1px solid black;
+}
+
+#hilfe4 span sup{
+      font-size: 60%;
+      color:black;
+}
+#hilfe5{
+	padding:0px;
+	margin:0px;
+	font-size: 100%;
+	background:#B02F2C;
+}
+
+#hilfe5 span{
+	border-right: 1px solid black;
+}
+
+#hilfe5 span sup{
+      font-size: 60%;
+      color:black;
+}
+#hilfe6{
+	padding:0px;
+	margin:0px;
+	font-size: 100%;
+	background:#B02F2C;
+}
+
+#hilfe6 span{
+	border-right: 1px solid black;
+}
+
+#hilfe6 span sup{
+      font-size: 50%;
+      color:black;
+} 
+/*TEXT BOX STYLING AND DIFFERENCES*/
+#vergleich{
+   	display:block;
+	color:black;
+	background: white; 
+	margin-bottom:20px;
+	padding-left:5px;
+	width:99%;
+	height:100%;
+}
+
+.singleinvergleich{
+	display:block;
+	background: white; 
+    	border-bottom: 1px solid black;
+	padding:10px;
+}
+
+
+.diffbundel{
+	display:none;
+	background: gray;
+	z-index: 2;
+	padding:5px;
+}
+
+.diffmarker{
+      color:gray;
+	cursor:pointer;
+	width: 2px;
+	height: 5px;
+	padding:0px;
+	margin: 0px;
+	font-size: 10px;
+	font-weight: bold;
+      border-top-right-radius:2px;
+      border-top-left-radius:2px;
+}
+
+.st{
+	font-size: 60%;
+	margin-bottom: 5px;
+      color:black;
+}
+#apparat .st{
+      border-right: 1px solid black;
+      font-size: 60%;
+	margin-bottom: 5px;
+      color:black;
+}
+
+.differwgl{
+	/*color:rgb(255,0,255);*/
+}
+.differwgl sup{
+      color:black;
+      font-size:40%;
+      font-family:Helvetica;
+}
+.diff{
+    min-width: 10px;
+}
+
+.diff sup{
+      color:black;
+      font-size:40%;
+      font-family:Helvetica;
+}
+
+sub{
+      color:black;
+      font-size:30%;
+      font-family:Helvetica;
+}
+
+.diffilerwgl{
+	 min-width: 10px;
+}
+
+.diffilerwgl sup{
+      color:black;
+      font-size:40%;
+      font-family:Helvetica;
+}
+
+.diffil{
+    min-width: 10px;
+}
+
+.diffil sup{
+      color:black;
+      font-size:40%;
+      font-family:Helvetica;
+}
+.same{
+      
+}
+
+.urn{
+	color:green;
+	 text-decoration: underline;
+}
+
+.line{
+      width:auto;
+}
+.toolong{
+	color:blue;
+}
+.moretextavailable{
+	color:blue;
+}
+.moretext{
+	color:blue;
+	width: 340px;
+	height:auto;
+	display:block;
+}
+.pline{
+      width:auto;
+}
+.linenum{
+      display: inline-block;
+      color:steelblue;
+      padding-left: 5px;
+	  margin-left: 5px;
+      font-size:60%;
+      font-family: "Helvetica", sans-serif;
+}
+
+#apparat{
+      padding-left:15px;
+      width:90%;
+}
+.refline{
+      border-left: 3px solid black;
+      color:steelblue;
+      padding-right: 5px;
+      padding-left: 5px;
+      font-size:70%;
+      font-family: "Helvetica", "Arial";
+}
+.refrefline{
+      border-left: 1px solid black;
+      font-size:70%;
+      padding-left:1px;
+}
+
+#apparatline{
+      width: 250px;
+      margin-top: 20px;
+      margin-bottom: 5px;
+      margin-left:-10px;
+      border-top: 1px solid black;
+}
+
+.con{
+      background:white;
+}
+
+.tparts{
+	padding-top: 10px;
+	border-bottom: 1px solid #f5f5f5;
+	border-top: 1px solid #f5f5f5;
+}
+
+.tpartsmenu{
+	font-size: 10px;
+	font-weight: bold;
+	border-top: 1px solid rgb(245, 245, 245);
+	padding:2px;
+}
+
+.tpartsmenu span{
+	padding-right: 3px;
+	border-right: 1px solid black;
+}
+
+.partnum{
+	font-size: 70%;
+	color:black;
+}
+
+.mol{
+	width:10px;
+	height:20px;
+	background:#daa021;
+}
+
+.context{
+	display:none;
+}
+
+.contextshow{
+	background: #daa021;
+}
+
+.reftextitle{
+	margin-bottom: 10px;
+	background: #f9f9f9;
+	
+}
+
+.reditor{
+	font-size: 70%;
+	font-weight: bold;
+	height: 30px;
+	/*width:350px;*/
+	background: rgb(245, 245, 245);
+}
+
+.reditor{
+	font-size: 70%;
+	font-weight: bold;
+	height: 30px;
+	/*width:350px;*/
+	background: rgb(245, 245, 245);
+}
+
+.beleg{
+	font-size: 60%;
+	background: rgb(245, 245, 245);
+}
+
+.onlinesource{
+	font-size: 60%;
+	background: rgb(245, 245, 245);
+}
+
+.reditorP{
+      position:absolute;
+	font-size: 70%;
+	font-weight: bold;
+	height: 38px;
+	width:310px;
+      padding:5px;
+	background: rgb(245, 245, 245);
+      border: 1px solid white;
+      border-top-right-radius:4px;
+      border-top-left-radius:4px;
+	overflow-y:hidden;
+}
+
+.redtitle{
+	font-size: 90%;
+	font-weight:bolder;
+	background: rgb(245, 245, 245);
+}
+
+.rtuo{
+	font-size: 70%;
+	font-weight: bold;
+	background: rgb(245, 245, 245);
+}
+
+
+.anmerukung{
+	font-size: 60%;
+	margin-bottom: 10px;
+	background: rgb(245, 245, 245);
+}
+
+#parallelview{
+	width: 20000px;
+	background:white;
+}
+
+.ref{
+	padding:5px;
+	float:left;
+	width:380px;
+	color:gray;
+	background: rgba(255,250,250,0.97);
+      
+}
+
+.verglt{
+	padding:5px;
+	float:left;
+}
+/* BILD VIEW*/
+.bviewpart{
+	display: block;
+	float:left;
+}
+/*diagramm View*/
+.dialabel{
+    
+	color:gray;
+	font-size:110%;
+}
+.tabelle{
+	padding:10px;
+	width:10000px;
+    background:white;
+}
+.tabellenspalte{
+	float:left;
+	border-right:1px solid gray;
+	margin-right:5px;
+    
+}
+.tabellenkopf{
+	width: 120px;
+	height: 70px;
+	overflow-y:hidden;
+	background: rgb(245, 245, 245);
+	color:gray;
+}
+.tabellenzelle{
+
+}
+/*new and bearbeiten ed*/
+#newedform{
+	display:block;
+}
+.persbez{
+      border-bottom: 1px solid black;
+      padding-top: 10px;
+}
+.oneed{
+      border-top: 1px solid black;
+      padding-top: 3px;
+}
+.oneed input,.persbez input, .persbez lable{
+      width:900px;
+      
+}
+.oneed input:focus, .persbez input:focus{
+      box-shadow: 0 1px 0 rgb(218, 160, 33) inset, 0 -1px 0 rgb(218, 160, 33) inset, 1px 0 0 rgb(218, 160, 33) inset, -1px 0 0 rgb(218, 160, 33) inset, 0 0 4px rgb(218, 160, 33);
+        outline: none;
+}
+.oneed textarea{
+      width:902px;
+      height:200px;
+}
+.oneed textarea:focus{
+      box-shadow: 0 1px 0 rgb(218, 160, 33) inset, 0 -1px 0 rgb(218, 160, 33) inset, 1px 0 0 rgb(218, 160, 33) inset, -1px 0 0 rgb(218, 160, 33) inset, 0 0 4px rgb(218, 160, 33);
+        outline: none;
+}
+.ednewmenu span{
+      background:white;
+      border-bottom-right-radius:2px;
+      border-bottom-left-radius:2px;
+      border-left: 1px solid lightgray;
+      border-right: 1px solid lightgray;
+      border-bottom: 1px solid lightgray;
+      padding-top:2px;
+      padding-bottom:5px;
+      padding-left: 3px;
+      padding-right: 3px;
+}
+/*input cts form*/
+#ctsinpdialog{
+	
+	display:block;
+	border-radius:2px;
+	border: 1px solid lightgray;
+	margin:5px;
+    margin-top: 10px;
+}
+
+.wordsinline{
+      display:none;
+}
+
+
+/*mod add eds*/
+#eds{
+	height:auto;
+}
+
+/*matrix darstellung*/
+.mazeile{
+    display:block;
+    width: 100000px;
+    height:100%;
+    border-bottom: 1px solid lightgray;
+}
+.maref{
+    vertical-align:top;
+	padding:5px;
+	display:inline-block;
+	width:380px;
+	color:gray;
+	background: rgba(255,250,250,0.97);
+    
+}
+
+.maverglt{
+    vertical-align:top;
+	padding:5px;
+	display:inline-block;
+}
+
+.mainfo{
+     width: 100000px;
+	display:block;
+}
+.reditorPma{
+    display:inline-block;
+	font-size: 70%;
+	font-weight: bold;
+	height: 38px;
+      padding:5px;
+	background: rgb(245, 245, 245);
+      border: 1px solid white;
+      border-top-right-radius:4px;
+      border-top-left-radius:4px;
+	overflow-y:hidden;
+}
+
+.archive{
+    display:none;
+}
+
+/*bildschrimtastatur der eingabe*/
+.tastat {
+    margin:0px;
+    padding:0px;
+    height: auto;
+    width: auto;
+}
+
+.tastat ul li{
+    margin: 4px;
+    padding-top: 1px;
+    padding-left: 8px;
+    padding-right: 7px;
+    padding-bottom: 1px;
+    display:block;
+    float:left;
+    border-left:1px solid gray;
+    border-radius: 4px;
+    background: white;
+}
