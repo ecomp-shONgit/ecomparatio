@@ -171,7 +171,16 @@ var lasttextbeta = "";
 
 
 /*INITIAL FUNCTION BUILDS BASE HTML AND CALL THE CHAIN of ecomparatio*/
-function restartecomparatio(){
+function requestfirstrender( ){
+    var r = window.confirm("Wollen Sie ein erstens Beispiel rechnen lassen? (Diese Nachricht wird nur beim ersten Start von eComparatio angezeigt.)");
+    if( r && localStorage.getItem( 'ECOMPfirstrun' ) == null ) {
+      localStorage.setItem( 'ECOMPfirstrun', true );
+      addED( );
+      loadtestcase1( );
+    } 
+}
+
+function restartecomparatio( ){
     startecomparatio( IdoliveIN );
 }
 
@@ -320,6 +329,8 @@ function startecomparatio( elemIDtoputitin ){ //untested by 17.10.2017 - is pure
     //run
     loadallmenu();
 
+    //testcase wanted?
+    requestfirstrender( );
 }
 
 
