@@ -172,12 +172,14 @@ var lasttextbeta = "";
 
 /*INITIAL FUNCTION BUILDS BASE HTML AND CALL THE CHAIN of ecomparatio*/
 function requestfirstrender( ){
-    var r = window.confirm("Wollen Sie ein erstens Beispiel rechnen lassen? (Diese Nachricht wird nur beim ersten Start von eComparatio angezeigt.)");
-    if( r && localStorage.getItem( 'ECOMPfirstrun' ) == null ) {
-      localStorage.setItem( 'ECOMPfirstrun', true );
-      addED( );
-      loadtestcase1( );
-    } 
+    if(localStorage.getItem( 'ECOMPfirstrun' ) == null){
+        var r = window.confirm("Wollen Sie ein erstens Beispiel rechnen lassen? (Diese Nachricht wird nur beim ersten Start von eComparatio angezeigt.)");
+        if( r ) {
+          localStorage.setItem( 'ECOMPfirstrun', true );
+          addED( );
+          loadtestcase1( );
+        } 
+    }
 }
 
 function restartecomparatio( ){
