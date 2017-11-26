@@ -14,4 +14,16 @@ Try the open example installation (quick test cases included):
 
 http://85.214.109.153/~ecomparatio/a/
 
+# stable on 
+
+Firefox Quantum 57.0 (OS: Linux 64-Bit, Win 10 64-Bit)
+
+Opera 46.0 (OS: Linux 64-Bit, Win 10 64-Bit)
+
+Chrome 61.0 (OS: Linux 64-Bit, Win 10 64-Bit, Mac OS Lion)
+
+
+
+
+
 
