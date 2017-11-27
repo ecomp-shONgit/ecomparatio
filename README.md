@@ -14,14 +14,20 @@ Try the open example installation (quick test cases included):
 
 http://85.214.109.153/~ecomparatio/a/
 
-# stable on 
+# Stable on 
 
-Firefox Quantum 57.0 (OS: Linux 64-Bit, Win 10 64-Bit)
+Firefox Quantum 57.0 Linux 64-Bit, Win 10 64-Bit (24.11.2017)
 
-Opera 46.0 (OS: Linux 64-Bit, Win 10 64-Bit)
+Opera 46.0 Linux 64-Bit, Win 10 64-Bit (24.11.2017)
 
-Chrome 61.0 (OS: Linux 64-Bit, Win 10 64-Bit, Mac OS Lion)
+Chrome / Chromium 61.0 Linux 64-Bit, Win 10 64-Bit, Mac OS Lion (24.11.2017)
 
+Chrome 62 Win 10 (27.11.2017)
+
+# Screenshots
+![ScreenShot](screen1.png)
+![ScreenShot](screen2.png)
+![ScreenShot](screen3.png)
 
 
 
