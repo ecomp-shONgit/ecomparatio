@@ -16,13 +16,25 @@ http://85.214.109.153/~ecomparatio/a/
 
 # Stable on 
 
+###### Firefox 
+
 Firefox Quantum 57.0 Linux 64-Bit, Win 10 64-Bit (24.11.2017)
 
+###### Opera
+
 Opera 46.0 Linux 64-Bit, Win 10 64-Bit (24.11.2017)
+
+Opera 49 Win 10 64 Bit (28.11.2017)
+
+###### Chrome / Chromium
 
 Chrome / Chromium 61.0 Linux 64-Bit, Win 10 64-Bit, Mac OS Lion (24.11.2017)
 
 Chrome 62 Win 10 (27.11.2017)
+
+###### Edge / IE
+
+Microsoft Edge 40 Win 10 64 Bit (28.11.2017)
 
 # Screenshots
 ![ScreenShot](screen1.png)
