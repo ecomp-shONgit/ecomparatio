@@ -36,6 +36,10 @@ Chrome 62 Win 10 (27.11.2017)
 
 Microsoft Edge 40 Win 10 64 Bit (28.11.2017)
 
+###### Safari
+
+Safari 10.2 (29.11.2017)
+
 # Screenshots
 ![ScreenShot](screen1.png)
 ![ScreenShot](screen2.png)
