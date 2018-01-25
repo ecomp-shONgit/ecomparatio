@@ -1,7 +1,7 @@
 //******************************************************************************
 // 2016/2017 eComparatio Frontend, Prof. Charlotte Schubert Alte Geschichte Leipzig
-// Function: DATA GETTING (Text and comparison results from online storage, and local browser storage), 
-// DATA SETTING (mostly local storage and a server transaction) and DISPLAY
+// Function: DATA GETTING (Text and comparison results from online storage, and local browser storage, or as JSON file input), 
+// DATA SETTING (mostly local storage and a server transaction) and DISPLAY of comparison results
 // further functions: URN, CTS, JSON, LATEX, PRINTING  ...
 //******************************************************************************
 
@@ -137,6 +137,7 @@ var pos0 = [10,10];
 var doverk = true;
 var r = 0; //scroll config
 
+var ctsanswersXML = []; //CTS Request results
 
 var buchstGRI = {"α":1, "β": 1, "γ":1, "δ":1, "ε":1, "ζ":1, "η":1, "θ":1, "ι":1, "κ":1, "λ":1, "μ":1, "ν":1, "ξ":1, "ο":1, "π":1, "ρ":1, "σ":1, "ς": 1, "τ":1, "υ":1, "φ":1, "χ":1, "ψ":1, "ω":1};
 
@@ -171,19 +172,19 @@ var lasttextbeta = "";
 
 
 /*INITIAL FUNCTION BUILDS BASE HTML AND CALL THE CHAIN of ecomparatio*/
+function restartecomparatio( ){
+    startecomparatio( IdoliveIN );
+}
+
 function requestfirstrender( ){
     if(localStorage.getItem( 'ECOMPfirstrun' ) == null){
-        var r = window.confirm( "Wollen Sie ein Beispiel gleich rechnen lassen? Ansonsten finden Sie die Beispiele im Menü 'ADD' -> 'Test Cases ...'! (Diese Nachricht wird nur beim ersten Start von eComparatio angezeigt.)" );
+        var r = window.confirm("Wollen Sie ein Beispiel gleich rechnen lassen? Ansonsten finden Sie die Beispiele im Menü 'ADD' -> 'Test Cases ...'! (Diese Nachricht wird nur beim ersten Start von eComparatio angezeigt.)");
         if( r ) {
           localStorage.setItem( 'ECOMPfirstrun', true );
           addED( );
           loadtestcase1( );
         } 
     }
-}
-
-function restartecomparatio( ){
-    startecomparatio( IdoliveIN );
 }
 
 function startecomparatio( elemIDtoputitin ){ //untested by 17.10.2017 - is pure AJAX VERSION
@@ -331,8 +332,7 @@ function startecomparatio( elemIDtoputitin ){ //untested by 17.10.2017 - is pure
     //run
     loadallmenu();
 
-    //testcase wanted?
-    requestfirstrender( );
+    
 }
 
 
@@ -998,11 +998,19 @@ function loadallmenu( ){
 		            }
                 }
             } else {
-                console.log("Man man man da ist kein Menu auf dem Server Server. Hatter vielleicht eine Clientside only Installation?")  
-                document.getElementById( "alledmenu" ).innerHTML = localStorage.getItem("ecompmenuADD");
-                typographmessure();  
-                //chain reinkloppen und dann läuft es
-                execloadcomparatioCHAIN();
+                console.log("Man man man da ist kein Menu auf dem Server Server. Hatter vielleicht eine Clientside only Installation?");
+                try{
+                    document.getElementById( "alledmenu" ).innerHTML = localStorage.getItem("ecompmenuADD");
+                    typographmessure( );  
+                    //chain reinkloppen und dann läuft es
+                    execloadcomparatioCHAIN( );
+                    //testcase wanted?
+                    requestfirstrender( );
+                } catch( err ){
+                    //first run no data in menu db, menu nullm keep going
+                    console.log( err, "DO NOT RENDER - Chromium Error ???" );
+                    
+                }
             }
         }
     } 
@@ -1072,9 +1080,12 @@ function loadcomparatio( numofeds ){
     coloralledmenu( numofeds );
     if( numofeds.toLowerCase ){ //offline data: index is a string
         bibdynvars[ numofeds ] = JSON.parse( localStorage.getItem( "ecompBIB"+numofeds ) );
+        //console.log(localStorage.getItem("ecompTENAMES"+numofeds ).split(""));
+        textnames = JSON.parse( localStorage.getItem("ecompTENAMES"+numofeds ) );
+        
         alltexts = JSON.parse( localStorage.getItem( "ecompALLTEX"+numofeds ) );
         comparatio = JSON.parse( localStorage.getItem( "ecompRES"+numofeds ) );
-        textnames = JSON.parse( localStorage.getItem("ecompTENAMES"+numofeds ) );
+        
         execloadcomparatioCHAIN( );
     } else { //online data
         var menuelem = document.getElementById( "alledmenu" );
@@ -1270,6 +1281,12 @@ function buildviewmenu( ){
     deselem.innerHTML = "DES"; 
     deselem.onclick = function( ){ modDIFFDES( ); };
     edmenu.appendChild( deselem );
+    var inelem = document.createElement( "span" );
+    inelem.className = "clickableED";
+    inelem.title = "Eingabe von Ergebnissen in Form von JSON files.";
+    inelem.innerHTML = "IN"; 
+    inelem.onclick = function( ){ inpJSON( ); };
+    edmenu.appendChild( inelem );
     var Einst1 = document.createElement( "span" );
     Einst1.className = "clickableED";
     Einst1.title = "Debug, Textstatistik etc.";
@@ -3971,7 +3988,7 @@ function delED( ){
 		    }
 	    }
         
-
+        
         localStorage.setItem("ecompmenuADD", alledmenuelem.innerHTML );
     }
 }
@@ -3988,8 +4005,84 @@ function showdelED( ){
 }
 
 /**************************************************************/
-/*ED NEW + MOD HELPER FKT*/
+/*ED NEW + MOD HELPER FKT / INPUT                             */
 /**************************************************************/
+function inpJSON(){ //create dialog for fileinput
+    
+    if( window.File && window.FileReader && window.FileList && window.Blob ){
+
+        
+        showhelpwithstr( "<div onclick='closediv( \"hilfe\" );'>x</div>" );
+        var inputelem = document.createElement("input");
+        inputelem.id = "fs";
+        inputelem.name = "file";
+        inputelem.type = "file";
+        //inputelem.multiple = "multiple";
+        console.log('addevent');
+        inputelem.addEventListener('change', inpfileselected, false);
+        document.getElementById( "hilfe" ).appendChild( inputelem );
+    } else {
+        alert('Benutzen Sie einen jüngeren Browser, Dateiaufruf ist in Ihrem in implementiert.');
+    }
+}
+
+function inpfileselected( ev ) {
+    var files = ev.target.files; // FileList object
+
+    // files is a FileList of File objects. List some properties.
+    var output = [];
+    for (var i = 0, f; f = files[i]; i++) {
+        //var dadadad = "{'textnames' :"+ localStorage.getItem("ecompTENAMES"+currentedseries)+", "+
+        //                "'alltexts' :" + localStorage.getItem("ecompALLTEX"+currentedseries) + ", " +
+        //                "'comparatio' :" + localStorage.getItem("ecompRES"+currentedseries)  +"}";
+        var edseriename = f.name.split( ".json" )[0]; 
+        console.log(edseriename);
+
+        //check if series exist??? - no why the hack
+
+        var rere = new FileReader( );
+       
+        rere.onload = ( function( theFile ) {
+            return function(e) {
+                 if( e.target.readyState == FileReader.DONE ) {
+                    //JSON.parse often not working, maby encoding issue, what ever, splitting willhit the problem
+                    var drei = e.target.result.split("'comparatio' :");
+                    var zwei = drei[ 0 ].split("'alltexts' :");
+        
+                    var inpcomparatio =  drei[1].substring( 0, drei[1].lastIndexOf("}") ).trim();//noch letze klammer raus
+                    var inpalltexts = zwei[1].substring( 0, zwei[1].lastIndexOf(",")).trim(); //alltexts, noch letzes komma raus
+                    var inptextnames = zwei[0].split("'textnames' :")[1];
+                    inptextnames = inptextnames.substring( 0, inptextnames.lastIndexOf(",") ).trim();
+
+                    //console.log(inptextnames);
+                    //console.log(inpalltexts);
+                    //console.log(inpcomparatio);
+                    //put it to the local storage and do a menu add and reload page fertsch
+                    localStorage.setItem("ecompTENAMES"+edseriename, inptextnames );
+                    localStorage.setItem("ecompALLTEX"+edseriename, inpalltexts );
+                    localStorage.setItem("ecompRES"+edseriename, inpcomparatio );
+
+                    var oldadd = "";
+                    if( localStorage.getItem("ecompmenuADD") ){
+                        oldadd =  localStorage.getItem("ecompmenuADD");
+                    }
+                    var newmenuadd = oldadd+' <span class="clickablesec offlmenu" style="position: relative;" id="'+edseriename+'" onclick="loadcomparatio(\''+edseriename+'\');">'+edseriename+'</span>';
+                    localStorage.setItem("ecompmenuADD", newmenuadd );
+                    location.reload();
+                }
+            };
+        })( f );
+
+        
+        rere.readAsText(f);
+    }
+    
+
+    closediv( "hilfe" );
+  }
+
+  
+
 function mkctsinput( ){
     var intomeelem = document.getElementById( "intome" );
     intomeelem.style.height = (intomeelem.offsetHeight+10).toString() + "px";
@@ -3999,8 +4092,8 @@ function mkctsinput( ){
 }
 
 /*CTS INPUT AND REQUEST TO CTS SERVER*/
-var ctsanswersXML = [];
-function ctsdirektinput( ){
+
+function ctsdirektinput(){
 	ctsanswersXML = [];
 	//"urn:cts:greekLit:tlg0085.tlg003.schutz1782:1-10"
 	//"urn:cts:greekLit:tlg0085.tlg003.schutz1782:1-400"
@@ -4011,15 +4104,18 @@ function ctsdirektinput( ){
 	
 	var count = 0;
 	
-	for( var c in urntags){
+	for( var c = 0; c < urntags.length; c++ ){
+        
 		//console.log(document.getElementById( "ctsinput1" ).value + urntags[ c ].value);
 		if( urntags[ c ].value ){
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.onreadystatechange = function() { 
                 if (xmlHttp.readyState == 4 ){
                     if( xmlHttp.status == 200){
+                        console.log( "uicki" );
                         document.getElementById("ctsrequestrawresult").innerHTML = xmlHttp.responseText;
                         ctsanswersXML.push( document.getElementById( "ctsrequestrawresult" ).innerHTML );
+                        
 					        count++;
 					        if( count == urntags.length ){
 						        document.getElementById( "ctsrequestrawresult" ).innerHTML = "";
@@ -4030,9 +4126,10 @@ function ctsdirektinput( ){
                     } else {
                         console.log("CTS dirct input. maby AJAX");
                     }
-                }
+                } 
             }    
-            xmlHttp.open("GET", document.getElementById( "ctsinput1" ).value + urntags[ c ].value, true); // true for asynchronous 
+            console.log( c, urntags[ c ], urntags[ c ].value, document.getElementById( "ctsinput1" ).value + urntags[ c ].value );
+            xmlHttp.open("GET", document.getElementById( "ctsinput1" ).value + urntags[ c ].value, false); // false for synchronous 
             xmlHttp.send(null);	
 		}
 	}
@@ -5914,4 +6011,3 @@ document.getElementsByName("ed6publishingdate")[0].value = "1983";
 document.getElementsByName("ed6text")[0].value = "Ἀναξίμανδρος μὲν Πραξιάδου Μιλήσιος Θαλοῦ γενόμενος διάδοχος καὶ μαθητὴς ἀρχήν τε καὶ στοιχεῖον πρῶτος τοῦτο τοὔνομα κομίσας τῆς εἴρηκε τῶν ὄντων τὸ ἄπειρον, ἀρχῆς. λέγει δ’ αὐτὴν μήτε ὕδωρ μήτε ἄλλο τι τῶν καλουμένων εἶναι στοιχείων, ἀλλ’ ἑτέραν τινὰ φύσιν ἄπειρον, ἐξ ἧς ἅπαντας γίνεσθαι τοὺς οὐρανοὺς καὶ τοὺς ἐν αὐτοῖς κόσμους· ἐξ ὧν δὲ ἡ γένεσίς ἐστι τοῖς οὖσι, καὶ τὴν φθορὰν εἰς ταῦτα γίνεσθαι κατὰ τὸ χρεών. διδόναι γὰρ αὐτὰ δίκην καὶ τίσιν ἀλλήλοις τῆς ἀδικίας κατὰ τὴν τοῦ χρόνου τάξιν, ποιητικωτέροις οὕτως ὀνόμασιν αὐτὰ λέγων· δῆλον δὲ ὅτι τὴν εἰς ἄλληλα μεταβολὴν τῶν τεττάρων στοιχείων οὗτος θεασάμενος οὐκ ἠξίωσεν ἕν τι τούτων ὑποκείμενον ποιῆσαι, ἀλλά τι ἄλλο παρὰ ταῦτα. οὗτος δὲ οὐκ ἀλλοιουμένου τοῦ στοιχείου τὴν γένεσιν ποιεῖ, ἀλλ’ ἀποκρινομένων τῶν ἐναντίων διὰ τῆς αὶδίου κινή- σεως·";
 submitneweds( false );
 }
-
