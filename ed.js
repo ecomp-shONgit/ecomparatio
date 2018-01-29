@@ -180,10 +180,11 @@ function requestfirstrender( ){
     if(localStorage.getItem( 'ECOMPfirstrun' ) == null){
         var r = window.confirm("Wollen Sie ein Beispiel gleich rechnen lassen? Ansonsten finden Sie die Beispiele im Menü 'ADD' -> 'Test Cases ...'! (Diese Nachricht wird nur beim ersten Start von eComparatio angezeigt.)");
         if( r ) {
-          localStorage.setItem( 'ECOMPfirstrun', true );
+          
           addED( );
           loadtestcase1( );
         } 
+        localStorage.setItem( 'ECOMPfirstrun', true ); //end first run alert
     }
 }
 
@@ -1490,20 +1491,40 @@ function comparatiomatrix( ){
 		            }
 	            }
             }
-            var b = thebib[ currented ];
-             var editor = document.createElement("div");
-  		        editor.className = "reditorPma";
-  		        editor.innerHTML = b[2] +"; " + b[4] +" "+ b[5] + "<br/>"+ b[3] +"; "+b[6];
-  		        infoma.appendChild( editor );
-            for( var i = 0; i < thebib.length; i++ ){
-			    if( i != currented ){
-        		    b = thebib[ i ];
-                    var editor = document.createElement("div");
-  		            editor.className = "reditorPma";
-  		            editor.innerHTML = b[2] +"; " + b[4] +" "+ b[5] + "<br/>"+ b[3] +"; "+b[6];
-  		            infoma.appendChild( editor );
-                }
-		    }
+            
+
+            if( thebib ){
+                 var b = thebib[ currented ];
+                 var editor = document.createElement("div");
+      		        editor.className = "reditorPma";
+      		        editor.innerHTML = b[2] +"; " + b[4] +" "+ b[5] + "<br/>"+ b[3] +"; "+b[6];
+      		        infoma.appendChild( editor );
+                for( var i = 0; i < thebib.length; i++ ){
+			        if( i != currented ){
+            		    b = thebib[ i ];
+                        var editor = document.createElement("div");
+      		            editor.className = "reditorPma";
+      		            editor.innerHTML = b[2] +"; " + b[4] +" "+ b[5] + "<br/>"+ b[3] +"; "+b[6];
+      		            infoma.appendChild( editor );
+                    }
+		        }
+            } else {
+                
+                 var editor = document.createElement("div");
+      		        editor.className = "reditorPma";
+      		        editor.innerHTML = textnames[ currented ][1]+"; "+ textnames[ currented ][2] +" "+ textnames[ currented ][3].split(".txt")[0];
+      		        infoma.appendChild( editor );
+                for( var i = 0; i < textnames.length; i++ ){
+			        if( i != currented ){
+            		    b = textnames[ i ];
+                        var editor = document.createElement("div");
+      		            editor.className = "reditorPma";
+      		            editor.innerHTML =  b[1]+"; "+ b[2] +" "+ b[3].split(".txt")[0];;
+      		            infoma.appendChild( editor );
+                    }
+		        }
+
+            }
             var zeile = document.createElement("div");
             zeile.className = "mazeile";
             vergelem.appendChild( zeile );
@@ -3906,21 +3927,39 @@ function modEDoffline( ){
 function buildeditviewoffline( aselection ){
     if( aselection.value != "" ){
         addED( );
-        var te = JSON.parse(localStorage.getItem("ecompPLAINTE"+aselection.value ));
-        var bi = JSON.parse(localStorage.getItem("ecompBIB"+aselection.value ));
         document.getElementById( "edKname" ).value = aselection.value;
-        for(var b in bi ){
-            var num = bi[b][0].toString();
-            document.getElementsByName("ed"+num+"source")[0].value = bi[b][1];
-            document.getElementsByName("ed"+num+"editor")[0].value = bi[b][2];
-            document.getElementsByName("ed"+num+"name")[0].value = bi[b][3];
-            document.getElementsByName("ed"+num+"publishingplace")[0].value = bi[b][4];
-            document.getElementsByName("ed"+num+"publishingdate")[0].value = bi[b][5];
-            document.getElementsByName("ed"+num+"belegst")[0].value = bi[b][6];
-            document.getElementsByName("ed"+num+"text")[0].value = te[b];
+        var te = JSON.parse(localStorage.getItem("ecompPLAINTE"+aselection.value ));
+        if(te == null){ //no plain version
+            te = JSON.parse(localStorage.getItem("ecompALLTEX"+aselection.value ));
+        }
+        var bi = JSON.parse(localStorage.getItem("ecompBIB"+aselection.value ));
+        if( bi == null ){
+            bi = JSON.parse(localStorage.getItem("ecompTENAMES"+aselection.value ));
+            for(var b in bi ){
+                var num = bi[b][0].toString();
+                document.getElementsByName("ed"+num+"editor")[0].value = bi[b][1];
+                document.getElementsByName("ed"+num+"name")[0].value = bi[b][2];
+                document.getElementsByName("ed"+num+"publishingplace")[0].value = bi[b][3].split(".txt")[0];
+                document.getElementsByName("ed"+num+"text")[0].value = te[b].join( " " );
 
-            if(b < bi.length-1){
-                addnewedtext();
+                if(b < bi.length-1){
+                    addnewedtext();
+                }
+            }
+        } else { //if bib vars present - do it, if not use textnames
+            for(var b in bi ){
+                var num = bi[b][0].toString();
+                document.getElementsByName("ed"+num+"source")[0].value = bi[b][1];
+                document.getElementsByName("ed"+num+"editor")[0].value = bi[b][2];
+                document.getElementsByName("ed"+num+"name")[0].value = bi[b][3];
+                document.getElementsByName("ed"+num+"publishingplace")[0].value = bi[b][4];
+                document.getElementsByName("ed"+num+"publishingdate")[0].value = bi[b][5];
+                document.getElementsByName("ed"+num+"belegst")[0].value = bi[b][6];
+                document.getElementsByName("ed"+num+"text")[0].value = te[b];
+
+                if(b < bi.length-1){
+                    addnewedtext();
+                }
             }
         }
         offlineedit = true;
