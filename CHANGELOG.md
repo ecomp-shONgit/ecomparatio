@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 The format is NEU: for new features/functions, Änderung: for something existing changes (also deprecation or deletion) and Fehler: for something worng working was fixed.
 
+## bis 29.01.2018
+- Neu: JSON import 
+- Test: Browser Version Test Chrome / Chromium Issue
+- Fehler: no bibvars Error - textnames array as fallback
 
 ## bis 23.10.2017
 - Neu: Online Spielplatz einrichten, verschiedenen Beispiele (PLAIN WEBSITE und WORDPRESS INTEGRATION)
