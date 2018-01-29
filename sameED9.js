@@ -257,7 +257,6 @@ var border = 20; //range to search equality, this is set via the param comming f
 var degugggg = false; //output debug and programm flow print messages
 var doUVlatin = false; // true or false, equal u and v in latin texts
 
-
 function ecomparatioVerg( edname, teNames, BIBarray, TEXTarray, doUVlatinNeu, borderNeu  ){
     //check for multiprocessing, if browser does not support, no programm given
     if( !window.Worker ) {
@@ -276,6 +275,7 @@ function ecomparatioVerg( edname, teNames, BIBarray, TEXTarray, doUVlatinNeu, bo
     console.log("ecompVergleich");
     console.time("allVergl");
     console.log("degugggg", degugggg);
+    
     if( degugggg ){
         console.log("EDRname", edname);
         console.log("BIBarray", BIBarray);
@@ -351,57 +351,60 @@ function ecomparatioVerg( edname, teNames, BIBarray, TEXTarray, doUVlatinNeu, bo
     var datatothem = [ ];
     var windex = 0;
     //start twice as much threads as CUP Cores
-    var cpucount = 4; //default
+    var cpucount = 2; //default
     if(navigator.hardwareConcurrency){
         cpucount = navigator.hardwareConcurrency*2; 
-    }
+    } //need to 
     //
     console.log("paral",cpucount, alledtexts.length, TEXTarray.length )
     for( var ref in alledtexts ){
         //parallel stuff
-        for( var text in alledtexts ){
-            if( ref != text ){
-                console.log( "Vergleich Ref:", ref, " Text ", text );
-                //var workerpath = "js/sameED9worker.js"; //!!! how to fix this
-                var workerpath = "sameED9worker.js"; //!!! how to fix this
-                //console.log(window.location);
-                if(window.location.href.indexOf("scri") != -1){
-                    workerpath = "../js/sameED9worker.js";
-                }
-                var worker = new Worker( workerpath );
-                //callback on termination
-                worker.onmessage = function( event ){
-                    allevergleiche.push( event.data.vergl );
-                    if( allevergleiche.length == datatothem.length ){ // IS THIS CLEAN???
-                        metavergleich( allevergleiche, alledtexts, BIBarray, edname, teNames );
-                        console.log("DONE DONE DONE ALL - build the DATABASE AND THE MENU");
-                        
-                    } else {
-                        if( windex < vergleicher.length ){
-                            vergleicher[ windex ].postMessage( datatothem[ windex ] );
-                            windex++;
-                        }
+        //some worker
+        for(var cpuc = 0; cpuc < cpucount; cpuc++){
+        //var workerpath = "js/sameED9worker.js"; //!!! how to fix this
+            var workerpath = "sameED9worker.js"; //!!! how to fix this
+            //console.log(window.location);
+            if(window.location.href.indexOf("scri") != -1){
+                workerpath = "../js/sameED9worker.js";
+            }
+            var worker = new Worker( workerpath );
+            //callback on termination
+            worker.onmessage = function( event ){
+                allevergleiche.push( event.data.vergl );
+                if( allevergleiche.length == datatothem.length ){ // IS THIS CLEAN???
+                    metavergleich( allevergleiche, alledtexts, BIBarray, edname, teNames );
+                    console.log("DONE DONE DONE ALL - build the DATABASE AND THE MENU");
+                    //terminate the workers
+                    for(var v in vergleicher){
+                        vergleicher[ v ].postMessage( {"cmd":"terminate"} );
+                    }
+                } else {
+                    if( windex < datatothem.length ){
+                        datatothem[ windex ]["workerid"] = event.data.workerid;
+                        vergleicher[ event.data.workerid ].postMessage( datatothem[ windex ] );
+                        windex++;
                     }
                 }
-                //push the worker to the worker array
-                vergleicher.push( worker );
+            }
+            //push the worker to the worker array
+            vergleicher.push( worker );
+        }
+        //data provided
+        for( var text in alledtexts ){ 
+            if( ref != text ){
+                console.log( "Data f. Vergleich Ref:", ref, " Text ", text );
+                
                 datatothem.push( {"cmd":"eval", "r": alledtexts[ref], "ri": ref, "t": alledtexts[text], "ti": text , "border": border, "degugggg": degugggg, "doUVlatin": doUVlatin} );
             }
         }
     }
-    //put data to the processes and join them
-    //for(var wo = 0; wo < vergleicher.length; wo++){ //nicht alle worker zur auf einmal starten - Firefox Buffer
-    //    vergleicher[ wo ].postMessage( datatothem[ wo ] );
-    //} 
-    //start first threads, if true Multiprocessing is implemented (Chrome, Opera), all threads can be called, 
-    //the scheduler works cares for the rest, this gives more speed in computation, BUT Firefox does not support true multiprocessing
-    //so this is the save implementation
+    //start first payload on each worker in array, they will go on for it self
     for(var cpuc = 0; cpuc < cpucount; cpuc++){  
-        if( windex < vergleicher.length ){
+        if( windex < datatothem.length ){
+            datatothem[ windex ]["workerid"] = cpuc;
             vergleicher[ windex ].postMessage( datatothem[ windex ] );
             windex++;
         }
     }
 }  
-
 
