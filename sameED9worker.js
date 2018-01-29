@@ -819,9 +819,9 @@ function EV(e){ //wrapper for the central function - just to keep it celan from 
     //call the comparison function
     var result = differentiellervergleich3( e.data.r, e.data.ri, e.data.t, e.data.ti );
     //post back the results
-    self.postMessage( { "vergl": result } );
+    self.postMessage( { "vergl": result , "workerid": e.data.workerid } );
     //teminate the webworker process
-	self.close();
+	//self.close();
 }
 
 self.onmessage = function(event) { //input data and compute
