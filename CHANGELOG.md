@@ -79,7 +79,7 @@ The format is NEU: for new features/functions, Änderung: for something existing
 - ÄNDERUNG: Keine Leeren TEXTE schreiben! Die Aufrufe dürfen gar nicht erst aus JavaScript raus gehen!
 - FEHLER: Wechsel von 100 auf 1 Zeile als Schritte und dann zurück gehen, da wird dann nur eine Zeile angezeigt
 - ÄNDERUNG: mobile Version zum Downloaden funktioniert nicht im Clonemodus: Clonen und Mobile Version nur für komplette Installation (Sicherheitsaspekt)
-- ÄNDERUNG: Reset und Aufräum-Funktion, Install in Python, Update Inastanzen script - überflüssig, wenn alles auf Javascript umgestellt ist; BSB Einbindung Ende 2016
+- ÄNDERUNG: Reset und Aufräum-Funktion, Install in Python, Update Inastanzen script - überflüssig, wenn alles auf Javascript umgestellt ist; 
 - NEU: Greek and Latin Letters Unterscheidung für LATEX und PERSEUS WORD Study tool link
 - ÄNDERUNG: Unterschiede gleich einfärben
 
