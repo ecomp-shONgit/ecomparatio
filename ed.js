@@ -5,6 +5,7 @@
 // further functions: URN, CTS, JSON, LATEX, PRINTING  ...
 //******************************************************************************
 
+
 /*
 GPLv3 copyrigth
 
@@ -67,6 +68,9 @@ var WTNleg='erster Teil einer Trennung';
 var VWT='get'; 
 var VWTleg='zweiter Teil einer Trennung'; 
 var colorofdiffclasses = 'rgb(0, 0, 255)';
+var bonbon = "🍬";
+var bonbonT = "Lücken";
+var csvtrenner = ";;";
 
 var coloerdclass = new Object();
 coloerdclass["T"] = 1; //sign of the compleat dissence between texts
@@ -170,6 +174,16 @@ var useunicode = 0; //grosz-klein buchsaben umschalter
 var lasttextuni = "";
 var lasttextbeta = "";
 
+/*precompiled regexp*/
+var cleanundamplt = new RegExp('&amp;amp;amp;lt;', 'g');
+var cleanundampgt = new RegExp('&amp;amp;amp;gt;', 'g');
+var cleanundamplt2 = new RegExp('&amp;lt;', 'g');
+var cleanundampgt2 = new RegExp('&amp;gt;', 'g');
+var cleanundamplt3 = new RegExp('&lt;', 'g');
+var cleanundampgt3 = new RegExp('&gt;', 'g');
+var cleanundamponly = new RegExp('&amp;amp;amp;', 'g');
+var cleanundamponly2 = new RegExp('&amp;', 'g');
+var regBonBon = new RegExp( '🍬', 'g' );
 
 /*INITIAL FUNCTION BUILDS BASE HTML AND CALL THE CHAIN of ecomparatio*/
 function restartecomparatio( ){
@@ -284,6 +298,10 @@ function startecomparatio( elemIDtoputitin ){ //untested by 17.10.2017 - is pure
         localStorage.setItem('VWT', VWT );
         localStorage.setItem('VWTleg', VWTleg );
         localStorage.setItem('colorofdiffclasses', colorofdiffclasses );
+        
+        localStorage.setItem('bonbon', bonbon );
+        localStorage.setItem('bonbonT', bonbonT );
+        localStorage.setItem('csvtrenner', csvtrenner );
     } else {
         TU = localStorage.getItem('TU');
         TUleg = localStorage.getItem('TUleg' );
@@ -322,6 +340,9 @@ function startecomparatio( elemIDtoputitin ){ //untested by 17.10.2017 - is pure
         VWT = localStorage.getItem('VWT' );
         VWTleg = localStorage.getItem('VWTleg' );
         colorofdiffclasses = localStorage.getItem('colorofdiffclasses' );
+        bonbon = localStorage.getItem( 'bonbon' );
+        bonbonT = localStorage.getItem( 'bonbonT' );
+        csvtrenner = localStorage.getItem('csvtrenner' );
     }
 
     //add scroll handler
@@ -1246,6 +1267,12 @@ function buildviewmenu( ){
     ee.innerHTML = "LATEX"; 
     ee.onclick = function( ){ tolatex( ); };
     edmenu.appendChild( ee );
+    var eVe = document.createElement( "span" );
+    eVe.className = "clickableED";
+    eVe.title = "Die Synopse im CSV Format exportieren.";
+    eVe.innerHTML = "CSV"; 
+    eVe.onclick = function( ){ tocsv( ); };
+    edmenu.appendChild( eVe );
     var jsonb = document.createElement( "span" );
     jsonb.className = "clickableED";
     jsonb.title = "Texte und Eregbnisse als JSON Exportieren.";
@@ -1272,7 +1299,7 @@ function buildviewmenu( ){
     edmenu.appendChild( modelem );
     var delelem = document.createElement( "span" );
     delelem.className = "clickableED";
-    delelem.title = "Textreihe löschen.";
+    delelem.title = "Diese Textreihe löschen.";
     delelem.innerHTML = "DEL"; 
     delelem.onclick = function( ){ delED( ); };
     edmenu.appendChild( delelem );
@@ -1519,7 +1546,7 @@ function comparatiomatrix( ){
             		    b = textnames[ i ];
                         var editor = document.createElement("div");
       		            editor.className = "reditorPma";
-      		            editor.innerHTML =  b[1]+"; "+ b[2] +" "+ b[3].split(".txt")[0];;
+      		            editor.innerHTML =  b[1]+"; "+ b[2] +" "+ b[3].split(".txt")[0];
       		            infoma.appendChild( editor );
                     }
 		        }
@@ -2183,8 +2210,8 @@ function renderlinesparallel( wordstart, howmanylines, elemarray ){
                     if(parseInt( elemarray[ e ].id ) == Us[di][0] ){
 					    if( parseInt(dispan.title) -parseInt( elemarray[ e ].lastChild.children[ elemarray[ e ].lastChild.children.length-1 ].title) > 1 ){
                             var aa = document.createElement("span");
-                            aa.className = "diffil T"
-                            aa.innerHTML = " 🍬 ";
+                            aa.className = "diffil T bonbon"
+                            aa.innerHTML = " "+bonbon+" ";
                             elemarray[ e ].lastChild.appendChild(aa);
                         }
                         elemarray[ e ].lastChild.appendChild(dispan);
@@ -3245,7 +3272,7 @@ function coloradiff( classname ){
             }
        coloerdclass[ classname ] = 1;
       } else { //decolor it
-			console.log(t.length, "class divs diff")
+			//console.log(t.length, "class divs diff")
             for( var ti in t ){
                  if( t[ ti ].style ){
                       if(whichview == 0){
@@ -3332,6 +3359,7 @@ function modDIFFDES( ){
  <input type='text' id='d15t' name='d15t' size='5'/> <input type='text' id='d15' name='d15' size='40' /><br/>\
  <input type='text' id='d16t' name='d16t' size='5'/> <input type='text' id='d16' name='d16' size='40' /><br/>\
  <input type='text' id='d17t' name='d17t' size='5'/> <input type='text' id='d17' name='d17' size='40' /><br/>\
+ <input type='text' id='d20t' name='d20t' size='5'/> <input type='text' id='d20' name='d20' size='40' /><br/>\
  <input type='text' value='Farbcode' size='5'/> <input type='text' id='d18' name='d18' size='40' />\
  <span>\
  <span class='clickable' onclick='selectacolor(this)' style='width:10px; height:10px; background:rgb(255,0,0); color:rgb(255,0,0);'>c\
@@ -3366,6 +3394,9 @@ function modDIFFDES( ){
  </span>\
  </span>\
  <br/><br/>\
+ANDERE DARSTELLUNGEN</br>\
+<input type='text' value='CSV' size='5'/> <input type='text' id='d21' name='d21' size='40' />\
+<br/><br/>\
  <div onclick='realymoddiffdes()' class='clickable'>Ändern</div> <span class='clickable' onclick='location.reload();' title='Zurück zur Hauptansicht.'>Zur&uuml;ck</span>\
 </form>";
        
@@ -3408,6 +3439,9 @@ function modDIFFDES( ){
     document.getElementById( 'd17t' ).value =  VWT;
     document.getElementById( 'd17' ).value =  VWTleg;
     document.getElementById( 'd18' ).value =  colorofdiffclasses;   
+    document.getElementById( 'd20' ).value =  bonbon;
+    document.getElementById( 'd20t' ).value =  bonbonT;
+    document.getElementById( 'd21' ).value =  csvtrenner;
 }
 
 function selectacolor( elem ){
@@ -3454,6 +3488,12 @@ function realymoddiffdes( ){
     VWT = document.getElementById( 'd17t' ).value;
     VWTleg = document.getElementById( 'd17' ).value;
     colorofdiffclasses = document.getElementById( 'd18' ).value;
+    if(document.getElementById( 'd20' ).value.trim() != "" && document.getElementById( 'd20' ).value != "   " ){//mehr checken newlines oder so
+        bonbon = document.getElementById( 'd20' ).value;
+        bonbonT = document.getElementById( 'd20t' ).value;
+    }
+    csvtrenner = document.getElementById( 'd21' ).value;
+
     localStorage.setItem('TU', TU );
     localStorage.setItem('TUleg', TUleg );
     localStorage.setItem('GK', GK );
@@ -3491,6 +3531,9 @@ function realymoddiffdes( ){
     localStorage.setItem('VWT', VWT );
     localStorage.setItem('VWTleg', VWTleg );
     localStorage.setItem('colorofdiffclasses', colorofdiffclasses );
+    localStorage.setItem('bonbon', bonbon );
+    localStorage.setItem('bonbonT', bonbonT );
+    localStorage.setItem('csvtrenner', csvtrenner );
 }
 
 /**************************************************************/
@@ -3588,10 +3631,68 @@ function buildteixml( ){
     dodownit( TEIout, currentedseries+'.xml','text/xml' );
 }
 
-var regBonBon = new RegExp( '🍬', 'g' );
+
+function tocsv( ){
+    comparatioparallel( 0 );
+    var csvout = "";
+    var infoelem = document.getElementById( "info" );
+	
+	for( var c = 0; c < infoelem.children.length; c += 1 ){
+		
+		csvout = csvout + (infoelem.children[c].innerHTML.split(";").join( " - " )).split("<br>").join( "" );
+        
+		csvout = csvout + csvtrenner;
+	}
+    csvout = csvout + "\n";
+    var vergelem = document.getElementById( "vergleich" );
+    var numOline = vergelem.children[0].children.length;
+	for(var l = 0; l < numOline; l++){
+		
+		for(var c = 0; c < vergelem.children.length; c++){
+			var lineelem = vergelem.children[c].children[l];
+			for( var w = 0; w < lineelem.children.length; w++){
+                if( lineelem.children[w].className.indexOf( "linenum" ) == -1){ //ksip lin numbers
+				    if( lineelem.children[w].className.indexOf( "diffil" ) != -1 ){
+                        var worrr = lineelem.children[w].innerHTML.split("<sup>")[0];
+					    csvout = csvout + " " + worrr.toUpperCase( );
+					
+				       	
+				    } else {
+					    if(lineelem.children[w].className.indexOf( "toolong" ) == -1){
+					        if(lineelem.children[w].style.display.indexOf( "none" ) != -1){
+							    for(var r = 0; r < lineelem.children[w].children.length; r++){
+								    if(lineelem.children[w].children[r].className.indexOf( "diffil" ) != -1){
+									    var worrr = lineelem.children[w].children[r].innerHTML.split("<sup>")[0];
+									    csvout = csvout + " " + worrr.toUpperCase();
+								    } else {
+									    var worrr = lineelem.children[w].children[r].innerHTML;
+									    csvout = csvout + " " + worrr;
+									
+								    }
+							    }
+						    } else {
+							    var worrr = lineelem.children[w].innerHTML;
+							    csvout = csvout + " " + worrr;
+							
+						    }
+					    } 
+				    }
+                }
+			}
+            csvout = csvout + csvtrenner;
+            
+			
+		}
+        csvout = csvout + "\n";
+	}
+	
+	var wnd = window.open("about:blank", "", "_blank");
+	wnd.document.write( csvout );	
+    dodownit( csvout, currentedseries+'.csv','text/text' );
+}
 
 function tolatex( ){
-	comparatioparallel( 0 );
+	comparatioparallel( 0 ); //does that mean only the first displayed lines could be rendered - do we need to reset the maxline count
 	var LATEXout = "\\documentclass[a0paper]{article}\n" 
 				  +"\\usepackage[utf8]{inputenc}"
 				  +"\\usepackage[greek.polutoniko,ngerman]{babel}\n"
@@ -3621,6 +3722,8 @@ function tolatex( ){
 			LATEXout = LATEXout + "&";
 		}
 	}
+    //recompile reexp for bonbon
+    regBonBon = new RegExp( bonbon, 'g' );
 	LATEXout = LATEXout + "\\\\";
 	var numOline = vergelem.children[0].children.length;
 	for(var l = 0; l < numOline; l++){
@@ -3772,14 +3875,6 @@ function addnewedtext( ){ //this assd a new inputfeald to a new ed set
 		(document.getElementById( "eds" ).offsetHeight+300).toString() + "px";
 }
 
-var cleanundamplt = new RegExp('&amp;amp;amp;lt;', 'g');
-var cleanundampgt = new RegExp('&amp;amp;amp;gt;', 'g');
-var cleanundamplt2 = new RegExp('&amp;lt;', 'g');
-var cleanundampgt2 = new RegExp('&amp;gt;', 'g');
-var cleanundamplt3 = new RegExp('&lt;', 'g');
-var cleanundampgt3 = new RegExp('&gt;', 'g');
-var cleanundamponly = new RegExp('&amp;amp;amp;', 'g');
-var cleanundamponly2 = new RegExp('&amp;', 'g');
 
 function submitneweds( justdata ){ //this submits the data to the server and checks for varius konventionen
     if( !justdata ){
@@ -3929,19 +4024,22 @@ function buildeditviewoffline( aselection ){
         addED( );
         document.getElementById( "edKname" ).value = aselection.value;
         var te = JSON.parse(localStorage.getItem("ecompPLAINTE"+aselection.value ));
-        if(te == null){ //no plain version
+        if( te == null ){ //no plain version
             te = JSON.parse(localStorage.getItem("ecompALLTEX"+aselection.value ));
         }
         var bi = JSON.parse(localStorage.getItem("ecompBIB"+aselection.value ));
         if( bi == null ){
             bi = JSON.parse(localStorage.getItem("ecompTENAMES"+aselection.value ));
-            for(var b in bi ){
+            for( var b in bi ){
                 var num = bi[b][0].toString();
                 document.getElementsByName("ed"+num+"editor")[0].value = bi[b][1];
                 document.getElementsByName("ed"+num+"name")[0].value = bi[b][2];
                 document.getElementsByName("ed"+num+"publishingplace")[0].value = bi[b][3].split(".txt")[0];
-                document.getElementsByName("ed"+num+"text")[0].value = te[b].join( " " );
-
+                try{
+                    document.getElementsByName("ed"+num+"text")[0].value = te[b].join( " " ); //could be text or array fix it some times
+                } catch( err ){ 
+                    document.getElementsByName("ed"+num+"text")[0].value = te[b];
+                }
                 if(b < bi.length-1){
                     addnewedtext();
                 }
@@ -4019,16 +4117,31 @@ function delED( ){
     var rconfirm = confirm("Sie sind dabei eine Textreihe zu löschen, wollen Sie das wirklich tun?");
 	//get menu elem
     if( rconfirm ){
+        //hier müssen wir nachbarbeiten - wenn es offline ist, dann richtig löschen
+        
         var alledmenuelem = document.getElementById( "alledmenu" );
-	    for(var a = 0; a < alledmenuelem.children.length; a++){
-		    if( alledmenuelem.children[ a ].style.display.includes("inline-block") ){
-                alledmenuelem.children[ a ].style.display = "none";
-			    alledmenuelem.children[ a ].className = alledmenuelem.children[ a ].className + " archive";
-		    }
-	    }
         
-        
+        for(var a = 0; a < alledmenuelem.children.length; a++){
+            if( alledmenuelem.children[ a ].style.position == "absolute" ){
+                
+                if( currentedseries.toLowerCase ){
+                    alledmenuelem.removeChild( alledmenuelem.children[ a ] ); //dump offline data
+                    localStorage.removeItem( "ecompTENAMES"+currentedseries );
+                    localStorage.removeItem( "ecompBIB"+currentedseries );
+                    localStorage.removeItem( "ecompPLAINTE"+currentedseries );
+                    localStorage.removeItem( "ecompRES"+currentedseries );
+                    localStorage.removeItem( "ecompTENAMES"+currentedseries );
+                    break;
+                }else { 
+                    alledmenuelem.children[ a ].style.position = "relative"; //just archive onlöine data
+                    alledmenuelem.children[ a ].style.display = "none";
+	                alledmenuelem.children[ a ].className = alledmenuelem.children[ a ].className + " archive";
+                    break;
+                }
+            }
+        }
         localStorage.setItem("ecompmenuADD", alledmenuelem.innerHTML );
+        location.reload();
     }
 }
 
@@ -6049,4 +6162,4 @@ document.getElementsByName("ed6publishingplace")[0].value = "Stuttgart";
 document.getElementsByName("ed6publishingdate")[0].value = "1983";
 document.getElementsByName("ed6text")[0].value = "Ἀναξίμανδρος μὲν Πραξιάδου Μιλήσιος Θαλοῦ γενόμενος διάδοχος καὶ μαθητὴς ἀρχήν τε καὶ στοιχεῖον πρῶτος τοῦτο τοὔνομα κομίσας τῆς εἴρηκε τῶν ὄντων τὸ ἄπειρον, ἀρχῆς. λέγει δ’ αὐτὴν μήτε ὕδωρ μήτε ἄλλο τι τῶν καλουμένων εἶναι στοιχείων, ἀλλ’ ἑτέραν τινὰ φύσιν ἄπειρον, ἐξ ἧς ἅπαντας γίνεσθαι τοὺς οὐρανοὺς καὶ τοὺς ἐν αὐτοῖς κόσμους· ἐξ ὧν δὲ ἡ γένεσίς ἐστι τοῖς οὖσι, καὶ τὴν φθορὰν εἰς ταῦτα γίνεσθαι κατὰ τὸ χρεών. διδόναι γὰρ αὐτὰ δίκην καὶ τίσιν ἀλλήλοις τῆς ἀδικίας κατὰ τὴν τοῦ χρόνου τάξιν, ποιητικωτέροις οὕτως ὀνόμασιν αὐτὰ λέγων· δῆλον δὲ ὅτι τὴν εἰς ἄλληλα μεταβολὴν τῶν τεττάρων στοιχείων οὗτος θεασάμενος οὐκ ἠξίωσεν ἕν τι τούτων ὑποκείμενον ποιῆσαι, ἀλλά τι ἄλλο παρὰ ταῦτα. οὗτος δὲ οὐκ ἀλλοιουμένου τοῦ στοιχείου τὴν γένεσιν ποιεῖ, ἀλλ’ ἀποκρινομένων τῶν ἐναντίων διὰ τῆς αὶδίου κινή- σεως·";
 submitneweds( false );
-}
+} 
