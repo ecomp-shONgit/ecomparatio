@@ -35,7 +35,7 @@ Chrome / Chromium 61.0 - Linux 64-Bit, Win 10 64-Bit, Mac OS Lion (24.11.2017)
 
 Chrome 62 - Win 10 (27.11.2017)
 
-Version 64.0.3282.167  - Linux 64-Bit Offizieller Build, (20.02.2018)
+Chrome Version 64.0.3282.167  - Linux 64-Bit Offizieller Build, (20.02.2018)
 
 ###### Edge / IE
 
