@@ -46,9 +46,11 @@ Microsoft Edge 40 - Win 10 64 Bit (28.11.2017)
 Safari 10.2 (29.11.2017)
 
 # Screenshots
-![ScreenShot](screen1.png)
-![ScreenShot](screen2.png)
-![ScreenShot](screen3.png)
+![ScreenShot](pic/screen1.png)
+![ScreenShot](pic/screen2.png)
+![ScreenShot](pic/screen3.png)
+![ScreenShot](pic/screen4.png)
+![ScreenShot](pic/screen5.png)
 
 
 
