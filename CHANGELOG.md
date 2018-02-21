@@ -1,7 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-The format is NEU: for new features/functions, Änderung: for something existing changes (also deprecation or deletion) and Fehler: for something worng working was fixed.
+The format is NEU: for new features/functions, Änderung: for something existing changes (also deprecation or deletion) and Fehler: for something worng working was fixed, Test: for a Testseries.
+
+## bis 20.02.2018
+- Neu: CSV export (eigene Trenner) 
+- Änderung: Website update
+- Fehler: delet Online und Offline Datenunterscheidung
+- Änderung: Speedup (~6x), reduzierte Textveränderung, reduzierte redundante Operation
+- BonBon Button (Lückendarstellung, ist ganzer Unterschied) wählbares Zeichen
 
 ## bis 29.01.2018
 - Neu: JSON import 
