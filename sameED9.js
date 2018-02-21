@@ -54,6 +54,7 @@ function delumbrbine( text ){
 function sameuninorm( aword, wichnorm ){
     return aword.normalize( wichnorm ) 
 }
+
 //... applied to a array of strings // done for speed issue
 function normatext( text, wichnorm ){
     var spt = text.split( " " )
@@ -132,7 +133,7 @@ function metavergleich( allevergleiche, alledtexts, BIBarray, edname, teNames ){
                         }
                         //verdrehung = RückwärtsVorwertsgleiche
 
-                        for(var r = allevergleiche[ w ].length-1; r > 1; r--){
+                        for(var r = allevergleiche[ w ].length-1; r > 2; r--){
                             //console.log(r, allevergleiche[ w ][ r ][ 2 ]);
                             if( allevergleiche[ w ][ r ][ 2 ].indexOf("T") != -1 || 
                                 allevergleiche[ w ][ r ][ 2 ].indexOf("mIAT")!= -1 || 
@@ -144,6 +145,9 @@ function metavergleich( allevergleiche, alledtexts, BIBarray, edname, teNames ){
                                 var countsame = 0;
                                 while(  tw == wr ){
                                     if( allevergleiche[ w ][ r+addTOr ] && allevergleiche[ v ][ t+addTOt ] ){
+                                        /*if(!allevergleiche[ w ][ r-addTOr ][ 2 ]){
+                                            console.log(allevergleiche[ w ][ r-addTOr ], w, r, r-addTOr );
+                                        }*/
                                         if( (allevergleiche[ w ][ r-addTOr ][ 2 ].indexOf("T") != -1 || 
                                             allevergleiche[ w ][ r-addTOr ][ 2 ].indexOf("mIAT")!= -1 || 
                                             allevergleiche[ w ][ r-addTOr ][ 2 ].indexOf("M")!= -1) && 
@@ -356,7 +360,7 @@ function ecomparatioVerg( edname, teNames, BIBarray, TEXTarray, doUVlatinNeu, bo
         cpucount = navigator.hardwareConcurrency*2; 
     } //need to 
     //
-    console.log("paral",cpucount, alledtexts.length, TEXTarray.length )
+    console.log("paral",cpucount, " comps ", alledtexts.length * TEXTarray.length )
     for( var ref in alledtexts ){
         //parallel stuff
         //some worker
@@ -385,9 +389,11 @@ function ecomparatioVerg( edname, teNames, BIBarray, TEXTarray, doUVlatinNeu, bo
                         windex++;
                     }
                 }
+            
             }
             //push the worker to the worker array
             vergleicher.push( worker );
+            //break;
         }
         //data provided
         for( var text in alledtexts ){ 
@@ -395,8 +401,11 @@ function ecomparatioVerg( edname, teNames, BIBarray, TEXTarray, doUVlatinNeu, bo
                 console.log( "Data f. Vergleich Ref:", ref, " Text ", text );
                 
                 datatothem.push( {"cmd":"eval", "r": alledtexts[ref], "ri": ref, "t": alledtexts[text], "ti": text , "border": border, "degugggg": degugggg, "doUVlatin": doUVlatin} );
+            //break;
             }
+            
         }
+        //break;
     }
     //start first payload on each worker in array, they will go on for it self
     for(var cpuc = 0; cpuc < cpucount; cpuc++){  
@@ -404,7 +413,9 @@ function ecomparatioVerg( edname, teNames, BIBarray, TEXTarray, doUVlatinNeu, bo
             datatothem[ windex ]["workerid"] = cpuc;
             vergleicher[ windex ].postMessage( datatothem[ windex ] );
             windex++;
+            
         }
+        //break;
     }
 }  
 
