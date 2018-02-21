@@ -18,23 +18,28 @@ http://85.214.109.153/~ecomparatio/a/
 
 ###### Firefox 
 
-Firefox Quantum 57.0 Linux 64-Bit, Win 10 64-Bit (24.11.2017)
+Firefox Quantum 57.0 - Linux 64-Bit, Win 10 64-Bit (24.11.2017)
+Firefox Quantum 58.0.2 - Linux 64-Bit, (20.02.2018)
 
 ###### Opera
 
-Opera 46.0 Linux 64-Bit, Win 10 64-Bit (24.11.2017)
+Opera 46.0 - Linux 64-Bit, Win 10 64-Bit (24.11.2017)
 
-Opera 49 Win 10 64 Bit (28.11.2017)
+Opera 49 - Win 10 64 Bit (28.11.2017)
+
+Opera 51.0.2830.34 - Linux 64-Bit (20.02.2018)
 
 ###### Chrome / Chromium
 
-Chrome / Chromium 61.0 Linux 64-Bit, Win 10 64-Bit, Mac OS Lion (24.11.2017)
+Chrome / Chromium 61.0 - Linux 64-Bit, Win 10 64-Bit, Mac OS Lion (24.11.2017)
 
-Chrome 62 Win 10 (27.11.2017)
+Chrome 62 - Win 10 (27.11.2017)
+
+Version 64.0.3282.167  - Linux 64-Bit Offizieller Build, (20.02.2018)
 
 ###### Edge / IE
 
-Microsoft Edge 40 Win 10 64 Bit (28.11.2017)
+Microsoft Edge 40 - Win 10 64 Bit (28.11.2017)
 
 ###### Safari
 
