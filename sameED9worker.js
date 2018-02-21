@@ -208,88 +208,119 @@ function deluv( text ){
 //**************************************************
 
 //function takes two strings a ref and a search string, if searchstring is contained in ref string it throws a True other wise False
-function checkDiakDirect( rp, sss ){
-    var rps = deldiak( rp ); //clean from diacritics 
+var cheDiakDirectTT = [ ];
+var cheDiakDirectRT = [ ];
+function checkDiakDirect( wri, wti, inTorR ){
+    /*var rps = deldiak( rp ); //clean from diacritics 
     var ssss = deldiak( sss );
     return rps.includes( ssss );
+    */
+    return (cheDiakDirectRT[ wri ] == cheDiakDirectTT[ wti ] )
 }
 
 //function applies all delet function instet of the removal od diacritics - returns true if strings does still not match - taht means that a string that is checked with checkall and could be considdered equal, s inequal because of the diacritics
-function checkDiak( rp, sss ){ 
-    var rps = delklammern( sigmaistgleich( delgrkl( delinterp( delumbrbine( delligaturen( rp ) ) ) ) ) );
+var cheDiakTT = [ ];
+var cheDiakRT = [ ];
+function checkDiak( wri, wti, inTorR ){ 
+    /*var rps = delklammern( sigmaistgleich( delgrkl( delinterp( delumbrbine( delligaturen( rp ) ) ) ) ) );
     var ssss = delklammern( sigmaistgleich( delgrkl( delinterp( delumbrbine( delligaturen( sss ) ) ) ) ) );
     
-    return !rps.includes( ssss );
+    return !rps.includes( ssss ); //
+    */
+    return !( cheDiakRT[ wri ] == cheDiakTT[ wti ] );
 }
 
 //functions applies all delet functions but the removal of ligatures, strings that are considered to be equal, will return a true, if they are unequal acording to the ligatures
-function checkLigat( rp, sss ){ //this is same to typographic differences
-    var ssss = delklammern( sigmaistgleich(delgrkl( delinterp( delumbrbine(  deldiak( sss ) )  ) ) ) );
-    var rps = delklammern( sigmaistgleich(delgrkl( delinterp( delumbrbine(  deldiak(  rp  ) )  ) ) ) );
+var cheLigatRT = [ ];
+var cheLigatTT = [ ];
+function checkLigat( wri, wti, inTorR ){ //this is same to typographic differences
+    //var ssss = delklammern( sigmaistgleich(delgrkl( delinterp( delumbrbine(  deldiak( sss ) )  ) ) ) );
+    //var rps = delklammern( sigmaistgleich(delgrkl( delinterp( delumbrbine(  deldiak(  rp  ) )  ) ) ) );
     /*if( rps.indexOf( ssss ) == -1 ){
         return true;
     } else {
         return false;
     }*/
-    return !rps.includes( ssss );
+    //return !rps.includes( ssss );
+    return !( cheLigatRT[ wri ] == cheLigatTT[ wti ] );
 }
 
 //function take string, calles delet fkt on the input, only interpunction remains, returns true if interpunction is reason for inequality
-function checkInterp( rp, sss ){
-    var ssss = delklammern( sigmaistgleich( delgrkl( delligaturen( delumbrbine( deldiak( sss ) ) ) ) ) );
+var cheInterpRT = [ ];
+var cheInterpTT = [ ];
+function checkInterp( wri, wti, inTorR ){
+    /*var ssss = delklammern( sigmaistgleich( delgrkl( delligaturen( delumbrbine( deldiak( sss ) ) ) ) ) );
     var rps = delklammern( sigmaistgleich( delgrkl( delligaturen( delumbrbine(  deldiak( rp  ) ) ) ) ) );
     if( !rps.includes( ssss ) || !ssss.includes( rps ) ){
         return true;
     } else {
         return false;
-    }
+    }*/
+    return !( cheInterpRT[ wri ] == cheInterpTT[ wti ] );
 }
   
 //function takes two strings, calls delet functions, true if strings still unequal      
-function checkUmbr( rp, sss ){
-    var ssss = delklammern( sigmaistgleich( delgrkl( delligaturen( delinterp( deldiak(  sss )  ) ) ) ) );
+var cheUmbrRT = [ ];
+var cheUmbrTT = [ ];
+function checkUmbr( wri, wti, inTorR ){
+    /*var ssss = delklammern( sigmaistgleich( delgrkl( delligaturen( delinterp( deldiak(  sss )  ) ) ) ) );
     var rps = delklammern( sigmaistgleich( delgrkl( delligaturen( delinterp(  deldiak(  rp  )  ) ) ) ) );
-    return !rps.includes( ssss );
+    return !rps.includes( ssss );*/
+    return !( cheUmbrRT[ wri ] == cheUmbrTT[ wti ] );
 }
 
 //...
-function checkgrkl( rp, sss ){ //eine weiter Unterschiedsklasse ist groß und klein Schr.
-    var ssss = delklammern( sigmaistgleich( delumbrbine( delligaturen( delinterp( deldiak( sss ) ) ) ) ) );
+var chegrklRT = [ ];
+var chegrklTT = [ ];
+function checkgrkl( wri, wti, inTorR ){ //eine weiter Unterschiedsklasse ist groß und klein Schr.
+    /*var ssss = delklammern( sigmaistgleich( delumbrbine( delligaturen( delinterp( deldiak( sss ) ) ) ) ) );
     var rps =  delklammern( sigmaistgleich( delumbrbine( delligaturen( delinterp( deldiak( rp  ) ) ) ) ) );
-    return !rps.includes( ssss );
+    return !rps.includes( ssss );*/
+    return !( chegrklRT[ wri ] == chegrklTT[ wti ] );
 }
 
 //...
-function checkklammern( rp, sss ){
-    var ssss = sigmaistgleich( delgrkl( delumbrbine( delligaturen( delinterp( deldiak(  sss  ) ) ) ) ) ); 
+var cheklammernRT = [ ];
+var cheklammernTT = [ ];
+function checkklammern( wri, wti, inTorR ){
+    /*var ssss = sigmaistgleich( delgrkl( delumbrbine( delligaturen( delinterp( deldiak(  sss  ) ) ) ) ) ); 
     var rps = sigmaistgleich( delgrkl( delumbrbine( delligaturen( delinterp( deldiak(  rp  ) ) ) ) ) ); 
     if( !rps.includes( ssss )  || !ssss.includes( rps ) ){
         return true; //wenn du alles außer klammern raus ist und ist ungleich
     } else {
         return false;
-    }
+    }*/
+    return !( cheklammernRT[ wri ] == cheklammernTT[ wti ] );
 }
 
 //...
-function checkUV( rp, sss ){
-    var ssss = delklammern( sigmaistgleich( delgrkl( delumbrbine( delligaturen( delinterp( deldiak(sss)))))));
+var cheUVRT = [ ];
+var cheUVTT = [ ];
+function checkUV( wri, wti, inTorR ){
+    /*var ssss = delklammern( sigmaistgleich( delgrkl( delumbrbine( delligaturen( delinterp( deldiak(sss)))))));
     var rps = delklammern( sigmaistgleich( delgrkl( delumbrbine( delligaturen( delinterp( deldiak(rp)))))));
     return !rps.includes( ssss );
+    */
+    return !( cheUVRT[ wri ] == cheUVTT[ wti ] );
 }
 
 //function takes two strings, removes everything (see delet functions) from it and returns true if they are nummericaly equal
-function checkall( r, s ){
-    var ss = "0000"; //init value
-    var rr = "    ";
+var cheALLofRT = [];
+var cheALLofTT = [];
+function checkall( wri, wti, inTorR ){
+    /*var ss = "0000"; //init value
+    var rr = "1111";
 
     if( doUVlatin ){ // classical latin
+        
         ss = deluv( delklammern( sigmaistgleich( delgrkl( delumbrbine( delligaturen( delinterp( deldiak(  s ))))))));
         rr = deluv( delklammern( sigmaistgleich( delgrkl( delumbrbine( delligaturen( delinterp( deldiak(  r ))))))));
     } else {
         ss = delklammern( sigmaistgleich( delgrkl( delumbrbine( delligaturen( delinterp( deldiak(  s  ) ) ) ) ) ) );
         rr = delklammern( sigmaistgleich( delgrkl( delumbrbine( delligaturen( delinterp( deldiak(  r  ) ) ) ) ) ) ); 
-    }
-    return rr.includes( ss );
+    }*/
+    //return rr.includes( ss );
+    return ( cheALLofRT[ wri ] == cheALLofTT[ wti ] );
 }
 
 //**************************************************
@@ -339,26 +370,26 @@ function wortabst( wr, wt ){
 //Section 5: comparison and equality
 //**************************************************
 // naming the inequality
-function welcheErsetzung( wr, wt ){
+function welcheErsetzung( wri, wti, inTorR ){
     var diffdesc = "";
-    if( doUVlatin && checkUV( wr, wt ) ){
+    if( doUVlatin && checkUV( wri, wti, inTorR ) ){
         diffdesc += " V"; //uv Probleme Latin Text
     } else {
-        if( checkgrkl( wr, wt ) ){
+        if( checkgrkl( wri, wti, inTorR ) ){
             diffdesc += " C"; //case, groß/klein 
         }
-        if( checkInterp( wr, wt ) ){
+        if( checkInterp( wri, wti, inTorR ) ){
             diffdesc += " I"; //interpunktion
         }
-        if( checkUmbr( wr, wt ) ){
+        if( checkUmbr( wri, wti, inTorR ) ){
             diffdesc += " U"; //umbruch bindestrich
         }
-        if( checkklammern( wr, wt ) ){
+        if( checkklammern( wri, wti, inTorR ) ){
             diffdesc += " K"; //klammern
         }
-        if( checkLigat( wr, wt ) ){
+        if( checkLigat( wri, wti, inTorR ) ){
             diffdesc += " L"; //ligaturen 
-        } else if( checkDiak( wr, wt ) ){
+        } else if( checkDiak( wri, wti, inTorR ) ){
             diffdesc += " D"; //diakritische zeichen / iota sub
         }
     }
@@ -367,7 +398,7 @@ function welcheErsetzung( wr, wt ){
 
 //function takes reference word -1, refrence word, rference word +1 and search word -1, search word and search word +1
 // function returns array with bool (equal or not), a description string, a word dirstance
-function gleich( wrv ,wr, wrn, wtv, wt, wtn ){
+function gleich( wrvi, wri, wrni, wtvi, wti, wtni, inTorR ){ // is 0 for search in Ref and 1 for search in Tex
     /*
        Am gegebenen Ort des Vergleichs innerhalb der Textlisten.
         1 Übereinstimmung Lexeme
@@ -391,36 +422,34 @@ function gleich( wrv ,wr, wrn, wtv, wt, wtn ){
     //(A) NICHT ENTHALTENSEIN IDENTITÄT DUCH ----------------------------------------------
     
     //LEXEM EBENE - keine Suche
-    var verglwr = wr.indexOf( wt ); //suche string wt in wr
-    if( verglwr != -1 &&  wr.length == wt.length ){ //zu 1 TinRundRinT, wenn gefunden, und worte gleich lang = völlige Übereinstimmung
-        return [gefunden, diffdesc, diffresuLOGIK]; //Rückgabe des Ergebnsarrays: True, Keine Beschreibung, Abstand 1
+    var wr = r[ wri ];
+    var wt = t[ wti ];
+    if( wr == wt ){ 
+        return [ gefunden, diffdesc, diffresuLOGIK ]; //Rückgabe des Ergebnsarrays: True, Keine Beschreibung, Abstand 1
     }
     
-    var dwr = delall( wr ); //Abzug aller möglichen Ungleichheiten auf Lexem Ebene
-    var dwt = delall( wt ); //"
-    var verglERwr = checkall( wr, wt ); 
+    
     //ERSETZUNGSEBEN
-    if( verglERwr && dwr.length == dwt.length  ){ //zu 4; nach check all eine Übereinstimmung, bei gleiche Länge der Strings = Übereinstimmung 
+    if( checkall( wri, wti, inTorR )  ){ //zu 4; nach check all eine Übereinstimmung, bei gleiche Länge der Strings = Übereinstimmung 
         // unterschiedlich weil ...
-        //console.log(wr, wt ,  len( dwr  ) , len( dwt  ), dwr, dwt)
-        diffdesc = welcheErsetzung( wr, wt ); // Auswahl der Gründe für die Ungleicheit
+        diffdesc = welcheErsetzung( wri, wti, inTorR ); // Auswahl der Gründe für die Ungleicheit
         return [gefunden, diffdesc, diffresuLOGIK]; // Rückgabe: True, Unterschiedsbeschreibung, Abstand 1
     }
 
     //ZUSAMMENZIEHUNG
     //Anmerkung: zusammengezogen = getrennt im Reftext! hier muß dann der andere Index weiter gesett werden,
     //es handelt sich um die Strings vor und nach den wr und wt strings
-    var dwtv = delall( wtv ); //Abzug aller Ungleichheitsgründe
-    var dwtn = delall( wtn ); //"
+    var dwt  = cheALLofTT[ wti ];
+    var dwtv = cheALLofTT[ wtvi ]; //Abzug aller Ungleichheitsgründe
+    var dwtn = cheALLofTT[ wtni ]; //"
     var vWT = dwtv + dwt; //Strings zusammenziehen
     var WTn = dwt + dwtn; //Strings zusammenziehen
-    var verglvWR = dwr.indexOf( vWT ); //Zusammenziehung (voriges Wort und dieses Wort) in dwr Sting suchen
-    var verglWRn = dwr.indexOf( WTn ); //Zusammenziehung (dieses Wort und nächstes) in dwr Sting suchen
-    if( verglvWR != -1 && dwr.length == vWT.length ){ //zu 3, gefunden checken
+    var dwr  = cheALLofRT[ wri ];
+    if( dwr == vWT ){ //zu 3, gefunden checken
         //console.log("GG vWR") 
         diffdesc = " vwt"; //Unterschiedsbeschreibung
         return [gefunden, diffdesc, 0.5]; // Rückgabe: True, Unterschiedsbeschreibung, Abstand 1
-    } else if( verglWRn != -1 && dwr.length == WTn.length ){ //zu 3
+    } else if( dwr == WTn ){ //zu 3
         //console.log("GG WRn") 
         diffdesc = " wtn"; 
         return [gefunden, diffdesc, 0.5];
@@ -428,8 +457,14 @@ function gleich( wrv ,wr, wrn, wtv, wt, wtn ){
 
     //WORTABSTAND
     //Wortabstand zu zusammengezogenen worten
-    var wrOhneK = delklammern( wr ); // Referenzwort ohne Klammern
-    var wtOhneK = delklammern( wt ); // Vergleichswort ohne Klammern
+    var wrOhneK = dwr;//DAS GEHT NICHT WEIL KLAMMER SIND DA DRIN -> cheklammernRT[ wri ]; // Referenzwort ohne Klammern
+    if(!wrOhneK){
+        wrOhneK = "111111111111";
+    }
+    var wtOhneK = dwt;//cheklammernTT[ wti ]; // Vergleichswort ohne Klammern
+    if(!wtOhneK){
+        wtOhneK = "111111111111";
+    }
     var verglWA = wortabst( wrOhneK, wtOhneK ); //Wortabstand berechnen
     var ma = Math.max( wrOhneK.length, wtOhneK.length ); //Länge des längeren Wortes
     var mi = Math.min( wrOhneK.length, wtOhneK.length ); //Länge des kürzeren Wortes
@@ -463,50 +498,75 @@ function gleich( wrv ,wr, wrn, wtv, wt, wtn ){
 }
 
 //function take three search words, a text array containing refrence words, a max indiex of it and a dirction value    
-function suche( vdas, das, dasn, indem, vonderstelle, maxindex, vz ){
+function suche( wrvi, wri, wrni, wtvi, wti, wtni, vz, inTorR ){
     //console.log("Suche zur Synchronisation der Vergleichsposition im Nächsten.")
+    var sindex = null;
+    var vdas = null;
+    var das = null;
+    var dasn = null;
+    var maxindex = null;
+    var indem = null;
+    if( inTorR == 0 ){ // 
+        vdas = wtvi;//(fix) dieses wt
+        das = wti;
+        dasn = wtni;
+        indem = r;//(var)
+        sindex = wri;
+        maxindex = r.length;
+    } else {
+        vdas = wrvi;//(fix) dieses wt
+        das = wri;
+        dasn = wrni;
+        indem = t;//(var)
+        sindex = wti;
+        maxindex = t.length;
+    }
     var dosearch = true; //steuerung der While schleife
     var findex = -1; //Index in Text Array, an dem Übereinstimmung gefunden wurde
     var gret = [ true, "", ""]; //Array der Gleichheit, gibt zurück, wie die gleich() Funktion zurück gibt
-    var sindex = vonderstelle; //Beginn der Suche ab diesem Index im Textarray
     var allotherresults = []; //Seicherarray für alle Zwischen Ergebnisse der Suche, zu Kontrolle
     var count = 0; //wie viel worte wurden bereits duchsucht
     while( dosearch ){ //while schleife bewegt durch das Text Array
-        var wr = indem[ sindex ]; // nimm Refrenzwort an Index
+        var awo = indem[ sindex ]; // nimm Refrenzwort an Index
 
-        if(!wr){
+        if( !awo ){
             dosearch = false;
             break;
         }
-        while( wr.length < 1 || wr == " " ){ //Leerstellen und Leerworte weitersetzen
+        while( awo.length < 1 || awo == " " ){ //Leerstellen und Leerworte weitersetzen
             if( vz > 0 ){ // vz ist eine Richtungsangabe, ob vorwärts, oder rückwärts im Array gegangen wird
                 sindex = sindex + 1; //vorwärts
             } else {
                 sindex = sindex - 1; //oder rückwärts
             }
-            if( sindex >= maxindex || sindex <= 0 || count >= border){ //falls das Array zuende ist, oder genug worte vegleichen - bestimmt durch border
+            if( sindex >= maxindex || sindex <= 0 || count >= border ){ //falls das Array zuende ist, oder genug worte vegleichen - bestimmt durch border (global)
                 dosearch = false; // genereller Abbruch der Suche
                 break; //Abbruch dieser While Schleife
             }
-            wr = indem[ sindex ]; // nicht leeres Wort, ist Abbruch dieser while Schleife, sonst geht es weiter
+            awo = indem[ sindex ]; // nicht leeres Wort, ist Abbruch dieser while Schleife, sonst geht es weiter
         }
-        if( wr.length < 1 || wr == " " || !wr  ){ //letzer Index erreicht im nicht leeres Wort suchen!!!
+        if( awo.length < 1 || awo == " " || !awo  ){ //letzer Index erreicht im nicht leeres Wort suchen!!!
             dosearch = false;
             break;
         } // IST DAS NÖTIG SIEHT NICHT SO AUS
 
         //Auswahl der Worte vor und nach diesem Wort, aus Referenztext
-        var wrv = "";
+        var sindexv = sindex;
         if( sindex > 0 ){
-            wrv = indem[ sindex-1 ]; //hier vielleicht auch einen while schleife, dann auch in der suche()
+            sindexv = sindex-1; //hier vielleicht auch einen while schleife, dann auch in der suche()
         }
-        var wrn = "";
+        var sindexn = sindex;
         if( sindex < maxindex ){
-            wrn = indem[ sindex+1 ];
+            sindexn = sindex+1;
         }
         
         //An der neu erreichten Stelle im Text
-        var g = gleich( wrv ,wr, wrn, vdas, das, dasn );
+        var g = [null];
+        if( inTorR == 0 ){ //wt fix
+            g = gleich( sindexv, sindex, sindexn, vdas, das, dasn, inTorR ); //interface gets global REF and Texindex and a switch value for direktion of comparisson!!!
+        } else { //wr fix
+            g = gleich( vdas, das, dasn, sindexv, sindex, sindexn, inTorR );
+        }
         //console.log("gg", g, "WR", wrv , wr, wrn,"DAS", vdas, das, dasn, "SINDEX", sindex)
         gret = g; // Rückgabewert merken; IST DAS NÖTIG
         //console.log(g, "wrv", wrv ,"wr", wr, "wrn", wrn, "vdas", vdas, "das", das, "dasn", dasn, "----", sindex, maxindex)
@@ -517,12 +577,12 @@ function suche( vdas, das, dasn, indem, vonderstelle, maxindex, vz ){
             allotherresults.push( [sindex, g]  );
             //check if at end else goon
             if( vz > 0 ){ //Richtung der Suche im Array
-                if( sindex >= maxindex || count >= border){ //MUSS HIER NICHT BORDER REIN, UM SUCHE EINZUDÄMMEN, WIR SUCHEN DOCH GERADE ALLES DURCH
+                if( sindex >= maxindex || count >= border ){ //MUSS HIER NICHT BORDER REIN, UM SUCHE EINZUDÄMMEN, WIR SUCHEN DOCH GERADE ALLES DURCH
                     dosearch = false; //Abbruch der Suche durch Ende des Arrays
                 }
                 sindex = sindex + 1; //index vorwärts setzen
             } else {
-                if( sindex <= 0  || count >= border){
+                if( sindex <= 0  || count >= border ){
                     dosearch = false; //Ende d Suche
                 }
                 sindex = sindex - 1; // rückwärts
@@ -538,69 +598,100 @@ function suche( vdas, das, dasn, indem, vonderstelle, maxindex, vz ){
 //function compares between the next three equal possitiona of search word in reference text
 //die beste Möglichkiet ist die Stelle an der die meisten gleichen Folgevergleiche zustande kommen
 //gibt -1 für nicht gefunden und index des fundes sonst
-function suchenVorwaerts( vdas, das, dasn, indem, vonderstelle, maxindex, anderstelle, ausdem ){
-    var c1 = suche(vdas, das, dasn, indem, vonderstelle, maxindex, 1); //suche nächste Übereinstimmung
+function suchenVorwaerts( wrvi, wri, wrni, wtvi, wti, wtni, inTorR ){
+    var vonderstelle = null;
+
+    if( inTorR == 0 ){
+        vonderstelle = wti;
+    } else {
+        vonderstelle = wri;
+    }
+
+    var c1 = suche( wrvi, wri, wrni, wtvi, wti, wtni, 1, inTorR ); //suche nächste Übereinstimmung
+      
     var naechstes1  = c1[ 0 ]; //nächste übereinstimmende Stelle
     var anzahlgl1 = 0; // Speicher für die Azahl gleicher folgender Funde für diesen Fundindex
     var c2 = [-1]; //Init Array
     if( naechstes1 != -1 && naechstes1 != vonderstelle ){ //wenn es eine nächste Fundstelle gibt
-        anzahlgl1 = anzahlgleiche( naechstes1, indem, anderstelle, ausdem ); //zählen der gleichen folgenden vergleiche, erster Fund
-        c2 = suche(vdas, das, dasn, indem, naechstes1+1, maxindex, 1); //zweiten Fund Suchen
+        //hier kommt es auf den REF oder TEXT bezug an
+        if( inTorR == 0 ){ //this wt in rt naechstesWTinR, iTex, 0
+            anzahlgl1 = anzahlgleiche( naechstes1, wti, inTorR ); //zählen der gleichen folgenden vergleiche, erster Fund
+            c2 = suche( naechstes1, naechstes1+1, naechstes1+2, wtvi, wti, wtni, 1, inTorR ); //zweiten Fund Suchen
+        } else { //this wr in wt
+            anzahlgl1 = anzahlgleiche( wri, naechstes1, inTorR ); //zählen der gleichen folgenden vergleiche, erster Fund
+            c2 = suche( wrvi, wri, wrni, naechstes1, naechstes1+1, naechstes1+2, 1, inTorR ); 
+        }
     }
     var naechstes2  = c2[0]; //zweite Fundstelle speichern
     var anzahlgl2 = 0; //fundindex2
     var c3 = [-1]; //init
     if( naechstes2 != -1 && naechstes2 != vonderstelle){
-        anzahlgl2 = anzahlgleiche( naechstes2, indem, anderstelle, ausdem );
-        c3 = suche(vdas, das, dasn, indem, naechstes2+1, maxindex, 1);
+        //hier kommt es auf den REF oder TEXT bezug an
+        if( inTorR == 0 ){ //this wt in rt naechstesWTinR, iTex, 0
+            anzahlgl2 = anzahlgleiche( naechstes2, wti, inTorR ); //zählen der gleichen folgenden vergleiche, zweiter Fund
+            c3 = suche( naechstes2, naechstes2+1, naechstes2+2, wtvi, wti, wtni, 1, inTorR ); //zweiten Fund Suchen
+        } else { //this wr in wt
+            anzahlgl2 = anzahlgleiche( wri, naechstes2, inTorR ); //zählen der gleichen folgenden vergleiche, zweiter Fund
+            c3 = suche( wrvi, wri, wrni, naechstes2, naechstes2+1, naechstes2+2, 1, inTorR ); 
+        }
     }
     var naechstes3  = c3[0];
     var anzahlgl3 = 0;
     if( naechstes3 != -1 && naechstes3 != vonderstelle ){
-        anzahlgl3 = anzahlgleiche( naechstes3, indem, anderstelle, ausdem );
+        //hier kommt es auf den REF oder TEXT bezug an
+        if( inTorR == 0 ){ //this wt in rt naechstesWTinR, iTex, 0
+            anzahlgl3 = anzahlgleiche( naechstes3, wti, inTorR ); //zählen der gleichen folgenden vergleiche, dritter Fund
+        } else { //this wr in wt
+            anzahlgl3 = anzahlgleiche( wri, naechstes3, inTorR ); //zählen der gleichen folgenden vergleiche, dritter Fund
+        }
     }
 
     //SELEKTION der besser passenden Stelle, Nach Anzahl der folgenden Gleichheit
     if( degugggg ){
-        console.log(vonderstelle, "c1", naechstes1, anzahlgl1, "c2", anzahlgl2, "c3", naechstes3, anzahlgl3 );
+        if( inTorR == 0 ){
+            console.log(vonderstelle, "IN REF:", "(c1)", naechstes1, r[naechstes1], anzahlgl1, "c2", naechstes2, r[naechstes2], anzahlgl2, "c3", naechstes3, r[naechstes3], anzahlgl3, "(t)", t[wti], );
+        } else {
+            console.log("IN TEXT:");
+        }
+        console.log( vonderstelle, "c1", naechstes1, anzahlgl1, "c2", naechstes2, anzahlgl2, "c3", naechstes3, anzahlgl3 );
     }
 
     if( anzahlgl1 > anzahlgl2 && anzahlgl1 > anzahlgl3 ){
         if( degugggg ){
             console.log("c1");
         }
-        return c1;
+        return [ c1[0], anzahlgl1 ];
     } else if( anzahlgl2 > anzahlgl1 && anzahlgl2 > anzahlgl3 ){
         if( degugggg ){
             console.log("c2");
         }
-        return c2;
+        return [ c2[0], anzahlgl2 ];
     } else if( anzahlgl3 > anzahlgl1 && anzahlgl3 > anzahlgl2 ){
         if( degugggg ){
             console.log("c3");
         }
-        return c3;
+        return [ c3[0], anzahlgl3 ];
     } else {
         if( anzahlgl1 == anzahlgl2 ){
             if( degugggg ){
                 console.log("c1");
             }
-            return c1;
+            return [ c1[0], anzahlgl1 ];
         } else if( anzahlgl1 == anzahlgl3 ){
             if( degugggg ){
                 console.log("c1");
             }
-            return c1;
+            return [ c1[0], anzahlgl1 ];
         } else if( anzahlgl2 == anzahlgl3 ){
             if( degugggg ){
                 console.log("c2");
             }
-            return c2;
+            return [ c2[0], anzahlgl2 ];
         } else {
             if( degugggg ){
                 console.log("c1");
             }
-            return c1;
+            return [ c1[0], anzahlgl1 ];
         }
     }
 	//suche alle(?) vorkommen und bewerte diese noch. die bewertung erfolgt, wie beim wandern des vergleichs
@@ -608,22 +699,23 @@ function suchenVorwaerts( vdas, das, dasn, indem, vonderstelle, maxindex, anders
 }
 
 //synonyme function für gleich(), jedoch zählt sie nur gleiche ergebnisse, keine Suche und
-function anzahlgleiche( ir, r, it, t ){
+function anzahlgleiche( wri, wti, inTorR ){
     /*Anmerkung: Das wird verwendet um zwischen den zwei Möglichkeiten, quasis vertikal, den Index des einen oder des anderen Textes weiter zu setzen. Das ist richtig. Genau genommen könnte diese Funktion aber auch eingesetzt werden, um innerhalb eines Textes die aufeinderfolgenden möglichen Fundstellen untereinander zu bewerten. Das würde dann auch ermöglichen, daß das ähnliche aufeinanderfolgende Stellen richtig zugeordnet werden. Das muß dann in der Funktion gemacht werden, die nach der nächsten Fundstelle Sucht. Oh und ich glaube, die Bewegung des Vergleichs mitgedacht, muß man das kontrollieren, wenn man eine Übereinstimmung hat. Gibt es eine Stelle, wo diese Übereinstimmung zu einer noch größeren globen Übereinstimmung führt?!!! Alter, so isses. Das erfüllt die Logik des Vergleichs und die Logik der Bewegung. Man man man.*/
-
-    if( ir == 0 || it == 0 ){ //weil wort vor dem wort eine rolle spielt, dieses aber sonst undefined ist
-        return 0;
-    }
-
+    var ir = wri;
+    var it = wti;
+    
+    
     var dovergleich = true;
     var howmuchgleiche = 0;
-    var lt = t.length - 2;
-    var lr = r.length - 2;
+    var lt = t.length - 1;
+    var lr = r.length - 1;
     var count = 0;
     
     while( dovergleich ){
         if( ir < lr && it < lt ){ // index checken sonst abbruch (in else)
-            var e = gleich( r[ir-1] ,r[ir], r[ir+1], t[it-1], t[it], t[it+1] ); //vergleiche
+            //vergleiche
+            //console.log("anzgl", r[ir], t[it]);
+            var e = gleich( ir-1, ir, ir+1, it-1, it, it+1, inTorR );
             if( e[0] ){ //übereinstimmung
                 howmuchgleiche += 1; //dann zähle diese Gleichheit
             } else { // keine übereinstimmung - abbruch  - das könnte man auch weg lassen und ein Verhältnis aus übereinstimmung und nicht zurücg geben
@@ -657,7 +749,11 @@ Anmerkung 6: Es ist so, das es beim Vergleich zweier Dinge, die vielzählig sind
 */
 
 //function takes a reference text array of words, a index of this array, a search text arry of words and a index of this array, a result array
-function differentiellervergleich3( r, ri, t, ti ){
+var r = [];
+var t = [];
+function differentiellervergleich3( rin, ri, tin, ti ){
+    r = rin;
+    t = tin;
     var comparatio = [ ]; //result array
     comparatio.push( [ri, ti] ); //first in comparatio array is index of ref and text in altextarray
 
@@ -676,35 +772,39 @@ function differentiellervergleich3( r, ri, t, ti ){
         //LEERE Stellen//
         //////////////////////////////
         var wr = r[ iRef ]; //refrence wort herausnehmen
-        while( (wr.length < 1 || wr == " " ) && iRef < maxiRef ){
+        while( (wr.length < 1 || wr == " " || wr == "   "  ) && iRef < maxiRef ){
             iRef += 1; //Index des Refrenztextes weitersetzen, wenn wort leer
             wr = r[ iRef ]; //neu holen
         }
         var wrv = "";
+        var wrvi = iRef-1;
         if( iRef > 0 ){ //wenn vergleich schon an min 2. Stelle
             wrv = r[ iRef-1 ]; //refrenzwort vorher
         }
         var wrn = "";
+        var wrni = iRef+1;
         if( iRef < maxiRef ){ // wenn Vergleich noch nicht an letzer Stelle
             wrn = r[ iRef+1 ]; //refrenzwort nachher
         }
         ////////
         var wt = t[ iTex ]; //wort aus dem Vergleichstext holen
-        while( (wt.length < 1 || wt == " " ) && iTex < maxiTex){
+        while( (wt.length < 1 || wt == " " || wt == "   " ) && iTex < maxiTex){
             iTex += 1;
             wt = t[ iTex ]; 
         }
         var wtv = "";
+        var wtvi = iTex-1;
         if( iTex > 0 ){
             wtv = t[ iTex-1 ]; //vergleichswort vorher
         }
         var wtn = "";
+        var wtni = iTex+1;
         if(iTex < maxiTex){
             wtn = t[ iTex+1 ]; //vergleichswort nachher
         }
 
         //GLEICHHEIT 
-        var g = gleich( wrv ,wr, wrn, wtv, wt, wtn ); //vergleichsergebnis dieser worte
+        var g = gleich( wrvi, iRef, wrni, wtvi, iTex, wtni, 0 ); //vergleichsergebnis dieser worte
         var pushIREF = iRef; //speichern der indices
         var pushITEX = iTex; //speichern index
         var pushDIFFDESC = g[1]; //speichern des Ergebnisses
@@ -726,40 +826,38 @@ function differentiellervergleich3( r, ri, t, ti ){
         } else {
             
             //SUCHE bester gleichheit
-            var a = suchenVorwaerts( wtv, wt, wtn, r, iRef, maxiRef, iTex, t ); //bestes nächstes auftreten wt in wr
+            var a = suchenVorwaerts( wrvi, iRef, wrni, wtvi, iTex, wtni, 0 ); //bestes nächstes auftreten wt in wr
             //benennen der Ergebnisse der Suche
             var naechstesWTinR  = a[0];
-            var naechstesWTinRbew = a[1];
-            var naechstesWTinRall = a[2];
-            var c = suchenVorwaerts( wrv, wr, wrn, t, iTex, maxiTex, iRef, r ); //bestes nächstes auftreten wt in wr
+            var anzahlglWTinR = a[1];
+            var c = suchenVorwaerts( wrvi, iRef, wrni, wtvi, iTex, wtni, 1 ); //bestes nächstes auftreten wt in wr
             var naechstesWRinT  = c[0];
-            var naechstesWRinTbew = c[1];
-            var naechstesWRinTall = c[2];
+            var anzahlglWRinT = c[1];
             if( degugggg ){
                 console.log( "ungleich", "WR", wrv ,wr, wrn, iRef, "WT", wtv, wt, wtn, iTex, g );
                 console.log( "suche wt",  wt, "an Stelle in r ", iRef, a );
                 console.log( "suche wr", wr, "an Stelle in t ", iTex, c );
             }
             //0gefdittevergleichsfunktion
-            if( (naechstesWTinR == -1 && naechstesWRinT == -1) ){ //weder wr tritt in T auf, noch wt in R
+            if( naechstesWTinR == -1 && naechstesWRinT == -1 ){ //weder wr tritt in T auf, noch wt in R
                 iRef += 1; // beide indices weiter setzen
                 iTex += 1;
                 pushDIFFDESC = " M mIAT";
             
             //WT nicht mehr gefunden
-            } else if( (naechstesWTinR == -1 && naechstesWRinT != -1)  ){
+            } else if( naechstesWTinR == -1 && naechstesWRinT != -1  ){
                 iTex += 1; //nur den vergleichstext weiter setzen
                 pushDIFFDESC = " M";
             //WR nicht mehr gefunden
-            } else if( (naechstesWTinR != -1 && naechstesWRinT == -1)  ){
-                iRef = iRef + 1; //nur den refrenztext weiter setzen
+            } else if( naechstesWTinR != -1 && naechstesWRinT == -1  ){
+                iRef += 1; //nur den refrenztext weiter setzen
                 pushDIFFDESC = " mIAT";
             //zusammenfassung anderer ungleichheit mit G
             } else {
                 //ermitteln der folgenden gleichheit an der neu gefundenen stelle, wenn wr in T und wt in R gefunden
                 //index weiter setzen, aber wie:
-                var anzahlglWTinR = anzahlgleiche( naechstesWTinR, r, iTex, t );
-                var anzahlglWRinT = anzahlgleiche( naechstesWRinT, t, iRef, r );
+                //var anzahlglWTinR = anzahlgleiche( naechstesWTinR, iTex, 0 );
+                //var anzahlglWRinT = anzahlgleiche( iRef, naechstesWRinT, 1 );
 
                 if(degugggg){
                     console.log( "anzahlglWTinR", anzahlglWTinR, naechstesWTinR,  r[naechstesWTinR],"anzahlglWRinT", anzahlglWRinT, naechstesWRinT, t[naechstesWRinT] );
@@ -816,6 +914,75 @@ function EV(e){ //wrapper for the central function - just to keep it celan from 
     }
     border = e.data.border;
     doUVlatin = e.data.doUVlatin;
+
+    //data preparation ONCE ****************************************************
+    //even better to do it in the calling thread, but that would result in a 
+    //strong restructuring of the program, first do it in the thread
+
+    //claer prev array - worker is used more than once
+    
+    cheALLofRT = [ ]; 
+    cheDiakDirectRT = [ ];
+    cheDiakRT = [ ];
+    cheLigatRT = [ ];
+    cheInterpRT = [ ];
+    cheUmbrRT = [ ];
+    chegrklRT = [ ];
+    cheklammernRT = [ ];
+    cheUVRT = [ ];
+    //itt the ref data
+    for( var inTHE in e.data.r ){
+            var itemin = e.data.r[ inTHE ];
+            if( doUVlatin ){ // classical latin
+                cheALLofRT.push( deluv( delklammern( sigmaistgleich( delgrkl( delumbrbine( delligaturen( delinterp( deldiak(  
+                                    itemin)))))))));
+            } else {
+                cheALLofRT.push( delklammern( sigmaistgleich( delgrkl( delumbrbine( delligaturen( delinterp( deldiak(  
+                                     itemin))))))));
+            }
+            cheDiakDirectRT.push( deldiak( itemin ) );
+            cheDiakRT.push( delklammern( sigmaistgleich( delgrkl( delinterp( delumbrbine( delligaturen( itemin )))))));
+            cheLigatRT.push( delklammern( sigmaistgleich(delgrkl( delinterp( delumbrbine(  deldiak( itemin )))))));
+            cheInterpRT.push( delklammern( sigmaistgleich( delgrkl( delligaturen( delumbrbine(  deldiak( itemin  )))))));
+            cheUmbrRT.push( delklammern( sigmaistgleich( delgrkl( delligaturen( delinterp(  deldiak(  itemin  )))))));
+            chegrklRT.push( delklammern( sigmaistgleich( delumbrbine( delligaturen( delinterp( deldiak( itemin  )))))));
+            cheklammernRT.push( sigmaistgleich( delgrkl( delumbrbine( delligaturen( delinterp( deldiak(  itemin  ))))))); 
+            cheUVRT.push( delklammern( sigmaistgleich( delgrkl( delumbrbine( delligaturen( delinterp( deldiak( itemin ))))))));
+    }
+    //clear rev data
+    cheALLofTT = [ ];
+    cheDiakDirectTT = [ ];
+    cheDiakTT = [ ];
+    cheLigatTT = [ ];
+    cheInterpTT = [ ];
+    cheUmbrTT = [ ];
+    chegrklTT = [ ];
+    cheklammernTT = [ ];
+    cheUVTT = [ ];
+    //itt text data
+    for( var inTHE in e.data.t ){
+        var itemin = e.data.t[ inTHE ];
+        if( doUVlatin ){ // classical latin
+            cheALLofTT.push( deluv( delklammern( sigmaistgleich( delgrkl( delumbrbine( delligaturen( delinterp( deldiak(  
+                                itemin)))))))));
+        } else {
+            cheALLofTT.push( delklammern( sigmaistgleich( delgrkl( delumbrbine( delligaturen( delinterp( deldiak(  
+                                itemin ))))))));
+        }
+        cheDiakDirectTT.push( deldiak( itemin ));
+        cheDiakTT.push( delklammern( sigmaistgleich( delgrkl( delinterp( delumbrbine( delligaturen( itemin )))))));
+        cheLigatTT.push( delklammern( sigmaistgleich(delgrkl( delinterp( delumbrbine(  deldiak( itemin )))))));
+        cheInterpTT.push( delklammern( sigmaistgleich( delgrkl( delligaturen( delumbrbine(  deldiak( itemin  )))))));
+        cheUmbrTT.push( delklammern( sigmaistgleich( delgrkl( delligaturen( delinterp(  deldiak(  itemin  )))))));
+        chegrklTT.push( delklammern( sigmaistgleich( delumbrbine( delligaturen( delinterp( deldiak( itemin  )))))));
+        cheklammernTT.push( sigmaistgleich( delgrkl( delumbrbine( delligaturen( delinterp( deldiak(  itemin  )))))));
+        cheUVTT.push( delklammern( sigmaistgleich( delgrkl( delumbrbine( delligaturen( delinterp( deldiak( itemin )))))))); 
+    }
+    
+    //gestae 198072.34692382812ms, 183357.96997070312 NEU 67167 faster 2.7x / 30951 5.7x
+    //Es kann, kurz gesagt, keine angewandte Mathematik geben. Es kann nur Mathematik und Anwendung geben. Die Ausführungen der Mathematik sind regelhafte sprachliche Konstrukte, das trifft auch auf die Zahlen zu, die eine Sonderstellung einnehmen, die bestimmte Probleme formulieren können und diese entweder lösen, also eine Vorschrift zur Wandlung der Ausdrücke in Ausdrücke geändertem Grundgehalt angeben, oder nicht. Die unlösbaren Probleme sind formal unlösbar, also durch die Termumformung oder Äquivalenzangaben der Mathematik, sind aber Grundsätzlich immer der praktischen Lösung zugänglich. So ist jedes nur mathematisch lösbare Problem ganz gewiss eine Redultion, auch wenn die Faktoren einezogen, viele sind. Der ermöglichte Erkenntnis Bereich bezieht das regelhaft ausdrückbare ein. Zu der Ungewissheit innerhalb von Aussagen in der Realität, kommt die oder steht an Stelle dessen, ob solche Formulierung überhaupt endlich und sinnvoll umgeformt werden kann. Die Mathematik suggeriert die Möglichkeit komplexer Operation, in Wahrheit ist die Mathematik aber immer eine Operation der Masse. Das heißt nicht die vollständige Abbildung eines Problems ist möglich, noch nicht mal die systematsiche, im Sinne anderer Wissenschaften, sondern nur die einfachste aber qunatitaiv umfänglichste Modellierung. Die Übertragung der mathematsichen Ergebnisse gelingt nur, weil die Zahl die Rückübertragung nahelegt, aber auch nur in bestimmten Grenzen. Darin besteht auch ihre Sonderrolle innerhalb der Mathematik. 
+    //end and up it goes************************************************************
+
     //call the comparison function
     var result = differentiellervergleich3( e.data.r, e.data.ri, e.data.t, e.data.ti );
     //post back the results
