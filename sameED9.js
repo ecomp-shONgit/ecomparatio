@@ -418,4 +418,4 @@ function ecomparatioVerg( edname, teNames, BIBarray, TEXTarray, doUVlatinNeu, bo
         //break;
     }
 }  
-
+ 
