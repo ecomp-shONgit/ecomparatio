@@ -1,5 +1,5 @@
 # Manual Inhalt
-1. [eComparatio Darstellungen](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-darstellungen)
+1. [eComparatio Darstellungen](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-darstellungen)\
 2.[eComparatio Eingabe](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-darstellungen)
 3.[eComparatio Ausgabe](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-darstellungen)
 4.[eComparatio Customizing](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-darstellungen)
