@@ -25,6 +25,7 @@ Die Idee zu dieser Darstellung bestand darin, die Unterschiede zu den anderen Te
 Referenztext einzutragen.
 
 ### Interaktion
+Es besteht die Möglichkeit die Unterschiede sich einfärben zu lassen. Die Unterschiede verbergen sich hinter in den Basistext gesetzte Kästchen. Verbirgt das Kätchen unter anderem einen Unterschied, der ausgewählten Unterschiedart, dann wird auf dem Kästchen ein kleines Dreieck angezeigt. Beim Klicken auf das Kästchen (![ScreenShot](inter1.png)) werden die Wörter angezeigt die in den jeweiligen Vergleichstexten zum Unterschied geführt haben. Ein erneuerter Klick verbirgt die Anzeige wieder. Das Kästen, da schon angesehen wird ab nun grau dargestellt. 
 
 ## Buch-Darstellung (![ScreenShot](menu3.png))
 Die Buchdarstellung übernimmt die Ordnung des Variantenapparats.
