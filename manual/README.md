@@ -62,6 +62,7 @@ auch autosave erwähnen
 ## TEI (![ScreenShot](menu11.png))
 ## Drucken (![ScreenShot](menu7.png))
 ## CSV (![ScreenShot](menu9.png))
+## digitale Edition (![ScreenShot](menu25.png))
 
 # eComparatio Customizing (![ScreenShot](menu16.png))
 Farben und Bezeichnungen
