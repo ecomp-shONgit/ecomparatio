@@ -1,17 +1,18 @@
 # Manual Inhalt
-1. [eComparatio Darstellungen](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-darstellungen)\
-2. [eComparatio Eingabe](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-eingabe)\
-3. [eComparatio Ausgabe](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-ausgabe)\
-4. [eComparatio Customizing](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-customizing)\
-5. [Browser bedienen](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#browser-bedienen)\
-6. [About Help](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#about-help)\
+1. [eComparatio Darstellungen](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-darstellungen) \
+2. [eComparatio Eingabe](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-eingabe) \
+3. [eComparatio Ausgabe](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-ausgabe) \
+4. [eComparatio Customizing](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-customizing) \
+5. [Navigation](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#browser-bedienen) \
+6. [Unterschiede / Anderes](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#browser-bedienen) \
+7. [Browser bedienen](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#browser-bedienen) \
+8. [About Help](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#about-help)\
 \
 \
 \
 \
 \
-\
-
+ \
 # eComparatio Darstellungen
 
 ## Synopse (![ScreenShot](menu1.png))
@@ -70,6 +71,8 @@ auch autosave erwähnen
 # eComparatio Customizing (![ScreenShot](menu16.png))
 Farben und Bezeichnungen
 
+# Navigation
+# Unterschiede / Anderes
 # Browser bedienen
 ## Caches 
 ## Console
