@@ -29,9 +29,10 @@ Es besteht die Möglichkeit die Unterschiede sich einfärben zu lassen. Die Unte
 
 ## Buch-Darstellung (![ScreenShot](menu3.png))
 Die Buchdarstellung übernimmt die Ordnung des Variantenapparats.
-Einfärbern der Unterschiede
+
 
 ### Interaktion
+Die Darstellung bietet einen ihr wesentliche Funktion. Klickt man entweder auf die Zeilennummer des Basistextes, oder auf die Zeilennummer im Variantenapparat, dann werden die korrespondierenden Zeilen markiert. Nutzt man die Funktion die Unterschiede einzufärben, dann äußert sich diese Funktion nicht farblich, wie in den übrigen Darstellungen, sondern streicht oder nimmt hinzu die Unterschiede der gewählten Art zum Apparat.
 
 ## Matrix-Darstellung (![ScreenShot](menu4.png))
 Die Matrixdarstellung ist eine Erweiterung der Synopse bei der alle Texte in einer Matrix
