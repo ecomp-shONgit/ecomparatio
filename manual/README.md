@@ -1,9 +1,10 @@
 # Manual Inhalt
 1. [eComparatio Darstellungen](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-darstellungen)\
-2.[eComparatio Eingabe](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-eingabe)\
-3.[eComparatio Ausgabe](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-ausgabe)\
-4.[eComparatio Customizing](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-customizing)\
-5.[Browser bedienen](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#browser-bedienen)\
+2. [eComparatio Eingabe](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-eingabe)\
+3. [eComparatio Ausgabe](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-ausgabe)\
+4. [eComparatio Customizing](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-customizing)\
+5. [Browser bedienen](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#browser-bedienen)\
+6. [About Help](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#about-help)\
 \
 \
 \
@@ -72,3 +73,6 @@ Farben und Bezeichnungen
 # Browser bedienen
 ## Caches 
 ## Console
+
+# About Help
+Die *Help* Funktion, die darin besteht mit dem Handbuch direkt verlinkt zu sein, kann durch Doppelklick auf die Menüpunkte angesprochen werden.
