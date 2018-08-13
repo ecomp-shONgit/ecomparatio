@@ -1,18 +1,18 @@
 # Manual Inhalt
-1. [eComparatio Darstellungen](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-darstellungen) \
-2. [eComparatio Eingabe](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-eingabe) \
-3. [eComparatio Ausgabe](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-ausgabe) \
-4. [eComparatio Customizing](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-customizing) \
-5. [Navigation](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#browser-bedienen) \
-6. [Unterschiede / Anderes](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#browser-bedienen) \
-7. [Browser bedienen](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#browser-bedienen) \
-8. [About Help](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#about-help)\
+1. [eComparatio Darstellungen](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-darstellungen) 
+2. [eComparatio Eingabe](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-eingabe) 
+3. [eComparatio Ausgabe](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-ausgabe) 
+4. [eComparatio Customizing](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-customizing) 
+5. [Navigation](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#browser-bedienen) 
+6. [Unterschiede / Anderes](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#browser-bedienen) 
+7. [Browser bedienen](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#browser-bedienen) 
+8. [About Help](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#about-help)
 \
 \
 \
 \
 \
- \
+ 
 # eComparatio Darstellungen
 
 ## Synopse (![ScreenShot](menu1.png))
@@ -41,16 +41,19 @@ Die Matrixdarstellung ist eine Erweiterung der Synopse bei der alle Texte in ein
 gegenübergestellt werden.
 
 ### Interaktion
+Die Matrix-Darstellung bietet, wie die horizontale Juxtaposition, die Möglichkeit die Unterschiede farblich zu markieren. Darüber hinaus, ist es natürlich in dieser vollständigen Darstellung aller Vergleichsreihen das Auftauchen von Wörtern mit den Funktionen des Browser darzustellen.
 
 ## Diagramm-Darstellung (![ScreenShot](menu5.png))
 Diese Darstellung gibt den Vergleich in Diagrammen wieder.
 
 ### Interaktion
 
+
 ## Interlinear-Darstellung (![ScreenShot](menu6.png))
 Die Darstellung ist der Synopse natürlich ähnlich, nur werden die vergleichenen Texte interlinear angeordnet.
 
 ### Interaktion
+Eine synoptische Darstellung muß natürlich nicht die horizontale gegenüberstellung anbieten, sondern kann die Wörter auch vertikal gegenüberstellen. Der Vorteil einer Übersichtlichkeit bleibt der Gleiche. Der unterschied der beiden Darstellungen besteht drin, dass die eine mehr Text des Basistextes, mehr Text aber weniger Vergleichstexten gegenüber stellt (natürlich in Abhängigkeit von der Bildschrimgröße und Text anzahl überhaupt). Die vertikale Gegenüberstellung oder interlineare Organisation zeigt weniger Text jedoch noch genauer gegenübergestellt. Hier ist es wichtig Lücken und das entsprechende Mehr im anderen text visuell praktikabel aufzubereiten. Die Interaktion mit der Darstellung beschränkt sich wiederum auf die farbliche Markierung der Unterschiede.
 
 # eComparatio Eingabe
 ## Hinzufügen (![ScreenShot](menu12.png))
