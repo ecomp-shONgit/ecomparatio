@@ -31,11 +31,11 @@ Opera 51.0.2830.34 - Linux 64-Bit (20.02.2018)
 
 ###### Chrome / Chromium
 
-Chrome / Chromium 61.0 - Linux 64-Bit, Win 10 64-Bit, Mac OS Lion (24.11.2017)
+Chromium 61.0 - Linux 64-Bit, Win 10 64-Bit, Mac OS Lion (24.11.2017)
 
 Chrome 62 - Win 10 (27.11.2017)
 
-Chrome Version 64.0.3282.167  - Linux 64-Bit Offizieller Build, (20.02.2018)
+Version 68.0.3440.75 (Offizieller Build) (64-Bit), (13.08.2018)
 
 ###### Edge / IE
 
