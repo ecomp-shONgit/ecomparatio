@@ -57,28 +57,55 @@ Eine synoptische Darstellung muß natürlich nicht die horizontale gegenüberste
 
 # eComparatio Eingabe
 ## Hinzufügen (![ScreenShot](menu12.png))
-auch autosave erwähnen
+Die neuerliche Eingabe von Textreihen umfasst eine Autosave Funktion. Sie werden beim Aufruf der *ADD* Funktion gefragt, ob sie die gespeicherten Daten benutzen wollen. Falls sie das tun wollen wird aus dem Speicher geholt, was dort zu letzt gelandet ist. Landen kann etwas im Speicher im Sinne eines Abbildes ihrer vormaligen Eingabe. Zu jeder eingabe wird zu jeden vergangen 10 Sekunden ein solches Abbild erstellt und ersetz das vorhandene Abbild. Auf diese Weise sind ihre Arbeitsschritte bei Problemen nicht verloren. Benötigen Sie die Autosave Daten nicht mehr, dann entscheiden sie sich gegen eine Nutzung, wenn das Programm nachfragt. Implizit werden so die Daten wieder auf einen leeren Ausgngspunkt zurück geführt.
+
+Die mit Stern gekenzeichneten Felder müssen eingegeben werden. Wichtig ist die Bennung der Textreihe, diese Benennung wird dann auch im Menü von eComparatio angezeigt. Zwei Werte verdienen zudem Erkläreung: Der Synchronisierungsabstand muss der größte ihnen bekannten Textlück entsprechen. Sind diese nicht bekannt, dann lassen sie den Wert niedrig. Zeigt das Vergleichsergebnis, das sich der Vergleich "verirrt hat", werden also deutlich gleiche Textstellen nicht richtig gegenübergestellt und dies auf ausgedehnteren Abschnitten des Textes, dann erhöhen sie diesen Wert. Das Programm wird dann die richtigen Ergebnisse liefern. Dieser Wert ist für die Performance der Sofwtare kritisch, es ist nicht unbedingt ratsam diesen massiv zu eröhen, wenn nicht Texteinschübe großen Umfangs zwischen den Vergleichstexten u erwarten sind.
+Der nächste zu erklärende Wert ist jener der "Alternativen Sortierung". Wenn bei einem vergleich nur festgestellt werden kann, dass die texte ungleich sind, dann ist dies als sehr informationsarmer Zustand anzusehen. Dieser Zustand kennt bezogen auf genau diese Vergleichstselle nicht wie sich der Anschluß an gleiche Textstellen gestalten wird. Das Programm hat zwei Möglichkeiten, entweder einem sehr künstlichen kriterium zu folgen und auf diese Weise die Texte zu vergleichen, oder einfach mit den nächsten beiden Wörtern weiter zu machen. Entsprechend ergeben sich andere Sortierungen der verglichenen Wörter im Bereich von Ungleichheit. 
+
+Die Reichenfolge der Texte, wie sie im menü erscheinen und wie sie in Bezug auf den Basistext dargestellt werden legen sie durch die Eingabereihenfoleg fest. Dies ermöglich chronologische und andere Orndungsprinzipien, welche Prinzipien sie je verfolgen.
+
 ## Ändern (![ScreenShot](menu13.png))
+Für das Editieren können sie ebenfalls die Autosave Funktion nutzen. Dazu wälen sie nachdem sie die Textreihe zur Modifikatio ausgewählt haben *Ok* aus. Anschließend können sie die Modifikation vornehmen. Die Autosave Daten entsprechen ihren Änderungen. Sollte ein Problem auftauchen und wollen sie den Zustand der Texte fortsetzen, dann wählen sie nicht erneut die Modifikation und die Textreiohe, sondern *ADD* und lassen sich die Autosave Daten in ihr Formaular übernehmen, wenn sie gefragt werden. Für die Änderung gilt, was sonst auch für die neue Eingabe gilt. Wollen sie Textreihen kopieren, dann können sie das ebenfalls über die Modifizieren Funktion bewerkstelligen, indem sie einfach einen anderen Namen für die Textreihe vergeben. Sie können nun die beiden Textreihen getrennt voneinander bearbeiten.
+
 ## Löschen (![ScreenShot](menu14.png))
+Das Löschen lässt die Datenreihe aus dem eComparatio Menü verschwinden und macht die Speicherung wieder überschreibbar. Falls ihnen einfallen sollte, dass sie die Daten noch einmal benötigen, dann können diese wieder hergestellt werden solange sie den Cache des Browsers nicht löschen. Wie dies zu bewerkstelligen sei entnehmen sie bitte dem Abschnitt über den Browser
+
 ## IN (![ScreenShot](menu15.png))
-## CTS (![ScreenShot](kommtnoch.png))
+Im Abschnitt *JSON / Dump* wird erklärt, wie man einen Dump im JSON Format exportieren kann. Dies stellt gleichzeitig die Möglichkeit zum Austausch von Daten bei der Testversion dar, bzw. eine Möglichkeit zur Datensicherung. Wählt man nach der Betätigung des Buttons eine entsprechende *.json* eComparatio Datei aus, dann erhält man einen eintrag im eComparatio Menü und die texte und Vergleichsergebnisse werden in eComparatio angezeigt, wenn man diesen Menüeintarg auswählt. Die so importierte Textreihe kann anschließen erweitert und bearbeitet werden.
 
 # eComparatio Ausgabe
+Die Ausgaben stellen entweder Grundgerüste dar (XML HTML), dienen der Weiterverarbeitung und dem Austausch (LATEX, CSV, JSON) oder dienen der schnellen Ausgabe (PDF Drucken)
+
 ## LATEX (![ScreenShot](menu8.png))
+Die Ausgabe stellt ein komplettes LaTeX Dokument zur Verfügung, was in Abhängigkeit zur eigenen LaTeX Umgebung direkt oder nach Eingriffen kompiliert. Man kann aber lediglich die Tabellendarstellung der Synopse in eigene Dokunete übernehmen. Die mühevolle Herstellung solcher Tabellen soll ersprat sein.
+
 ## JSON / Dump (![ScreenShot](menu10.png))
+Diese Funktion läßt einen persistentes Abbild der Textreihe erhalten. Man kann diese dann mit anderen Programmen weiter verarbeiten, zum Beispiel eigene graphsiche Ausgaben programmieren oder kann dies Daten wieder eComparatio eingeben.
+
 ## TEI (![ScreenShot](menu11.png))
+Das ausgebbare TEI XML validert, und stellt ein Grundgerüst zur Annonation von Textzeugen und deren Reihendarstellung bereit. Die XML Datein können als Ergebnis, oder als Ausgangspunkt betrachtet werden.
+
 ## Drucken (![ScreenShot](menu7.png))
+Es gibt zwei Varianten des Druckens, einmal mittles eComparatios Menü, was einen Druck mit reduzierten Farben erlaubt und ein Drucken mittels der Browser Funkton Drucken. Die Einrichtung des drucks geschieht wie allgemein bekannt.
+
 ## CSV (![ScreenShot](menu9.png))
+Der Export von CSV Dateien, also Trenner separierten Dateien (Trenner können selbst eingestellt werden, siehe Abschnitt *eComparatio Customizing*) der Synopse, richtet sich an jene, die Ergebnisse gern in ihrer Textverarbeitung weiter verwenden wollen. 
+
 ## digitale Edition (![ScreenShot](menu25.png))
+Die neuerdings dazugekommenen Funktion, hier mit dem richtigen Index *digitale Edition* versehen, um die entsprechenden Zielsetzungen zu adressieren, erlaubt es, funktionsfähige *digitale Editionen* auszugeben. Dabei handelt es sich um HTML Ausgaben der Darstellungen von eComparatio, die jeweis ausgewählt wurde (außer der Diagrammdarstellung). Dabei ist das HTML rudimentär mit CSS Styling versehen und die wenigste mögliche JS Interaction ist beigefügt. Damit lassen sich die Ausgaben in andere Projekte der digitalen Edition integrieren oder eigenständig zu einer dieser Fortführen. Man kann auf die Erfahrung eines Informatikers im Folgenden der Arbeit verzichten, und sich auf die Gestaltung, das Angebot und die Intagration kümmern. Die Ausgabe ist ein Ausgangspunkt, wenn auch ein ausreichend vollständiger. 
 
 # eComparatio Customizing (![ScreenShot](menu16.png))
 Farben und Bezeichnungen
 
 # Navigation
+
 # Unterschiede / Anderes
+
 # Browser bedienen
-## Caches 
 ## Console
+## Vergleiche beobachten
+## Caches (Datenbanken)
+
 
 # About Help
 Die *Help* Funktion, die darin besteht mit dem Handbuch direkt verlinkt zu sein, kann durch Doppelklick auf die Menüpunkte angesprochen werden.
