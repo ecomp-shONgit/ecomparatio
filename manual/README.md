@@ -95,11 +95,15 @@ Der Export von CSV Dateien, also Trenner separierten Dateien (Trenner können se
 Die neuerdings dazugekommenen Funktion, hier mit dem richtigen Index *digitale Edition* versehen, um die entsprechenden Zielsetzungen zu adressieren, erlaubt es, funktionsfähige *digitale Editionen* auszugeben. Dabei handelt es sich um HTML Ausgaben der Darstellungen von eComparatio, die jeweis ausgewählt wurde (außer der Diagrammdarstellung). Dabei ist das HTML rudimentär mit CSS Styling versehen und die wenigste mögliche JS Interaction ist beigefügt. Damit lassen sich die Ausgaben in andere Projekte der digitalen Edition integrieren oder eigenständig zu einer dieser Fortführen. Man kann auf die Erfahrung eines Informatikers im Folgenden der Arbeit verzichten, und sich auf die Gestaltung, das Angebot und die Intagration kümmern. Die Ausgabe ist ein Ausgangspunkt, wenn auch ein ausreichend vollständiger. 
 
 # eComparatio Customizing (![ScreenShot](menu16.png))
-Farben und Bezeichnungen
+Bedient man das entsprechende Menü, dann bekommt man eine Eingabemaske, die die Legende der Unterscheidesklassen editierbar macht, es ermöglicht die Hervorhebung der Unterschiede anders farblich zu gestalten. Zudem kann das Trenner Zeichen für den CSV Datei Export festgelegt werden. Berücksichtigen sie, dass die Kurzformen der Unterschiedsklassen im Text als Siglen auftauen wird. Berücksichtigen sie auch, das ein Cache Rest des Bwosers ihre Einstellungen vertreiben wird.
 
-# Navigation
+# Navigation (![ScreenShot](menu192921.png))
+Die Navigation längerer Texte gelingt durch die Pfeiltasten im Menü. Ein Klick auf einen Pfeil setzt den Text um die angebene Zeilenzahl weiter (Screenzeilen sind nicht die Zeilen ihrer Ausgangsdokumente). Sehr hilfreich ist es, dass auch mit der Tastenkombination Shift + Alt + Scroll(rad) der Text navigiert werden kann. 
 
-# Unterschiede / Anderes
+# Unterschiede / Anderes 
+Die Darstellung der Unterschiedsklassen im Text kann "An" und "Aus" geschaltet werden. Dazu rufen sie die Legende auf (![ScreenShot](menu18.png)), wählen aus und verbergen diese wieder.
+Das Menü kann gezoomt werden, dazu verwenden sie die Lupen (![ScreenShot](menu2223.png)).
+Wenn es Probleme gibt, die sie auch in älteren [Handbüchern](http://139.18.121.15/ecomparatio/) oder in den [Videotutorials](http://139.18.121.15/ecomparatio/) nicht klären können, dann benutzen sie die Rückmeldefunktion (![ScreenShot](menu24.png)) (sie können zwischen github und email als Rückmeldung wählen)
 
 # Browser bedienen
 ## Console
