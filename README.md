@@ -4,7 +4,9 @@ The main objective of the eComparatio project was to develop a software that is 
 # How to
 Please consult the handbook (currently just in German language), technical specification, use cases, example installation, installation instruction and video tutorials on the documenting page:
 
-http://85.214.109.153/~ecomparatio/
+http://85.214.109.153/~ecomparatio/ (old)
+
+http://139.18.121.15/ecomparatio/
 
 # Change Log / Software Version
 Consult the change log for the pre-GitHub Development. This Github Repository starts with the version 1.0.
@@ -12,7 +14,9 @@ Consult the change log for the pre-GitHub Development. This Github Repository st
 # Try not you can only loose
 Try the open example installation (quick test cases included):
 
-http://85.214.109.153/~ecomparatio/a/
+http://85.214.109.153/~ecomparatio/a/ (old)
+
+http://139.18.121.15/ecomparatio/a/
 
 # Stable on 
 
