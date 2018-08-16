@@ -47,7 +47,11 @@ Die Matrix-Darstellung bietet, wie die horizontale Juxtaposition, die Möglichke
 Diese Darstellung gibt den Vergleich in Diagrammen wieder.
 
 ### Interaktion
+Zwei Diagramme und einen Tabelle werden für einen Teilvergleich angegeben. Dabei stellt die Tabelle die Auszählung der Unterscheidsklassen nach ihrer Häufigkeit dar. Absolute Häufigkeit und reltive Häufigkeit bezogen auf die Länge des Vergleichstextes können abgelesen werden.
 
+Das erste Diagramm ist ein Balkendiagramm der relativen Häufigkeit nacj Unterschiedsklassen sortiert. Hält man den Maus-Zeiger auf einen Balken bekommt man den Editor des Textes angezeigt, wie auch im eComparatio Menü verwendet.
+
+Das zweite Diagramm ist eine Visualisierung des Vergleichs. Dabei stellt jedes Kästchen ein Wort dar. Die Farben und Striche stellen die Bewertung auf ungleich und gleich dar. Das Halten des Maus-Zeigers über ein Kästchen zeigt das Wort, welches "dahinter steht". Die Darstellung kann als SVG exportiert werden, ein Button findet sich am unteren Rand der Darstellung.
 
 ## Interlinear-Darstellung (![ScreenShot](menu6.png))
 Die Darstellung ist der Synopse natürlich ähnlich, nur werden die vergleichenen Texte interlinear angeordnet.
@@ -107,9 +111,13 @@ Wenn es Probleme gibt, die sie auch in älteren [Handbüchern](http://139.18.121
 
 # Browser bedienen
 ## Console
-## Vergleiche beobachten
-## Caches (Datenbanken)
+eComparatio in der hier angebotenen Version, bzw. der Online Testversion ist eine JavaScript (JS) Anwendung. JavaScript ist eine Programmiersprache, die im Browser ausgeführt wird, also dem Progarmm mit dem man dem WWW Teils des Internets ansictig werden kann. Der Browser bietet die Möglichkeit die Ausgaben von JS Programmen auf einer Console anzuseigen. eConmparatio nutzt die Console. Die sinnvollen oder nützlichen Hinwiese, oder einfache Rückmeldung können dort abgelsen werden. Lassen sie sich die Console anzeigen diese [Beschreibung](https://webmasters.stackexchange.com/questions/8525/how-do-i-open-the-javascript-console-in-different-browsers) können sie dabei folgen.
 
+## Vergleiche beobachten
+Die Vergleiche lassen sie wissen, ob noch einer arbeitet oder ob es einen Fehler gegeben hat. Beobachten sie die Console. rufen sie diese schon nach ihrer Eingabe auf.
+
+## Caches (Datenbanken)
+Wollen sie sich die Datenbaken von eComparatio ansehen, dann öffenen sie sich die localStorage Ansicht, wie zum Beispiel in dieser [Beschreibung](https://stackoverflow.com/questions/9404813/how-to-view-or-edit-localstorage). Sie können hier Daten retten. 
 
 # About Help
 Die *Help* Funktion, die darin besteht mit dem Handbuch direkt verlinkt zu sein, kann durch Doppelklick auf die Menüpunkte angesprochen werden.
