@@ -260,8 +260,9 @@ function metavergleich( allevergleiche, alledtexts, BIBarray, edname, teNames ){
 var border = 20; //range to search equality, this is set via the param comming from user input
 var degugggg = false; //output debug and programm flow print messages
 var doUVlatin = false; // true or false, equal u and v in latin texts
+var altSorting = false; //comparisson sorting
 
-function ecomparatioVerg( edname, teNames, BIBarray, TEXTarray, doUVlatinNeu, borderNeu  ){
+function ecomparatioVerg( edname, teNames, BIBarray, TEXTarray, doUVlatinNeu, borderNeu, altSortingNeu  ){
     //check for multiprocessing, if browser does not support, no programm given
     if( !window.Worker ) {
         alert('No Webworker Multiprocessing Support on this Browser. A later Browserversion ist required.');
@@ -287,6 +288,7 @@ function ecomparatioVerg( edname, teNames, BIBarray, TEXTarray, doUVlatinNeu, bo
     }
     doUVlatin = doUVlatinNeu;
     border = borderNeu;
+    altSorting = altSortingNeu;
     //global memory of texts
     var alledtexts = [ ];
     var allfilenames = [ ];
@@ -303,7 +305,7 @@ function ecomparatioVerg( edname, teNames, BIBarray, TEXTarray, doUVlatinNeu, bo
                 var h = ws[w].split( "-" );
                 halfw = h[0].replace(" ", "");
                 secondhalf = h[1].replace(" ", "");
-                if( secondhalf.indexOf("]") != -1 ){ 
+                if( secondhalf.indexOf("]") != -1 ){ //can not reconstruct the - issue
                     var hh = h[1].split("]");
                     if( hh[1].length > 1 ){
                         ca.push( halfw + hh[1] + " " + hh[0] + "]<br/>" );
@@ -400,7 +402,7 @@ function ecomparatioVerg( edname, teNames, BIBarray, TEXTarray, doUVlatinNeu, bo
             if( ref != text ){
                 console.log( "Data f. Vergleich Ref:", ref, " Text ", text );
                 
-                datatothem.push( {"cmd":"eval", "r": alledtexts[ref], "ri": ref, "t": alledtexts[text], "ti": text , "border": border, "degugggg": degugggg, "doUVlatin": doUVlatin} );
+                datatothem.push( {"cmd":"eval", "r": alledtexts[ref], "ri": ref, "t": alledtexts[text], "ti": text , "border": border, "degugggg": degugggg, "doUVlatin": doUVlatin, "altSorting": altSorting } );
             //break;
             }
             
@@ -418,4 +420,5 @@ function ecomparatioVerg( edname, teNames, BIBarray, TEXTarray, doUVlatinNeu, bo
         //break;
     }
 }  
- 
+
+

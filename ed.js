@@ -27,6 +27,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "use strict"; 
 
 /*GLOBALS*/
+var theautosavevar = null;
+var autosaveinervall = 10000; //10 secF
 var IdoliveIN = null;
 //transmitted from local store or server store (via json saved as html doc), holding the bibliographical data
 var bibdynvars = new Object(); 
@@ -103,6 +105,7 @@ var parallelpartwidth = 300; //also hard coded in css
 var maxlines = 0;
 var howlogtowaitfirstlineheightrender = 500;//wait alittel until everything is loaded, than scale every column
 var offlineedit = false; //controll if edit is done localy - than overwrite, else copy
+var notmodiffunction = true;
 
 //selected text series
 var currentedseries = 0; //index or string !!! not the 
@@ -111,7 +114,7 @@ var currentvergleicht = 0;
 var alltexts = null;
 var textnames = null;
 
-//data store of comparisson results
+//data store of comparison results
 var comparatiotogether = [];
 var comparatiotogethertemp = [];
 var tog = undefined;
@@ -122,7 +125,7 @@ var comparatio = null;
 var oncemenu = 0;
 
 //text view and render options
-var whichview = 0; //0 - detailview, 1 - parallel view, 2 Buch view
+var whichview = 0; //0 - detailview, 1 - parallel view, 2 Buch view, 3 Bild, 4 Digramm, 5 Matrix, 6 interlinear
 var renderstyle = 0;
 var rendercount = 1;
 var oldrendercount = 1;
@@ -212,6 +215,67 @@ function startecomparatio( elemIDtoputitin ){ //untested by 17.10.2017 - is pure
     toputinelem.appendChild( div1 );
 
     //append all needed to intome 
+    var d10 = document.createElement( 'div');
+    d10.id = "allmenu";
+
+    //create static main menu
+    d10.innerHTML = '<nav id="nnav"><p style="margin-top: 1px; background: rgb(176, 47, 44);">'
+    +'<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"'
+	 +'width="20px" height="20px" viewBox="0 0 600 600" enable-background="new 0 0 600 600" xml:space="preserve">'
+     +'<rect fill-rule="evenodd" clip-rule="evenodd" fill="#AF2D2B" width="600" height="600"/>'
+     +'<g id="Logo-1-Vorlage-AI-b.psd"><g><g><g>'
+				+'<path fill-rule="evenodd" clip-rule="evenodd" fill="#D6433C" d="M490.955,528.266c-2.588,0.004-6.055-3.844-10.805-10.045'
+					+'c-0.563-0.738-1.006-1.314-1.27-1.621c-1.523-1.746-3.398-3.969-5.145-6.102l-0.543-0.676c-0.965-1.215-2.76-3.471-3.785-3.965'
+					+'c-0.496-0.238-1.701-0.656-2.682-0.77c-1.936-0.23-4.676-0.342-8.383-0.342c-2.303,0-4.605,0.041-6.602,0.076'
+					+'c-1.537,0.031-2.889,0.055-3.916,0.055H133.467c-1.29,0-2.847-0.055-4.363-0.109c-1.429-0.049-2.822-0.098-3.931-0.098'
+					+'c-0.77,0-1.213,0.021-1.467,0.049c-0.322,0.742-0.914,2.453-1.287,3.541c-0.389,1.131-0.747,2.152-0.941,2.598'
+					+'c-4.125,9.43-11.13,14.41-20.248,14.41c-1.204,0-2.462-0.09-3.742-0.256c-0.104-0.01-10.252-1.639-12.694-6.121'
+					+'c-0.682-1.246-0.713-2.605-0.085-3.934c0.94-2.006,3.542-2.006,4.656-2.006c0.637,0,1.319,0.035,2.021,0.066'
+					+'c0.756,0.037,1.462,0.068,2.169,0.068c1.319,0,2.298-0.117,3.083-0.375c5.538-1.795,10.061-7.564,10.99-14.031'
+					+'c0.801-5.564-1.048-13.021-2.682-19.605l-0.491-1.998c-6.084-24.893-10.691-45.73-14.084-63.701'
+					+'c-2.342-12.418-3.299-25.896-4.314-40.168l-0.501-6.98c-3.805-51.465,7.736-96.096,31.655-122.438'
+					+'c9.289-10.221,29.546-27.813,60.917-30.775l1.011-0.099c2.169-0.207,4.401-0.427,6.586-0.427c1.98,0,3.612,0.184,4.989,0.563'
+					+'c3.483,0.958,7.917,5.851,11.479,9.78c0.965,1.066,1.82,2.012,2.496,2.691l2.169,2.151c3.677,3.632,7.145,7.057,9.796,10.795'
+					+'l0.99,1.397l-1.636,0.488c-46.869,14.02-78.445,43.669-93.851,88.132c-4.395,12.674-7.12,24.479-8.574,37.152'
+					+'c-3.814,33.115,1.573,67.586,6.323,98l1.026,6.566c0.164,1.08,0.391,2.457,0.646,4.023c0.288,1.779,0.621,3.795,0.95,5.887'
+					+'c0.106,0.672,0.25,2.084,0.41,3.646c0.178,1.732,0.452,4.473,0.655,5.539c0.603,0.127,2.181,0.303,6.29,0.303'
+					+'c3.488,0,7.592-0.131,10.302-0.211c1.508-0.051,2.667-0.082,3.2-0.082h306.042l1.723,0.01l2.551,0.008'
+					+'c2.141,0,3.389-0.039,4.113-0.086c-0.82-1.688-2.934-4.977-3.719-6.215c-0.424-0.652-0.756-1.17-0.928-1.453'
+					+'c-4.229-7.143-7.482-13.078-10.631-20.621c-0.715-1.725-1.213-3.564-1.691-5.344c-0.596-2.209-1.158-4.293-2.094-6.074'
+					+'c-0.869-1.656-3.631-4.32-5.85-6.459c-0.693-0.666-1.355-1.305-1.932-1.881c-30.059-30.141-60.514-60.467-89.961-89.791'
+					+'c-32.383-32.242-65.87-65.585-99.037-98.888c-12.89-12.943-25.55-25.68-38.406-38.615l-18.839-18.95'
+					+'c-0.468-0.473-1.08-1.101-1.762-1.8c-1.87-1.924-5.362-5.506-6.125-5.92c-0.79,0.054-3.317,3.011-4.397,4.273'
+					+'c-0.625,0.736-1.192,1.397-1.651,1.852c-0.473,0.477-1.004,1.058-1.566,1.674c-2.279,2.498-4.631,5.085-6.832,5.085h-0.058'
+					+'l-0.194-0.009c-2.448-0.225-4.428-3.924-6.762-8.747c-0.481-0.99-0.896-1.856-1.224-2.408'
+					+'c-9.959-16.99-19.55-33.171-29.396-49.783l-13.128-22.166c-0.065-0.108-0.191-0.283-0.345-0.506'
+					+'c-1.298-1.861-3.472-4.971-1.712-6.739c0.459-0.459,1.08-0.693,1.861-0.693c2.534,0,6.852,2.602,10.736,5.149'
+					+'c0.349,0.225,0.603,0.394,0.727,0.468c8.896,5.275,17.577,10.448,26.207,15.592c14.667,8.74,29.83,17.78,45.426,26.938'
+					+'c0.414,0.243,0.92,0.5,1.443,0.765c2.041,1.031,3.969,2.007,4.26,3.587c0.466,2.534-2.673,5.225-5.189,7.39'
+					+'c-0.617,0.531-1.17,0.999-1.548,1.377c-0.432,0.437-1.073,1.015-1.795,1.661c-1.229,1.105-3.985,3.578-4.492,4.626'
+					+'c0.731,0.927,3.427,3.443,5.099,5c1.098,1.031,2.12,1.98,2.786,2.642c30.651,30.532,61.489,61.521,91.314,91.488'
+				  +' c31.803,31.966,64.694,65.015,97.368,97.515c8.32,8.275,16.871,16.701,25.508,25.203c10.637,10.473,21.637,21.301,32.373,32.043'
+					+'c1.135,1.135,2.219,2.404,3.262,3.633c1.637,1.926,3.186,3.744,4.479,4.482c1.771,1.008,3.975,1.557,6.303,2.139'
+					+'c1.811,0.453,3.676,0.922,5.393,1.633c9.537,3.965,19.225,9.734,28.363,15.518V133.001c0-1.053,0.053-2.453,0.109-3.879'
+					+'c0.063-1.832,0.162-4.482,0.063-5.513c-1.109-0.301-4.211-0.63-5.963-0.814c-1.383-0.148-2.648-0.284-3.418-0.414l-3.566-0.585'
+					+'c-28.229-4.643-57.422-9.442-86.211-9.442c-21.361,0-40.139,2.642-57.4,8.069c-43.422,13.66-75.282,44.281-89.709,86.213'
+					+'c-0.205,0.599-0.457,1.553-0.747,2.617c-1.048,3.922-1.64,5.851-2.511,6.569c-0.308,0.252-0.686,0.382-1.1,0.382'
+					+'c-1.438,0-3.313-1.712-6.267-4.87c-0.291-0.311-0.518-0.558-0.673-0.713l-12.791-12.791c-0.412-0.407-0.929-0.889-1.487-1.402'
+					+'c-2.597-2.417-4.467-4.249-4.91-5.855c-1.956-7.115,1.458-21.859,2.552-26.207c5.131-20.349,16.776-38.16,33.691-51.518'
+					+'c19.139-15.108,50.157-25.226,85.095-27.76c4.746-0.342,9.846-0.518,15.148-0.518c9.816,0,20.721,0.59,33.348,1.803'
+					+'c31.654,3.036,59.783,9.113,92.279,17.302c1.225,0.309,2.482,0.642,3.766,0.99c5.225,1.397,11.139,2.979,16.541,2.979'
+					+'c1.016,0,1.996-0.054,2.918-0.165c6.936-0.826,12.955-5.461,14.635-11.276c0.283-0.977,0.215-2.575,0.145-4.116'
+					+'c-0.115-2.597-0.238-5.277,1.17-6.747c0.625-0.662,1.467-0.99,2.486-0.99c0.354,0,0.736,0.041,1.139,0.119'
+					+'c3.492,0.711,4.813,4.379,5.518,6.344l0.186,0.502c2.506,6.616,2.482,12.989-0.074,18.428'
+					+'c-2.684,5.711-8.031,10.178-15.066,12.586c-0.137,0.049-0.543,0.16-1.053,0.294c-0.578,0.148-1.768,0.457-2.42,0.671'
+					+'c-0.078,1.163,0.008,4.1,0.061,6.134c0.047,1.478,0.084,2.892,0.084,3.895v324.911c0,0.877-0.014,1.777-0.025,2.684'
+					+'c-0.037,2.861-0.074,5.818,0.285,7.578c0.221,1.049,2.055,2.357,3.531,3.412c0.646,0.463,1.283,0.912,1.838,1.367'
+					+'c3.641,2.971,5.67,4.861,8.477,7.471c1.084,1.014,2.279,2.121,3.721,3.443c0.389,0.355,0.891,0.734,1.432,1.135'
+					+'c2.074,1.561,4.662,3.506,4.055,6.125c-0.328,1.418-2.402,2.232-9.381,4.307c-1.795,0.541-3.492,1.039-4.08,1.324'
+					+'c-10.387,4.949-16.869,12.744-19.811,23.83l-0.232,0.908c-0.902,3.543-1.609,5.896-3.17,6.352'
+					+'C491.438,528.234,491.199,528.266,490.955,528.266L490.955,528.266z"/>'
+			+'</g></g></g></g></svg>'
+            +'</p><p class="clickable" id="ecompbutton" onclick="editionsaction( this );" style="background: rgb(216, 65, 62);">eComparatio</p><p class="clickable" onclick="hilfeaktion( this );" style="background: rgb(176, 47, 44);">Hilfe / Dokumentation</p></nav>';
+
     var d11 = document.createElement( 'div');
     d11.id = "edinto";
     var d12 = document.createElement( 'div');
@@ -226,6 +290,7 @@ function startecomparatio( elemIDtoputitin ){ //untested by 17.10.2017 - is pure
     d16.id = 'vergleich';
     var d17 = document.createElement( 'div');
     d17.id = 'comparatiodata';
+    div1.appendChild( d10 );
     div1.appendChild( d11 );
     div1.appendChild( d12 );
     div1.appendChild( d13 );
@@ -302,6 +367,8 @@ function startecomparatio( elemIDtoputitin ){ //untested by 17.10.2017 - is pure
         localStorage.setItem('bonbon', bonbon );
         localStorage.setItem('bonbonT', bonbonT );
         localStorage.setItem('csvtrenner', csvtrenner );
+        localStorage.setItem('AS', "" );
+        
     } else {
         TU = localStorage.getItem('TU');
         TUleg = localStorage.getItem('TUleg' );
@@ -351,6 +418,8 @@ function startecomparatio( elemIDtoputitin ){ //untested by 17.10.2017 - is pure
     } else if (el.attachEvent)  {
         d16.attachEvent( 'wheel', function(e) { UPorDOWNtext(e) } );
     }
+    //set autosave mode to ADD
+    notmodiffunction = true;
     //run
     loadallmenu();
 
@@ -358,10 +427,17 @@ function startecomparatio( elemIDtoputitin ){ //untested by 17.10.2017 - is pure
 }
 
 
-
 /**************************************************************/
 /*HELPER FKT*/
 /**************************************************************/
+//external manual
+function hilfeaktion( elem ){
+    window.open( 'https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#manual-inhalt', '_blank' ); // backlink
+}
+
+function openHelpAdd(){
+    window.open( 'https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#hinzuf%C3%BCgen-', '_blank' );
+}
 
 //bildschirmtastatur
 function setchar( index, idoftextfeald, historxdivid ){
@@ -641,7 +717,6 @@ function nextel( elem ) {
 
 function showhelpwithstr( str ){
     var hilf1 = document.getElementById("hilfe");
-	hilf1.style.opacity = "0.8";
     hilf1.style.visibility = "visible";
     hilf1.style.position = "absolute";
     hilf1.style.top = (window.pageYOffset+100).toString() +"px";
@@ -651,7 +726,6 @@ function showhelpwithstr( str ){
 
 function showelemname( elem ){
 	var hilf1 = document.getElementById("hilfe");
-	hilf1.style.opacity = "0.8";
     hilf1.style.visibility = "visible";
     hilf1.style.position = "absolute";
 	var pooo = getpositiononpage( elem );
@@ -789,6 +863,7 @@ function showhelp2withmenu( e ){
     zei.className = "clickableED";
     zei.innerHTML = "Zeilen der Synopse nicht verkürzen<br><br>"; 
     zei.onclick = function(){ if(doverk){doverk=false;} else {doverk=true;}  comparatioparallel( 0 ); };
+    
     hilf2.appendChild( zei );
     var c = document.createElement("div");
     c.className = "clickableED";
@@ -958,10 +1033,22 @@ function showhelptextnav( e ){
 }
 
 function debuggemail( astring ){
-    var somemore = prompt( "Beschreiben Sie den Fehler, wenn Sie Rückmeldung wünschen geben Sie auch Ihre email an (die wird nicht gespeichert oder sich gemerkt)!" );
-    var nono = "OS: "+ window.navigator.platform +", Agent: "+ window.navigator.userAgent + ", Reason: " + astring +", Besch: "+ somemore;
-    var l = "mailto:hannes.kahl@uni-leipzig.de?subject=eComparatio sagt&body=" + encodeURIComponent(nono); 
-    window.open(l, "_blank");   
+    var concon = confirm("Wollen Sie ein Issue auf Github eröffnen (click OK) oder eine email an die Entwickler senden (click Cancel)");   
+    if( concon == true ) {
+        var somemore = prompt( "Beschreiben Sie den Fehler kurz." );
+        if( somemore ){
+            var nono = "OS: "+ window.navigator.platform +", Agent: "+window.navigator.userAgent+ ", Reason: " +astring+", Besch: "+ somemore;
+            var ll = "https://github.com/ecomp-shONgit/ecomparatio/issues/new?title="+astring+"&body="+encodeURIComponent(nono); 
+            window.open( ll, "_blank");   
+        }       
+    } else {
+        var somemore = prompt( "Beschreiben Sie den Fehler, wenn Sie Rückmeldung wünschen geben Sie auch Ihre email an (die wird nicht gespeichert oder sich gemerkt)!" );
+        if( somemore ){
+            var nono = "OS: "+ window.navigator.platform +", Agent: "+window.navigator.userAgent+", Reason: "+astring +", Besch: "+ somemore;
+            var l = "mailto:hannes.kahl@uni-leipzig.de?subject=eComparatio sagt&body=" + encodeURIComponent(nono); 
+            window.open( l, "_blank");  
+        } 
+    }
 }
 
 function buggreport( ){ // buggreport from inputform
@@ -969,17 +1056,17 @@ function buggreport( ){ // buggreport from inputform
     debuggemail( astring ); //call mailto
 }
 
-function zoommenu( ){
+function zoommenu( ){  
     menuzoom += 20;
-    document.getElementById( "viewmenu" ).style.zoom = menuzoom.toString()+"%";
-    document.getElementById( "hilfe3" ).style.zoom = menuzoom.toString()+"%";
+    document.getElementById( "viewmenu" ).style.fontSize = menuzoom.toString()+"%";
+    document.getElementById( "hilfe3" ).style.fontSize = menuzoom.toString()+"%";
 }
 
 function dezoommenu( ){
-    if(menuzoom > 100){
+    if(menuzoom > 40){
         menuzoom -= 20;
-        document.getElementById( "viewmenu" ).style.zoom = menuzoom.toString()+"%";
-        document.getElementById( "hilfe3" ).style.zoom = menuzoom.toString()+"%";
+        document.getElementById( "viewmenu" ).style.fontSize = menuzoom.toString()+"%";
+        document.getElementById( "hilfe3" ).style.fontSize = menuzoom.toString()+"%";
     }
 }
 
@@ -1216,12 +1303,14 @@ function buildviewmenu( ){
     	p.style.background = "#8AC2D1";
 	}
     p.onclick = function( ){ decolorviewmenu( ); this.style.background = "#8AC2D1"; comparatioparallel( 0 ); };
+    p.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#synopse-", "_blank"); };
     edmenu.appendChild( p );
     var d = document.createElement( "span" );
     d.className = "clickableED";
     d.title = "Die Darstellung legt die verglichenen Texte zusammen.";
-    d.innerHTML = "Detail-Darstellung";  
+    d.innerHTML = "DetailD";  
     d.onclick = function(){ decolorviewmenu( ); this.style.background = "#8AC2D1";comparatiodetail( 0 ); };
+    d.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#detail-darstellung-", "_blank"); };
 	if( whichview == 0 ){
     	d.style.background = "#8AC2D1";
 	}
@@ -1229,103 +1318,139 @@ function buildviewmenu( ){
     var b = document.createElement( "span" );
     b.className = "clickableED";
     b.title = "Die Darstellung bietet einen Variantenapparat an.";
-    b.innerHTML = "Buch-Darstellung"; 
+    b.innerHTML = "BuchD"; 
 	
 	if(whichview == 2){
     	b.style.background = "#8AC2D1";
 	}
     b.onclick = function( ){ decolorviewmenu( ); this.style.background = "#8AC2D1";comparatiobuch( 0 ); };
+    b.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#buch-darstellung-", "_blank"); };
     edmenu.appendChild( b );
     var ma = document.createElement( "span" );
     ma.className = "clickableED";
     ma.title = "Die Darstellung zeigt die Vergleiche von allen zu allen anderen Texten in einer rechteckigen Matrix.";
-    ma.innerHTML = "Matrix-Darstellung";
+    ma.innerHTML = "MatrixD";
 	if(whichview == 5){
     	ma.style.background = "#8AC2D1";
 	}
     ma.onclick = function(){ decolorviewmenu( ); this.style.background = "#8AC2D1"; comparatiomatrix( ); };
+    ma.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#matrix-darstellung-", "_blank"); };
     edmenu.appendChild( ma );
 	var dia = document.createElement( "span" );
     dia.className = "clickableED";
     dia.title = "Die Darstellung zeigt den Vergleich in Zahlen und Diagrammen."
-    dia.innerHTML = "Diagramm-Darstellung"; 
+    dia.innerHTML = "DiagrammD"; 
 	if(whichview == 4){
     	dia.style.background = "#8AC2D1";
 	}
     dia.onclick = function( ){ decolorviewmenu( ); this.style.background = "#8AC2D1";comparatiodiagramm( 0 ); };
+    dia.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#diagramm-darstellung-", "_blank"); };
     edmenu.appendChild( dia );
+
+    var intl = document.createElement( "span" );
+    intl.className = "clickableED";
+    intl.title = "Die Darstellung zeigt den Vergleich als interlinearen Text."
+    intl.innerHTML = "InterlinearD"; 
+	if(whichview == 6){
+    	intl.style.background = "#8AC2D1";
+	}
+    intl.onclick = function( ){ decolorviewmenu( ); this.style.background = "#8AC2D1";comparatiointerlin( 0 ); };
+    intl.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#interlinear-darstellung-", "_blank"); };
+    edmenu.appendChild( intl );
     
     var e = document.createElement( "span" );
     e.className = "clickableED";
     e.title = "Drucken";
     e.innerHTML = "&#9113;"; 
     e.onclick = function( ){ printcomparatio( ); };
+    e.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#drucken-", "_blank"); };
+    
     edmenu.appendChild( e );
 	var ee = document.createElement( "span" );
     ee.className = "clickableED";
     ee.title = "Die Synopse als Latex Tabelle exportieren.";
     ee.innerHTML = "LATEX"; 
     ee.onclick = function( ){ tolatex( ); };
+    ee.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#latex-", "_blank"); };
     edmenu.appendChild( ee );
     var eVe = document.createElement( "span" );
     eVe.className = "clickableED";
     eVe.title = "Die Synopse im CSV Format exportieren.";
     eVe.innerHTML = "CSV"; 
     eVe.onclick = function( ){ tocsv( ); };
+    eVe.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#csv-", "_blank"); };
     edmenu.appendChild( eVe );
     var jsonb = document.createElement( "span" );
     jsonb.className = "clickableED";
     jsonb.title = "Texte und Eregbnisse als JSON Exportieren.";
     jsonb.innerHTML = "JSON"; 
     jsonb.onclick = function( ){ calljsonphp( ); };
+    jsonb.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#json--dump-", "_blank"); };
     edmenu.appendChild( jsonb );
 	var teib = document.createElement( "span" );
     teib.className = "clickableED";
     teib.title = "Die Ergebnisse als TEI Apparatus Tag verwendendes XML exportieren.";
     teib.innerHTML = "TEI"; 
     teib.onclick = function( ){ buildteixml( ); };
+    teib.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#tei-", "_blank"); };
     edmenu.appendChild( teib );
+    var htmlb = document.createElement( "span" );
+    htmlb.className = "clickableED";
+    htmlb.title = "Die Ergebnisse werden als digitale Edition exportiert.";
+    htmlb.innerHTML = "HTML"; 
+    htmlb.onclick = function( ){ buildhtml( ); };
+    htmlb.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#digitale-edition-", "_blank"); };
+    edmenu.appendChild( htmlb );
     var addelem = document.createElement( "span" );
     addelem.className = "clickableED";
     addelem.title = "Textreihe in der verglichen werden soll hinzufügen und vergleichen.";
     addelem.innerHTML = "ADD"; 
     addelem.onclick = function( ){ addED( ); };
+    addelem.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#hinzuf%C3%BCgen-", "_blank"); };
     edmenu.appendChild( addelem );
     var modelem = document.createElement( "span" );
     modelem.className = "clickableED";
     modelem.title = "Texte einer Textreihe modifizieren und neu vergleichen.";
     modelem.innerHTML = "MOD"; 
     modelem.onclick = function( ){ modEDoffline( ); }; //that is just for the first version of ecomparatio - without server com
+    modelem.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#%C3%84ndern-", "_blank"); };
     edmenu.appendChild( modelem );
     var delelem = document.createElement( "span" );
     delelem.className = "clickableED";
     delelem.title = "Diese Textreihe löschen.";
     delelem.innerHTML = "DEL"; 
     delelem.onclick = function( ){ delED( ); };
+    delelem.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#l%C3%B6schen-", "_blank"); };
     edmenu.appendChild( delelem );
-    var deselem = document.createElement( "span" );
-    deselem.className = "clickableED";
-    deselem.title = "Bezeichnung und Färbung der Unterschiede verändern.";
-    deselem.innerHTML = "DES"; 
-    deselem.onclick = function( ){ modDIFFDES( ); };
-    edmenu.appendChild( deselem );
+    
     var inelem = document.createElement( "span" );
     inelem.className = "clickableED";
     inelem.title = "Eingabe von Ergebnissen in Form von JSON files.";
     inelem.innerHTML = "IN"; 
     inelem.onclick = function( ){ inpJSON( ); };
+    inelem.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#in-", "_blank"); };
     edmenu.appendChild( inelem );
+
+    var deselem = document.createElement( "span" );
+    deselem.className = "clickableED";
+    deselem.title = "Bezeichnung und Färbung der Unterschiede verändern.";
+    deselem.innerHTML = "DES"; 
+    deselem.onclick = function( ){ modDIFFDES( ); };
+    deselem.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-customizing-", "_blank"); };
+    edmenu.appendChild( deselem );
     var Einst1 = document.createElement( "span" );
     Einst1.className = "clickableED";
     Einst1.title = "Debug, Textstatistik etc.";
     Einst1.innerHTML = "&#9881;"; 
     Einst1.onclick = function( e ){ showhelp2withmenu( e ); };
+    Einst1.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#unterschiede--anderes", "_blank"); };
     edmenu.appendChild( Einst1 );
     var unterschkl = document.createElement( "span" );
     unterschkl.className = "clickableED";
     unterschkl.title = "Unterschiede ein- und ausblenden.";
     unterschkl.innerHTML = "&#9997;"; 
     unterschkl.onclick = function( e ){ showhelp3withmenu( e ); };
+    unterschkl.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#unterschiede--anderes", "_blank"); };
     edmenu.appendChild( unterschkl );
     var zurueckelem = document.createElement( "span" );
     zurueckelem.className = "clickableED";
@@ -1338,6 +1463,7 @@ function buildviewmenu( ){
     stepelem.title = "Schrittweite der Textnavigation einstellen.";
     stepelem.innerHTML = "&#9863;"; 
     stepelem.onclick = function( e ){ showhelptextnav( e ); };
+    stepelem.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#navigation", "_blank"); };
     edmenu.appendChild( stepelem );
     var vorelem = document.createElement( "span" );
     vorelem.className = "clickableED";
@@ -1362,6 +1488,7 @@ function buildviewmenu( ){
     emailelem.innerHTML = "&#128231;"; 
     emailelem.title = "Email an den Admin bezüglich erkannter Fehler versenden.";
     emailelem.onclick = function( ){ debuggemail( "Fehler Frontend" ); };
+    
     edmenu.appendChild( emailelem );
 }
 
@@ -1482,6 +1609,21 @@ function comparatiodetail( aindex ){
     makeueberschriftDundB( );  
     firstwordindex = aindex;
     lastwordindex = renderlines( firstwordindex, maxlines ); 
+    colornewonscreen();
+}
+
+function comparatiointerlin( aindex ){
+    buildcomparatiowico( currented );
+    whichview = 6;
+    linecount = 0;
+    linehinstory = [];
+    document.getElementById( "info" ).innerHTML = "";
+    var vergelem = document.getElementById( "vergleich" );
+    vergelem.innerHTML = "";
+    vergelem.style.width = "100000px";
+    vergelem.style.height = "100%";
+    firstwordindex = aindex;
+    lastwordindex = renderlinesinterlin( firstwordindex, Math.floor(maxlines/2) ); 
     colornewonscreen();
 }
 
@@ -1738,14 +1880,14 @@ function comparatiodiagramm( aindex ){
 	//tabelle
   	var labeltabellendiv = document.createElement( "div" );
 	labeltabellendiv.className = "dialabel";
-	labeltabellendiv.innerHTML = "Unterschiede in Zahlen:";
+	labeltabellendiv.innerHTML = "<br>Unterschiede in Zahlen:";
 	var tabellendiv = document.createElement( "div" );
 	tabellendiv.innerHTML = textSTAT( 1 );
 	velem.appendChild( labeltabellendiv );
 	velem.appendChild( tabellendiv );
 	//balkendiagramm
 	var labelXYdiv = document.createElement( "div" );
-    labelXYdiv.style.width = "400px";
+    labelXYdiv.style.width = "420px";
 	labelXYdiv.className = "dialabel";
 	labelXYdiv.innerHTML = "Nach Unterschieden gezählt:";
 	var XYdiv = document.createElement( "div" );
@@ -1765,6 +1907,7 @@ function comparatiodiagramm( aindex ){
     var downbuttDivv = document.createElement( "div" );
     downbuttDivv.innerHTML = "Download SVG";
     downbuttDivv.className = "clickable";
+    downbuttDivv.title = "Mit dieser Funktion können sie den Vergleich der Vergleiche herunter laden.";
 	downbuttDivv.style.background = "lightgray";
 	downbuttDivv.onclick = function() { dodownit( document.getElementById( "svgtodownload" ).innerHTML, currentedseries+'.svg','image/svg+xml' ); };
     velem.appendChild( downbuttDivv );
@@ -1816,9 +1959,11 @@ function selectEDbyID( indexofed ){
       comparatiobuch( 0 );
     } else if( whichview == 5 ){
       comparatiomatrix( );
-    } else {
-		comparatiodiagramm(0);
-	}
+    } else if( whichview == 4 ){
+		comparatiodiagramm( 0 );
+	} else {
+        comparatiointerlin( 0 );
+    }
 	colornewonscreen( );//coloring for the selection of diffs
 }
 
@@ -1888,6 +2033,7 @@ function prevSTEP( ){
     }
     var ddd = rendercount; //how much is rendered
     var diffof = linehinstory.length - verl;
+    
     if( rendercount > diffof ){
         ddd = diffof;
     }
@@ -1895,6 +2041,7 @@ function prevSTEP( ){
     if( renderstyle == 0 ){
         for( var v = 0; v < verl+ddd; v += 1 ){
             if(linehinstory.length != 0){
+                //console.log("eine");
                 linehinstory.pop();
 				linecount -= 1;        
             } 
@@ -1933,6 +2080,11 @@ function prevSTEP( ){
         document.getElementById( "textver" ).innerHTML = "";
         document.getElementById( "apparat" ).innerHTML = "";
         lastwordindex = renderlinesBuch( NEWINDEX, verl );
+    } else if(whichview == 6){ //interlinear
+        vergelem.innerHTML = "";
+        //console.log(NEWINDEX, verl);
+        lastwordindex = renderlinesinterlin( NEWINDEX, (verl*alltexts.length) );
+
     } else { //bild-view
 
     }
@@ -1941,7 +2093,8 @@ function prevSTEP( ){
 
 function nextSTEP( ){
 	//if last line is rendered - just do nothing:
-	if( lastwordindex == alltexts[ currented ].length-1 || lastwordindex == undefined ){
+    //console.log(lastwordindex, alltexts[ currented ].length-1);
+	if( lastwordindex >= alltexts[ currented ].length-1 || lastwordindex == undefined ){
 			return;
 	}
     //render screenlines
@@ -2002,6 +2155,23 @@ function nextSTEP( ){
         if( renderstyle != 0 ){
             blockhistory.push( indexlength );
         }
+    } else if( whichview == 6 ) { // interlinear 
+
+        while( vergelem.hasChildNodes( ) && goon < ddd ){ 
+            vergelem.removeChild( vergelem.firstChild ); 
+            if( renderstyle == 0 ){
+                goon += 1; 
+            }
+        }
+        //console.log("lastwordindex", lastwordindex, rendercount);
+        var indexlength = [ lastwordindex ];
+        lastwordindex = renderlinesinterlin( lastwordindex+1, rendercount );
+        //console.log(lastwordindex);
+        indexlength.push( vergelem.children.length );
+        if( renderstyle != 0 ){
+            blockhistory.push( indexlength );
+        }
+
     } else { //bildview
 
     }
@@ -2018,6 +2188,227 @@ function handelaTOOlonPline( elem ){
 		document.getElementById( elem.name ).style.display = "inline";
 		elem.innerHTML = " ⥢";
 	} 
+}
+
+function renderlinesinterlin( wordstart, howmanylines ){
+    var templinecount = 0;
+    var container = document.getElementById( "vergleich" );
+    var perlinecontainer = document.createElement("div");
+    perlinecontainer.className = "interlline";
+    var templinewidth = 200;
+    var wordnumtoreturn = 0;
+    /**/
+    
+    var thebib = "";
+    if( currentedseries.toLowerCase ){ //currentedseries is string
+        thebib = bibdynvars[currentedseries];
+    } else {
+        for( var c in menuelem.children ){
+        	if( c == currentedseries ){
+            	thebib = bibdynvars[ menuelem.children[c].innerHTML ];
+		    }
+	    }
+    }
+
+    if( thebib == null ){
+        thebib = textnames;
+    }
+
+    var editorstack = document.createElement("div");
+        editorstack.className = "editorstack";
+        
+    var aed =  document.createElement("div");
+        aed.innerHTML = thebib[ currented ][2];
+        aed.style.height = lineheight.toString()+"px";
+        aed.style.overflow = "hidden";
+        aed.className = "stacked";
+    editorstack.appendChild( aed );
+    
+    for(var reihe = 0; reihe < alltexts.length; reihe++ ){
+        if( currented != reihe ){
+            var aed =  document.createElement("div");
+            aed.innerHTML = thebib[ reihe ][2];
+            aed.style.height = lineheight.toString()+"px";
+            aed.style.overflow = "hidden";
+            aed.className = "stacked";
+            editorstack.appendChild( aed );
+        }
+    }
+    var linenumelem = document.createElement("span");
+            linenumelem.className = "linenum wordstack";
+            linenumelem.innerHTML = linecount+templinecount;
+            
+            perlinecontainer.appendChild( linenumelem );
+    perlinecontainer.appendChild( editorstack );
+
+    for( var wi = wordstart; wi < alltexts[ currented ].length; wi = wi+1 ){
+        
+        var wordstack = document.createElement("div");
+        wordstack.className = "wordstack";
+        perlinecontainer.appendChild( wordstack );
+        var refword = document.createElement("div");
+        refword.innerHTML = alltexts[ currented ][wi] + " ";
+        refword.className = "stacked";
+        refword.style.height = lineheight.toString()+"px";
+        wordstack.appendChild( refword );
+        templinewidth += (alltexts[ currented ][wi].length*9);//anzahl der buchstaben mal durch schnittliche 
+        
+
+        
+
+        var Us = wico[ wi.toString() ];
+        
+        if( Us != undefined ){  
+            for(var reihe = 0; reihe < alltexts.length; reihe++ ){
+            
+            if( currented != reihe  ){
+                var dispan = document.createElement("div");
+                dispan.className = "stacked";
+                dispan.style.height = lineheight.toString()+"px";
+                for( var di in Us ){
+
+                
+                    if( reihe == Us[di][0] ){
+			            if(alltexts[ Us[di][0] ][ Us[di][1] ] == undefined){
+                            dispan.innerHTML = "GAB";
+				            continue;
+			            }
+
+                
+                dispan.setAttribute("name", Us[di][0].toString()); 
+                dispan.setAttribute("title", wi.toString());
+                if(dodebug == 1){
+                    dispan.innerHTML = dispan.innerHTML+" " + alltexts[ Us[di][0] ][ Us[di][1] ] + "<sub>"+wi.toString()+","+Us[di][1].toString()+"</sub>";
+                } else {
+                    dispan.innerHTML = dispan.innerHTML+ " " + alltexts[ Us[di][0] ][ Us[di][1] ];
+                }
+				if( Us[di][2] != "" ){
+                    var disup = document.createElement("sup");
+				    var tempclasssup = "";
+				    var givvenclasssup = Us[di][2];
+				    if( givvenclasssup.indexOf(" T") != -1 ){
+					    tempclasssup = tempclasssup + " " + TU;
+						dispan.className = "diffil" + Us[di][2];
+				    }
+				    if( givvenclasssup.indexOf(" C") != -1 ){
+						tempclasssup = tempclasssup + " " + GK;
+						dispan.className = "diffilerwgl" + Us[di][2];
+				    }
+				    if( givvenclasssup.indexOf(" D") != -1 ){
+						tempclasssup = tempclasssup + " " + DK;
+						dispan.className = "diffilerwgl" + Us[di][2];
+				    }
+				    if( givvenclasssup.indexOf(" L") != -1 ){
+						tempclasssup = tempclasssup + " " + LI;
+						dispan.className = "diffilerwgl" + Us[di][2];
+				    }
+				    if( givvenclasssup.indexOf(" U") != -1 ){
+						tempclasssup = tempclasssup + " " + UM;
+						dispan.className = "diffilerwgl" + Us[di][2];
+				    }
+				    if( givvenclasssup.indexOf(" Z") != -1 ){
+					    tempclasssup = tempclasssup + " " + ZK;
+					    dispan.className = "diffilerwgl" + Us[di][2];
+				    }
+				    if( givvenclasssup.indexOf(" M") != -1 ){
+					    tempclasssup = tempclasssup + " " + ME;
+					    dispan.className = "diffil" + Us[di][2];
+				    }
+				    if( givvenclasssup.indexOf(" W") != -1 ){
+					    tempclasssup = tempclasssup + " " + WE;
+					    dispan.className = "diffilerwgl" + Us[di][2];
+				    }
+				    if( givvenclasssup.indexOf(" I") != -1 ){
+					    tempclasssup = tempclasssup + " " + INTERP;
+					    dispan.className = "diffilerwgl" + Us[di][2];
+				    }
+				    if( givvenclasssup.indexOf(" K") != -1 ){
+					    tempclasssup = tempclasssup + " " + KK;
+					    dispan.className = "diffilerwgl" + Us[di][2];
+				    }
+				    if( givvenclasssup.indexOf(" V") != -1 ){
+					    tempclasssup = tempclasssup + " " + UV;
+					    dispan.className = "diffilerwgl" + Us[di][2];
+				    }
+				    if( givvenclasssup.indexOf(" vERT") != -1 ){
+					    tempclasssup = tempclasssup + " " + VERT;
+					    dispan.className = "diffil" + Us[di][2];
+				    }
+                    if( givvenclasssup.indexOf(" vErdRE") != -1 ){
+					    tempclasssup = tempclasssup + " " + VERDRE;
+					    dispan.className = "diffil" + Us[di][2];
+				    }
+				    if( givvenclasssup.indexOf(" mIAT") != -1 ){
+					    tempclasssup = MIAT;
+					    dispan.className = "diffil" + Us[di][2];
+				    }
+		    	    if( givvenclasssup.indexOf(" EiN") != -1 ){
+					    tempclasssup = tempclasssup + " " + EIN;
+					    dispan.className = "diffil" + Us[di][2];
+				    }
+				    if( givvenclasssup.indexOf(" dist") != -1 ){
+					    tempclasssup = tempclasssup + " " + DIST;
+					    dispan.className = "diffil" + Us[di][2];
+				    }
+				    if( givvenclasssup.indexOf(" wtn") != -1 ){
+					    tempclasssup = tempclasssup + " " + WTN;
+					    dispan.className = "diffil" + Us[di][2];
+				    }
+				    if( givvenclasssup.indexOf(" vwt") != -1 ){
+					    tempclasssup = tempclasssup + " " + VWT;
+					    dispan.className = "diffil" + Us[di][2];
+				    }
+                    dispan.className = dispan.className +" stacked";
+                    disup.innerHTML = tempclasssup;
+                    dispan.appendChild( disup );
+                }
+                
+                wordstack.appendChild( dispan );
+				}//ifreihe zu
+            }
+            if( dispan.innerHTML == "" ){
+                            dispan.className = "diffil T bonbon stacked"
+                            dispan.innerHTML = " "+bonbon+" ";
+                wordstack.appendChild( dispan );
+            }
+            }//icurrednum!=reihe zu
+            }
+        } 
+        
+        if( templinewidth >= linewidth ){
+            linehinstory.push( wi );
+            templinecount += 1;
+            container.appendChild( perlinecontainer );
+            perlinecontainer = document.createElement("div");
+            perlinecontainer.className = "interlline";
+            var linenumelem = document.createElement("span");
+            linenumelem.className = "linenum wordstack";
+            linenumelem.innerHTML = linecount+ templinecount;
+            
+            perlinecontainer.appendChild( linenumelem );
+            perlinecontainer.appendChild( editorstack.cloneNode(true) );
+            templinewidth = 200;
+            
+        }
+        
+        //länge des angezeigten textes
+        wordnumtoreturn = wi;
+        if( howmanylines <= (templinecount * alltexts.length) ){
+            
+            break;
+    
+        }
+    }
+    //console.log(perlinecontainer.children.length);
+    if(perlinecontainer.children.length > 2){
+        linehinstory.push( wordnumtoreturn );
+        container.appendChild( perlinecontainer );
+    }
+    
+    
+    linecount += templinecount;
+    
+    return wordnumtoreturn;
 }
 
 function renderlinesparallel( wordstart, howmanylines, elemarray ){
@@ -2208,7 +2599,7 @@ function renderlinesparallel( wordstart, howmanylines, elemarray ){
                 }
 				for(var e in elemarray){
                     if(parseInt( elemarray[ e ].id ) == Us[di][0] ){
-					    if( parseInt(dispan.title) -parseInt( elemarray[ e ].lastChild.children[ elemarray[ e ].lastChild.children.length-1 ].title) > 1 ){
+					    if( parseInt(dispan.title) - parseInt( elemarray[ e ].lastChild.children[ elemarray[ e ].lastChild.children.length-1 ].title) > 1 ){
                             var aa = document.createElement("span");
                             aa.className = "diffil T bonbon"
                             aa.innerHTML = " "+bonbon+" ";
@@ -3597,13 +3988,255 @@ function calljsonphp( ){
     xmlHttp.send(null);
 }
 
+function buildhtml( ){
+    //set max lines to close to endless
+    maxlines = 100000000;
+    doverk = false; //richtiger render stil
+    //undisplay elemt
+    var vergelem = document.getElementById( "vergleich" );
+    vergelem.style.display = "hidden";
+    //render specific view
+    if( whichview == 1 ){//synopse
+        //render all
+        comparatioparallel( 0 );
+    } else if( whichview == 0 ){ //detail
+        comparatiodetail( 0 );
+    } else if( whichview == 2 ){ //buch
+        comparatiobuch( 0 );
+    } else if( whichview == 5 ){ //matrix
+        //comparatiomatrix( 0 );
+    } else if( whichview == 6 ){ //inline
+        comparatiointerlin( 0 );
+    } else {
+        alert("Keine digitale Edition für diese Darstellung erstallbar. Wenden Sie sich an die Entwickler, wenn diese Funktion unbedingt erforderlich ist.");
+    }
+    //get innerHTML, put into index.html, export and done     
+        var prehtml = '<!DOCTYPE html>\n<html lang="de">\n<head>\n<meta charset="utf-8" />\n<title>'+currentedseries+'View'+whichview.toString()+'</title>\n<style>.toolong{\
+	color:blue;\
+}\
+.mazeile{\
+    display:block;\
+    width: 100000px;\
+    height:100%;\
+    border-bottom: 1px solid lightgray;\
+}\
+.maref{\
+    vertical-align:top;\
+	padding:5px;\
+	display:inline-block;\
+	width:380px;\
+	color:gray;\
+	background: rgba(255,250,250,0.97);}\
+.maverglt{\
+    vertical-align:top;\
+	padding:5px;\
+	display:inline-block;\
+}\
+.mainfo{\
+     width: 100000px;\
+	display:block;\
+}\
+.reditorPma{\
+    display:inline-block;\
+	font-size: 70%;\
+	font-weight: bold;\
+	height: 38px;\
+      padding:5px;\
+	background: rgb(245, 245, 245);\
+      border: 1px solid white;\
+      border-top-right-radius:4px;\
+      border-top-left-radius:4px;\
+	overflow-y:hidden;\
+}\
+.diffbundel{\
+	display:none;\
+	background: gray;\
+	z-index: 2;\
+	padding:5px;\
+}\
+.diffmarker{\
+      color:gray;\
+	cursor:pointer;\
+	width: 2px;\
+	height: 5px;\
+	padding:0px;\
+	margin: 0px;\
+	font-size: 10px;\
+	font-weight: bold;\
+      border-top-right-radius:2px;\
+      border-top-left-radius:2px;\
+}\
+.diffilerwgl{\
+	 min-width: 10px;\
+}\
+.diffilerwgl sup{\
+      color:black;\
+      font-size:40%;\
+      font-family:Helvetica;\
+}\
+.diffil{\
+    min-width: 10px;\
+}\
+.diffil sup{\
+      color:black;\
+      font-size:40%;\
+      font-family:Helvetica;\
+}\
+.moretextavailable{\
+	color:blue;\
+}\
+.moretext{\
+	color:blue;\
+	width: 340px;\
+	height:auto;\
+	display:block;\
+}\
+.pline{\
+      width:auto;\
+      border-bottom: 1px dotted lightgray;\
+}\
+.linenum{\
+      display: inline-block;\
+      color:steelblue;\
+      padding-left: 5px;\
+	  margin-left: 5px;\
+      font-size:60%;\
+      font-family: "Helvetica", sans-serif;\
+}\
+#parallelview{\
+	width: 20000px;\
+	background:white;\
+}\
+\
+.ref{\
+	padding:5px;\
+	float:left;\
+	width:380px;\
+	color:gray;\
+	background: rgba(255,250,250,0.97);\
+      \
+}\
+.verglt{\
+	padding:5px;\
+	float:left;\
+}\
+.wordsinline{\
+      display:none;\
+}\
+.wordstack{\
+    display: inline-block;\
+    padding-left: 8px;\
+}\
+.editorstack{\
+    display: inline-block;\
+    background: rgb(245, 245, 245);\
+    width: 200px;\
+}\
+.stacked{\
+    border-bottom: 1px dotted lightgray;\
+}\
+.interlline{\
+      width:auto;\
+    border-bottom: 4px solid gray;\
+}</style>\n<script>\
+var textnames = ' +JSON.stringify( textnames ) + ';\n \
+    function hidevarianten( id, elem, oldhtml ){\n \
+	document.getElementById( id ).style.display = "none";\n \
+	document.getElementById( id ).innerHTML = oldhtml;\n \
+	elem.style.background = "lightgray";\n \
+	elem.onclick = function( ) { showvarianten( this.getAttribute("name"), this); };\n \
+}\n \
+    function showvarianten( id, elem ){\n\
+	document.getElementById( id ).style.display = "block";\n\
+	document.getElementById( id ).style.position = "absolute";\n\
+	var posofmarker = getpositiononpage( elem );\n\
+	document.getElementById( id ).style.left = (posofmarker[1]+10) + "px";\n\
+	document.getElementById( id ).style.top = (posofmarker[0]+10) + "px";\n\
+	var numberof = document.getElementById( id ).children[ 0 ].getAttribute("name");\n\
+	var theallhtml = "";\n\
+	var thetemphtml = "";\n\
+	var oldhtml = "";\n\
+	for( var c = 0; c < document.getElementById( id ).children.length; c++ ){\n\
+		if( document.getElementById( id ).children[ c ].getAttribute("name") != numberof ){\n\
+			var tn = textnames[ parseInt(numberof) ];\n\
+			var name = "<div class=\'st>("+tn[1].replace(/ _ /g,",").replace(/_/g,".") +")</div>";\n\
+			var currenthtml = thetemphtml + name;\n\
+			theallhtml = theallhtml + currenthtml;\n\
+			thetemphtml = "";\n\
+		} \n\
+		thetemphtml = thetemphtml + "<span class=\'"+document.getElementById( id ).children[ c ].getAttribute( "class" )+"\' name=\'"+numberof+"\'>" +document.getElementById( id ).children[ c ].innerHTML +"</span>";\n\
+		numberof = document.getElementById( id ).children[ c ].getAttribute( "name" );\n\
+	}\n\
+	if( thetemphtml != "" ){\n\
+		var tn = textnames[ parseInt(numberof) ];\n\
+			var name = "<div class=\'st\'>("+tn[1].replace(/_/g,".") +")</div>";\n\
+			var currenthtml = thetemphtml+name;\n\
+			theallhtml = theallhtml + currenthtml.replace(/\<br\>\<\\/br\>/g,"UMBRUCH<br></br>");\n\
+			thetemphtml = "";\n\
+	}\n\
+	oldhtml = document.getElementById( id ).innerHTML;\n\
+	document.getElementById( id ).innerHTML = theallhtml;\n\
+	if(document.getElementById( id ).className.indexOf( "shaped" ) == -1){\n\
+		document.getElementById( id ).className += " shaped";\n\
+	} \n\
+	elem.onclick = function( ) { hidevarianten(id, this, oldhtml); };\n\
+}\n\
+</script></head>\n<body >';
+       
+var posthtml = '<script>\n\
+    function handelaTOOlonPline( elem ){\n\
+	if( document.getElementById( elem.name ).style.display.indexOf("inline") != -1 ){\n\
+		document.getElementById( elem.name ).style.display = "none";\n\
+		elem.innerHTML = " ⥤";\n\
+	} else {\n\
+		document.getElementById( elem.name ).style.display = "inline";\n\
+		elem.innerHTML = " ⥢";\n\
+	} \n\
+}\n\
+function getpositiononpage( element ){\n\
+    if( element.nodeType ){\n\
+        var rect = element.getBoundingClientRect( );\n\
+        var elementLeft, elementTop; \n\
+        var scrollTop = document.documentElement.scrollTop ?\n\
+                        document.documentElement.scrollTop:document.body.scrollTop;\n\
+        var scrollLeft = document.documentElement.scrollLeft ?                   \n\
+                         document.documentElement.scrollLeft:document.body.scrollLeft;\n\
+        elementTop = rect.top+scrollTop;\n\
+        elementLeft = rect.left+scrollLeft;\n\
+        return [ elementTop, elementLeft ];\n\
+    } else {\n\
+        return false;\n\
+    }\n\
+}\n\
+var vergelem = document.getElementById( "vergleich" );\n\
+	var infoelem = document.getElementById( "info" );\n\
+var l = vergelem.children[0].children.length;\n\
+	var lineheight = vergelem.children[0].children[0].offsetHeight;\n\
+  	vergelem.style.height = (lineheight*l).toString() + "px";\n\
+    for( var tn = 0; tn < vergelem.children.length; tn++ ){\n\
+        var posofreftext = getpositiononpage( vergelem.children[ tn ] );\n\
+        if(tn == 1){\n\
+            infoelem.children[ tn ].style.width = (vergelem.children[ tn ].offsetWidth-16).toString() + "px";\n\
+            infoelem.children[ tn ].style.left = (posofreftext[1]+vergelem.children[ tn ].style.paddingLeft).toString() + "px";\n\
+        } else {\n\
+            infoelem.children[ tn ].style.width = (vergelem.children[ tn ].offsetWidth-16).toString() + "px";\n\
+            infoelem.children[ tn ].style.left = posofreftext[1].toString() + "px";\n\
+        }\n\
+    }\n\
+</script></body>\n</html>';
+        dodownit( prehtml +"<div id='parallelview'><div id='info' style='height: 70px;'>" +document.getElementById( "info" ).innerHTML +"</div><div id='vergleich'>"+ vergelem.innerHTML +'</div></div>'+ posthtml, currentedseries+'View'+whichview.toString()+'.html','text/xml' );      
+    //reload
+    location.reload();
+    
+}
+ 
 function buildteixml( ){
 	comparatioparallel( 0 );
 	var TEIout = "<TEI xmlns='http://www.tei-c.org/ns/1.0'>\n<teiHeader>\n<fileDesc>\n<titleStmt><title></title><author>eComparatio</author><respStmt><resp>Text Encoding by </resp><name>eComparatio</name></respStmt></titleStmt><publicationStmt></publicationStmt><notesStmt></notesStmt><sourceDesc></sourceDesc></fileDesc>\n<encodingDesc><editorialDecl><p>eComparatio TEI Output</p></editorialDecl>\n<variantEncoding method='parallel-segmentation' location='internal'/></encodingDesc>\n</teiHeader>\n<text>\n<front>\n<div><listWit>";
 	var wittnesseses = [];
 	var infoelem = document.getElementById( "info" );
 	for( var c = 0; c < infoelem.children.length; c += 1 ){
-		var ih = infoelem.children[c].innerHTML;
+		var ih = infoelem.children[c].innerHTML.replace( /<br[^>]*>/gi, ";");
 		wittnesseses.push(ih);
 		TEIout = TEIout + "<witness xml:id='"+ih+"'>"+ih+"</witness>\n";
 	}
@@ -3618,9 +4251,9 @@ function buildteixml( ){
 			TEIout = TEIout + "<rdg wit='#"+wittnesseses[c]+"'>";
 			for( var w = 0; w < lineelem.children.length; w++){
 				if(lineelem.children[w].className.indexOf( "diffil" ) != -1){
-				   TEIout = TEIout + " "+lineelem.children[w].innerHTML.split("<sup>")[0]+"<note>Unterschied: "+lineelem.children[w].className+" </note>";
+				   TEIout = TEIout + " "+lineelem.children[w].innerHTML.split("<sup>")[0].replace( /<[^>]*span[^>]*>/gi, " ").replace( /<br[^>]*>/gi, ";")+"<note>Unterschied: "+lineelem.children[w].className+" </note>";
 				} else {
-					TEIout = TEIout + " "+lineelem.children[w].innerHTML;
+					TEIout = TEIout + " "+lineelem.children[w].innerHTML.replace( /<[^>]*span[^>]*>/gi, " ").replace( /<br[^>]*>/gi, ";");
 				}
 			}
 			TEIout = TEIout + "</rdg>";
@@ -3813,16 +4446,64 @@ function tolatex( ){
     dodownit( LATEXout, currentedseries+'.tex','text/text' );
 }
 
+/**************************************************************/
+/*Autosave for EDIT and NEW */
+/**************************************************************/
+
+
+function autosavethe(){
+    //console.log("autodone");
+    
+    var allinp = document.getElementsByTagName('input');
+    for( var index = 0; index < allinp.length; ++index ) {
+        if( allinp[ index ].value != "" ){
+            allinp[ index ].placeholder = allinp[ index ].value;
+        }
+    }
+    var alltexe = document.getElementsByTagName('textarea');
+    for( var index = 0; index < alltexe.length; ++index ) {
+        if( alltexe[ index ].value != "" ){
+            alltexe[ index ].placeholder = alltexe[ index ].value;
+        }
+    }
+    localStorage.setItem('AS', document.getElementById("intome").innerHTML );
+    
+}
 
 /**************************************************************/
 /*NEW ED Series*/
 /**************************************************************/
 function addED( ){ //this loads the input forms for new eds
     hidetextmenus( );
-    
-    document.getElementById("intome").innerHTML = "<div id='inpmenu'><span class='clickable' onclick='location.reload();' title='Zurück zur Hauptansicht.'>Zur&uuml;ck</span> | <span class='clickable' onclick='showinputstyle()' style='font-size:140%;' title='Eingaberichtlinien'>&#9995;</span> | <span class='clickable' id='tastbutton' onclick='mkTASTAT()' style='font-size:140%;' title='Inline Tastatur für polytonisches Griechisch. (Betacode Umwandlung)'>&#9000;</span> | <span class='clickable' id='ctsinputbutton' onclick='mkctsinput()' style='font-size:110%;' title='Wenn CTS Server abgefragt werden sollen, hier klicken.'>CTS Input</span> | <span class='clickable' id='tcbutton' onclick='loadtestcase1()' style='font-size:110%;'>Test Case 1 Anaximander</span>| <span class='clickable' id='tcbutton2' onclick='loadtestcase2()' style='font-size:110%;' title='Testcase kurz, Deutsch'>Test Case 2 Bruder Lustig</span> |<span class='clickable' id='tcbutton2' onclick='loadtestcase3()' style='font-size:110%;' title='Testcase länger, Latein'>Test Case 3 Res gestae</span>| <span class='clickable' id='buggbutton2' onclick='buggreport()' style='font-size:110%;' title='Email an den Admin.'>📧</span></div><div id='tastetc' style='display:none;'><div id='tatst' class='tastat'></div><div class='clear'></div><textarea style='margin:2px; margin-left:50px;' id='greekout'></textarea><textarea style='margin:2px;' id='betaout'></textarea></div><div id='bildschtastat'></div><form id='newedform' name='newedform' method='post' action='scri/addED.php'><div class='persbez'><input type='text' id='aname' name='aname' placeholder='Ihr Vorname + Name*'/><input type='text' id='aemail' name='aemail' placeholder='Ihre Email-Adresse*'/><input type='text' name='edKname' id='edKname' placeholder='Kurzbezeichnung der Edition (ein Wort)*'/><br/><br/><lable>Synchronisierung der Suche im Wortabstand von </lable><input style='width:20%;' type='text' name='synchdist' id='synchdist' value='20'/><br/><lable>Latein U-V angleichen</lable> <input style='width:10px;' type='checkbox' id='latinuv' name='latinuv' value='1'/><br/></div><br/><div id='eds'><div class='oneed'><input type='hidden' name='ed0number' value='0' /><input type='text' name='ed0source' placeholder='Ursprung des digitalen Texts (URL / URN)'/><input type='text' name='ed0editor' placeholder='Editor(en) (Name1 Vorname1; Vorname2 Name2; ... )*'/><input type='text' name='ed0name' placeholder='Name der Edition*'/><input type='text' name='ed0publishingplace' placeholder='Erscheinungsort*'/><input type='text' name='ed0publishingdate' placeholder='Erscheinungsdatum*'/><input type='text' name='ed0belegst' placeholder='Belegstelle'/><textarea type='text' id='ed0text' name='ed0text' placeholder='Text der Edition*'></textarea></div><script></script> </div><!--eds--><div class='ednewmenu'><span class='clickable' onclick='addnewedtext()'>+ Edition</span> <span class='clickable' onclick='submitneweds( false )'>&Uuml;bernehmen!</span> <span class='clickable' onclick='editionsaction( null );'>Abbrechen</span></div></form>";
+    //earased cts inp  | <span class='clickable' id='ctsinputbutton' onclick='mkctsinput()' style='font-size:110%;' title='Wenn CTS Server abgefragt werden sollen, hier klicken.'>CTS Input</span> 
+    var rconfirm = false;
+    if( localStorage.getItem( 'AS' ) != "" && notmodiffunction ){
+
+        rconfirm = confirm("Wollen Sie die Autosave Daten als Ausgangspunkt ihrer Eingabe nutzen?");
+    }
+	
+    if( rconfirm ){
+        document.getElementById("intome").innerHTML = localStorage.getItem('AS');
+        var allinp = document.getElementsByTagName('input');
+        for( var index = 0; index < allinp.length; ++index ) {
+            if( allinp[ index ].value == "" ){
+                allinp[ index ].value = allinp[ index ].placeholder;
+            }
+        }
+        var alltexe = document.getElementsByTagName('textarea');
+        for( var index = 0; index < alltexe.length; ++index ) {
+            if( alltexe[ index ].value == "" ){
+                 alltexe[ index ].value = alltexe[ index ].placeholder;
+            }
+        }
+        //daten müssen aus der 
+    } else {
+    document.getElementById("intome").innerHTML = "<div id='inpmenu'> <span class='clickable' onclick='location.reload();' title='Zurück zur Hauptansicht.'>Zur&uuml;ck</span> | <span class='clickable' onclick='showinputstyle()' style='font-size:140%;' title='Eingaberichtlinien'>&#9995;</span> | <span class='clickable' id='tastbutton' onclick='mkTASTAT()' style='font-size:140%;' title='Inline Tastatur für polytonisches Griechisch. (Betacode Umwandlung)'>&#9000;</span> | <span class='clickable' id='tcbutton' onclick='loadtestcase1()' style='font-size:110%;'>Test Case 1 Anaximander</span> | <span class='clickable' id='tcbutton2' onclick='loadtestcase2()' style='font-size:110%;' title='Testcase kurz, Deutsch'>Test Case 2 Bruder Lustig</span> | <span class='clickable' id='tcbutton2' onclick='loadtestcase3()' style='font-size:110%;' title='Testcase länger, Latein'>Test Case 3 Res gestae</span> | <span class='clickable' id='buggbutton2' onclick='buggreport()' style='font-size:110%;' title='Email an den Admin.'>📧</span> | <span class='clickable' id='inputhelp' onclick='openHelpAdd();' style='font-size:110%;' title='Online Hilfe aufrufen.'>Hilfe</span></div><div id='tastetc' style='display:none;'><div id='tatst' class='tastat'></div><div class='clear'></div><textarea style='margin:2px; margin-left:50px;' id='greekout'></textarea><textarea style='margin:2px;' id='betaout'></textarea></div><div id='bildschtastat'></div><form id='newedform' name='newedform' method='post' action='scri/addED.php'><div class='persbez'><input type='text' id='aname' name='aname' placeholder='Ihr Vorname + Name*'/><input type='text' id='aemail' name='aemail' placeholder='Ihre Email-Adresse*'/><input type='text' name='edKname' id='edKname' placeholder='Kurzbezeichnung der Edition (ein Wort)*'/><br/><br/><lable>Synchronisierung der Suche im Wortabstand von </lable><input style='width:20%;' type='text' name='synchdist' id='synchdist' value='20'/><br/><lable>Latein U-V angleichen</lable> <input style='width:10px;' type='checkbox' id='latinuv' name='latinuv' value='1'/><br/><lable>Alternative Sortierung</lable> <input style='width:10px;' type='checkbox' id='altsort' name='altsort' value='1'/><br/></div><br/><div id='eds'><div class='oneed'><input type='hidden' name='ed0number' value='0' /><input type='text' name='ed0source' placeholder='Ursprung des digitalen Texts (URL / URN)'/><input type='text' name='ed0editor' placeholder='Editor(en) (Name1 Vorname1; Vorname2 Name2; ... )*'/><input type='text' name='ed0name' placeholder='Name der Edition*'/><input type='text' name='ed0publishingplace' placeholder='Erscheinungsort*'/><input type='text' name='ed0publishingdate' placeholder='Erscheinungsdatum*'/><input type='text' name='ed0belegst' placeholder='Belegstelle'/><textarea type='text' id='ed0text' name='ed0text' placeholder='Text der Edition*'></textarea></div><script></script> </div><!--eds--><div class='ednewmenu'><span class='clickable' onclick='addnewedtext()'>+ Edition</span> <span class='clickable' onclick='submitneweds( false )'>&Uuml;bernehmen!</span> <span class='clickable' onclick='editionsaction( null );'>Abbrechen</span></div></form>";
+    }
     //TEXT IS IN newed.html, this is just string version
+    theautosavevar = window.setInterval( autosavethe, autosaveinervall );
 }
+
 
 function addnewedtext( ){ //this assd a new inputfeald to a new ed set
       var numberofed = document.getElementById( "eds" ).children.length/2;
@@ -3983,9 +4664,9 @@ function submitneweds( justdata ){ //this submits the data to the server and che
             
             localStorage.setItem("ecompPLAINTE"+document.getElementsByName( "edKname" )[0].value,  JSON.stringify( orderedText ));
             //run vergleiche
-            ecomparatioVerg( document.getElementsByName( "edKname" )[0].value, TEnames, orderedBib, orderedText, document.getElementById("latinuv").checked,  parseInt(document.getElementById("synchdist").value) );
+            ecomparatioVerg( document.getElementsByName( "edKname" )[0].value, TEnames, orderedBib, orderedText, document.getElementById("latinuv").checked,  parseInt(document.getElementById("synchdist").value), document.getElementById("altsort").checked );
             } else {
-                return document.getElementsByName( "edKname" )[0].value +" ++ "+ JSON.stringify( TEnames ) +" ++ "+ JSON.stringify( orderedBib ) +" ++ "+ JSON.stringify( orderedText ) +" ++ "+ document.getElementById("latinuv").checked.toString() + " ++ " + document.getElementById("synchdist").value;
+                return document.getElementsByName( "edKname" )[0].value +" ++ "+ JSON.stringify( TEnames ) +" ++ "+ JSON.stringify( orderedBib ) +" ++ "+ JSON.stringify( orderedText ) +" ++ "+ document.getElementById("latinuv").checked.toString() + " ++ " + document.getElementById("synchdist").value + " ++ " + document.getElementById("altsort").checked.toString();
         }
     }
 }
@@ -3994,6 +4675,7 @@ function submitneweds( justdata ){ //this submits the data to the server and che
 /*MODIFIE ED SERIES*/
 /**************************************************************/
 function modED( ){ 
+    notmodiffunction = false;
     offlineedit = false;
     var menuelem = document.getElementById( "alledmenu" );
     var mstr = "Bearbeiten von:<br/><form  name='edited' action='scri/editED.php'><select name='edsn' style='width:auto;'>";
@@ -4005,6 +4687,7 @@ function modED( ){
 }
 
 function modEDoffline( ){
+    notmodiffunction =  false;
     var menuadd = localStorage.getItem("ecompmenuADD");
     if( menuadd ){
         var spaspa = menuadd.split( "</span>" );
@@ -4157,6 +4840,12 @@ function showdelED( ){
 }
 
 /**************************************************************/
+/*Helper for autosave AUTOSAVE AUTO SAVE EVAS OTUA*/
+/**************************************************************/
+//do it
+
+
+/**************************************************************/
 /*ED NEW + MOD HELPER FKT / INPUT                             */
 /**************************************************************/
 function inpJSON(){ //create dialog for fileinput
@@ -4238,7 +4927,7 @@ function inpfileselected( ev ) {
 function mkctsinput( ){
     var intomeelem = document.getElementById( "intome" );
     intomeelem.style.height = (intomeelem.offsetHeight+10).toString() + "px";
-    intomeelem.innerHTML = " <form id='ctsinpdialog'><input size='80' type='text' name='ctsinput1' id='ctsinput1' value='http://folio.furman.edu/ecomp-cts/api?request=GetPassage&urn='/><lable>(URL CTS Server)</lable><div id='ctsdirecttag'><div id='ctsurnlist'><input type='text' size='80' class='thectsurn' name='thectsurn0' id='thectsurn0' placeholder='CTS URN (getPassage)' value='urn:cts:greekLit:tlg0085.tlg003.schutz1782:1-400'/><input type='text' size='80' class='thectsurn' name='thectsurn1' id='thectsurn1' placeholder='CTS URN (getPassage)' value='urn:cts:greekLit:tlg0085.tlg003.fu:1-400'/></div>	<div><span class='clickable' onclick='morectspassages()'>+ CTS URN</span> |<span class='clickable' onclick='ctsdirektinput()'>Datenabfrage</span> |<span class='clickable' id='buttonshowctsxml' onclick='showctsxml()' style='display:none;'>XML Ergebnis</span> |<span class='clickable' id='buttonrequestverg' onclick='ctsTOtextTOrequest()' style='display:none;'>Vergleich</span></div></div></form><div id='ctsrequestrawresult'></div><form style='display:none;' id='newedform' name='newedform' method='post' action='scri/addED.php'><div class='persbez'><input type='text' id='aname' name='aname' placeholder='Ihr Vorname + Name*'/><input type='text' id='aemail' name='aemail' placeholder='Ihre Email-Adresse*'/><input type='text' name='edKname' id='edKname' placeholder='Kurzbezeichnung der Edition (ein Wort)*'/><br/><br/><lable>Synchronisierung der Suche im Wortabstand von </lable><input style='width:20%;' type='text' name='synchdist' id='synchdist' value='20'/><br/><lable>Latein U-V angleichen</lable> <input style='width:10px;' type='checkbox' id='latinuv' name='latinuv' value='1'/><br/></div><br/><div id='eds'></div><div id='edmenucts' class='ednewmenu' style='display:none;'><span class='clickable' onclick='addnewedtext()'>+ Edition</span> <span class='clickable' onclick='submitneweds( false )'>&Uuml;bernehmen!</span> <span class='clickable' onclick='editionsaction( null );'>Abbrechen</span></div></form>";
+    intomeelem.innerHTML = " <form id='ctsinpdialog'><input size='80' type='text' name='ctsinput1' id='ctsinput1' value='http://folio.furman.edu/ecomp-cts/api?request=GetPassage&urn='/><lable>(URL CTS Server)</lable><div id='ctsdirecttag'><div id='ctsurnlist'><input type='text' size='80' class='thectsurn' name='thectsurn0' id='thectsurn0' placeholder='CTS URN (getPassage)' value='urn:cts:greekLit:tlg0085.tlg003.schutz1782:1-400'/><input type='text' size='80' class='thectsurn' name='thectsurn1' id='thectsurn1' placeholder='CTS URN (getPassage)' value='urn:cts:greekLit:tlg0085.tlg003.fu:1-400'/></div>	<div><span class='clickable' onclick='morectspassages()'>+ CTS URN</span> |<span class='clickable' onclick='ctsdirektinput()'>Datenabfrage</span> |<span class='clickable' id='buttonshowctsxml' onclick='showctsxml()' style='display:none;'>XML Ergebnis</span> |<span class='clickable' id='buttonrequestverg' onclick='ctsTOtextTOrequest()' style='display:none;'>Vergleich</span></div></div></form><div id='ctsrequestrawresult'></div><form style='display:none;' id='newedform' name='newedform' method='post' action='scri/addED.php'><div class='persbez'><input type='text' id='aname' name='aname' placeholder='Ihr Vorname + Name*'/><input type='text' id='aemail' name='aemail' placeholder='Ihre Email-Adresse*'/><input type='text' name='edKname' id='edKname' placeholder='Kurzbezeichnung der Edition (ein Wort)*'/><br/><br/><lable>Synchronisierung der Suche im Wortabstand von </lable><input style='width:20%;' type='text' name='synchdist' id='synchdist' value='20'/><br/><lable>Latein U-V angleichen</lable> <input style='width:10px;' type='checkbox' id='latinuv' name='latinuv' value='1'/><br/><lable>Alternative Sortierung</lable> <input style='width:10px;' type='checkbox' id='altsort' name='altsort' value='1'/><br/></div><br/><div id='eds'></div><div id='edmenucts' class='ednewmenu' style='display:none;'><span class='clickable' onclick='addnewedtext()'>+ Edition</span> <span class='clickable' onclick='submitneweds( false )'>&Uuml;bernehmen!</span> <span class='clickable' onclick='editionsaction( null );'>Abbrechen</span></div></form>";
 
     //Text is in ctsinput.html, this is just string version
 }
@@ -4439,6 +5128,7 @@ document.getElementsByName("aemail")[0].value = "hans@schwranz";
 document.getElementsByName("edKname")[0].value = "Testcase3resgestae";
 document.getElementById("synchdist" ).value = 100;
 document.getElementById( "latinuv" ).checked = true;
+document.getElementById( "altsort" ).checked = false;
 
 
 
@@ -6162,4 +6852,5 @@ document.getElementsByName("ed6publishingplace")[0].value = "Stuttgart";
 document.getElementsByName("ed6publishingdate")[0].value = "1983";
 document.getElementsByName("ed6text")[0].value = "Ἀναξίμανδρος μὲν Πραξιάδου Μιλήσιος Θαλοῦ γενόμενος διάδοχος καὶ μαθητὴς ἀρχήν τε καὶ στοιχεῖον πρῶτος τοῦτο τοὔνομα κομίσας τῆς εἴρηκε τῶν ὄντων τὸ ἄπειρον, ἀρχῆς. λέγει δ’ αὐτὴν μήτε ὕδωρ μήτε ἄλλο τι τῶν καλουμένων εἶναι στοιχείων, ἀλλ’ ἑτέραν τινὰ φύσιν ἄπειρον, ἐξ ἧς ἅπαντας γίνεσθαι τοὺς οὐρανοὺς καὶ τοὺς ἐν αὐτοῖς κόσμους· ἐξ ὧν δὲ ἡ γένεσίς ἐστι τοῖς οὖσι, καὶ τὴν φθορὰν εἰς ταῦτα γίνεσθαι κατὰ τὸ χρεών. διδόναι γὰρ αὐτὰ δίκην καὶ τίσιν ἀλλήλοις τῆς ἀδικίας κατὰ τὴν τοῦ χρόνου τάξιν, ποιητικωτέροις οὕτως ὀνόμασιν αὐτὰ λέγων· δῆλον δὲ ὅτι τὴν εἰς ἄλληλα μεταβολὴν τῶν τεττάρων στοιχείων οὗτος θεασάμενος οὐκ ἠξίωσεν ἕν τι τούτων ὑποκείμενον ποιῆσαι, ἀλλά τι ἄλλο παρὰ ταῦτα. οὗτος δὲ οὐκ ἀλλοιουμένου τοῦ στοιχείου τὴν γένεσιν ποιεῖ, ἀλλ’ ἀποκρινομένων τῶν ἐναντίων διὰ τῆς αὶδίου κινή- σεως·";
 submitneweds( false );
-} 
+}
+

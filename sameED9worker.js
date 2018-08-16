@@ -868,12 +868,12 @@ function differentiellervergleich3( rin, ri, tin, ti ){
                 } else if( anzahlglWTinR < anzahlglWRinT ){//anzahl gleiche bei wr in T größer, dann setz lieber den vergleichstext weiter
                     iTex += 1;  
                 } else {// gleiche anzahl von Gleichheit
-                    if( naechstesWTinR < naechstesWRinT ){ //passe die indeces wieder einander an (sollte da snciht der kleinere Schritt sein)
+                    if( naechstesWTinR < naechstesWRinT && !altSorting){ //passe die indeces wieder einander an (sollte da snciht der kleinere Schritt sein)
                         iRef += 1;
-                    } else if( naechstesWTinR > naechstesWRinT ){
+                    } else if( naechstesWTinR > naechstesWRinT && !altSorting){
                         iTex += 1;
                     } else {
-                        iRef += 1; //wenn man keine entscheidung treffen kann, dann muß aber wieter gestzt werden
+                        iRef += 1; //wenn man keine Entscheidung treffen kann, dann muß aber wieter gesetzt werden, ergibt auch eine alternative Sortierung
                         iTex += 1;
                     }
                 }
@@ -905,7 +905,7 @@ function differentiellervergleich3( rin, ri, tin, ti ){
 var border = 20;
 var degugggg = false; 
 var doUVlatin = false;
-
+var altSorting = false; //comparisson sorting
 function EV(e){ //wrapper for the central function - just to keep it celan from worker specific operations 
     //setting border and getting data from event
     degugggg = e.data.degugggg;
@@ -914,7 +914,7 @@ function EV(e){ //wrapper for the central function - just to keep it celan from 
     }
     border = e.data.border;
     doUVlatin = e.data.doUVlatin;
-
+    altSorting = e.data.altSorting;
     //data preparation ONCE ****************************************************
     //even better to do it in the calling thread, but that would result in a 
     //strong restructuring of the program, first do it in the thread
