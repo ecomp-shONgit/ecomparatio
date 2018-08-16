@@ -16,10 +16,40 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+/*font*/
+@font-face {
+    font-family: 'gentiumplus';
+    src: url('GentiumPlus-R.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
 
 /*main*/
 #intome{
     font-family:Helvetica;
+}
+
+/*main menu*/
+#allmenu{
+ display:block;
+}
+
+nav{
+	margin:0px;
+	padding:0px;
+	padding-top:10px;
+	background: #B02F2C; //a4300c
+}
+
+nav p{
+	display:inline-block;
+	padding-left:10px;
+	padding-right:10px;
+	padding-top:0px;
+	padding-bottom:3px;
+	margin:0px;
+	background: #B02F2C;
 }
 
 /*MENU SECTION*/
@@ -159,10 +189,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	font-size:40%;
       font-family:Helvetica;
 }
+
+/*popup menus called help*/
 #hilfe{
-	
+	visibility: hidden;
 	width:auto;
-	padding:0px;
+	padding:5px;
 	margin:0px;
 	color:white;
 	font-size: 100%;
@@ -170,11 +202,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 }
 
 #hilfe2{
-	
+	visibility: hidden;
 	width:auto;
-	padding:0px;
+	padding:5px;
 	margin:0px;
-	color:white;
+	color: white;
 	font-size: 100%;
 	background:#B02F2C;
 }
@@ -190,9 +222,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       color:white;
 }
 #hilfe3{
+    visibility: hidden;
     background:gray;
 	width:auto;
-	padding:0px;
+	padding:5px;
 	margin:0px;
 	color:white;
 	font-size: 100%;
@@ -222,6 +255,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	color:black;
 }
 #hilfe4{
+    visibility: hidden;
 	width:auto;
 	padding:0px;
 	margin:0px;
@@ -291,6 +325,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	background: gray;
 	z-index: 2;
 	padding:5px;
+    font-family:"gentiumplus";
 }
 
 .diffmarker{
@@ -344,6 +379,7 @@ sub{
 
 .diffilerwgl{
 	 min-width: 10px;
+    font-family:"gentiumplus";
 }
 
 .diffilerwgl sup{
@@ -354,6 +390,7 @@ sub{
 
 .diffil{
     min-width: 10px;
+    font-family:"gentiumplus";
 }
 
 .diffil sup{
@@ -372,6 +409,7 @@ sub{
 
 .line{
       width:auto;
+    font-family:"gentiumplus";
 }
 .toolong{
 	color:blue;
@@ -387,6 +425,8 @@ sub{
 }
 .pline{
       width:auto;
+      border-bottom: 1px dotted lightgray;
+    font-family:"gentiumplus";
 }
 .linenum{
       display: inline-block;
@@ -677,6 +717,28 @@ sub{
       border-top-right-radius:4px;
       border-top-left-radius:4px;
 	overflow-y:hidden;
+}
+
+/*interlinear*/
+.wordstack{
+    display: inline-block;
+    padding-left: 8px;
+}
+
+.editorstack{
+    display: inline-block;
+    background: rgb(245, 245, 245);
+    width: 200px;
+    
+}
+.stacked{
+    border-bottom: 1px dotted lightgray;
+    border-right: 1px dotted lightgray;
+}
+.interlline{
+      width:auto;
+    border-bottom: 4px solid gray;
+    font-family:"gentiumplus";
 }
 
 .archive{
