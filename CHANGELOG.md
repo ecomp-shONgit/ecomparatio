@@ -4,20 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is NEU: for new features/functions, Änderung: for something existing changes (also deprecation or deletion) and Fehler: for something worng working was fixed, Test: for a Testseries.
 
 ## bis 17.08.2018
-Neu: eComp Manual auf github
-Neu: direkte Verlinkung auf die Dokumentation
-Neu: Rueckmeldung zu eComparatio via *email/issue response*
-Änderung: Menü Sortierung
-Neu: alternative Sortierung der Vergleichsergebnisse während des Vergleichs erstellen
-Änderung: Zeilen deutlicher bei der Synopse
-Neu: EXPORT TO HTML (digitale Edition)
-Neu: direkte Hilfe für die Menü-Elemente via Doppelklick
-Änderung: Gentium plus als Typo wieder eingeführt
-Neu: Interlineare Darstellung erste Implementierung
-Änderung: CTS Input aus der Testversion entfernt
-Fehler: XML malformed solved
-Neu: autosave für ADD und MOD Funktion (also während der Eingabe)
-Änderung: mouse-over Hilfe für die Eingabemaske 
+- Neu: eComp Manual (Anleitung) auf github
+- Neu: direkte Verlinkung auf die Dokumentation
+- Neu: Rückmeldung zu eComparatio via *email/issue response*
+- Änderung: Menü Sortierung
+- Neu: alternative Sortierung der Vergleichsergebnisse während des Vergleichs erstellen
+- Änderung: Zeilen deutlicher bei der Synopse
+- Neu: EXPORT TO HTML (digitale Edition)
+- Neu: direkte Hilfe für die Menü-Elemente via Doppelklick
+- Änderung: Gentium plus als Typo wieder eingeführt
+- Neu: Interlineare Darstellung erste Implementierung
+- Änderung: CTS Input aus der Testversion entfernt
+- Fehler: XML malformed solved
+- Neu: autosave für ADD und MOD Funktion (also während der Eingabe)
+- Änderung: mouse-over Hilfe für die Eingabemaske 
 
 ## bis 20.02.2018
 - Neu: CSV export (eigene Trenner) 
