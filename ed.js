@@ -432,7 +432,7 @@ function startecomparatio( elemIDtoputitin ){ //untested by 17.10.2017 - is pure
 /**************************************************************/
 //external manual
 function hilfeaktion( elem ){
-    window.open( 'https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#manual-inhalt', '_blank' ); // backlink
+    window.open( 'https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#anleitung-inhalt', '_blank' ); // backlink
 }
 
 function openHelpAdd(){
@@ -6853,4 +6853,3 @@ document.getElementsByName("ed6publishingdate")[0].value = "1983";
 document.getElementsByName("ed6text")[0].value = "Ἀναξίμανδρος μὲν Πραξιάδου Μιλήσιος Θαλοῦ γενόμενος διάδοχος καὶ μαθητὴς ἀρχήν τε καὶ στοιχεῖον πρῶτος τοῦτο τοὔνομα κομίσας τῆς εἴρηκε τῶν ὄντων τὸ ἄπειρον, ἀρχῆς. λέγει δ’ αὐτὴν μήτε ὕδωρ μήτε ἄλλο τι τῶν καλουμένων εἶναι στοιχείων, ἀλλ’ ἑτέραν τινὰ φύσιν ἄπειρον, ἐξ ἧς ἅπαντας γίνεσθαι τοὺς οὐρανοὺς καὶ τοὺς ἐν αὐτοῖς κόσμους· ἐξ ὧν δὲ ἡ γένεσίς ἐστι τοῖς οὖσι, καὶ τὴν φθορὰν εἰς ταῦτα γίνεσθαι κατὰ τὸ χρεών. διδόναι γὰρ αὐτὰ δίκην καὶ τίσιν ἀλλήλοις τῆς ἀδικίας κατὰ τὴν τοῦ χρόνου τάξιν, ποιητικωτέροις οὕτως ὀνόμασιν αὐτὰ λέγων· δῆλον δὲ ὅτι τὴν εἰς ἄλληλα μεταβολὴν τῶν τεττάρων στοιχείων οὗτος θεασάμενος οὐκ ἠξίωσεν ἕν τι τούτων ὑποκείμενον ποιῆσαι, ἀλλά τι ἄλλο παρὰ ταῦτα. οὗτος δὲ οὐκ ἀλλοιουμένου τοῦ στοιχείου τὴν γένεσιν ποιεῖ, ἀλλ’ ἀποκρινομένων τῶν ἐναντίων διὰ τῆς αὶδίου κινή- σεως·";
 submitneweds( false );
 }
-
