@@ -7,11 +7,7 @@
 6. [Unterschiede / Anderes](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#browser-bedienen) 
 7. [Browser bedienen](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#browser-bedienen) 
 8. [About Help](https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#about-help)
-\
-\
-\
-\
-\
+
  
 # eComparatio Darstellungen
 
