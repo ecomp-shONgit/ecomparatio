@@ -10,7 +10,7 @@
 // Section 4: string proximity check
 // Section 5: comparison and searching
 // Section 5a: meta comparison for locating VERTAUSCHUNg UND DREHUNG
-// Section 6: html menu
+// Section 6: html menu (deprecated)
 // Section 7: offline database communication
 // Section 8: main function, data getting, data setting, control variables
 //**************************************************
