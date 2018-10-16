@@ -44,6 +44,14 @@ var cleanleerkoma = new RegExp(' ,', 'g');
 var cleanleersemik = new RegExp(' ;', 'g');
 var cleanleerausrufe = new RegExp(' !', 'g');
 var cleanleerfrege = new RegExp(' \\?', 'g');
+//breakdown typographic variances "Bindestriche und Geviertstriche"
+var cleanklbindstrichvollbreit = new RegExp('－', 'g');
+var cleanklbindstrichkurz = new RegExp('﹣', 'g');
+var cleanklgeviert = new RegExp('﹘', 'g');
+var cleanviertelgeviert = new RegExp('‐', 'g');
+var cleanziffbreitergeviert = new RegExp('‒', 'g');
+var cleanhalbgeviert = new RegExp('–', 'g');
+var cleangeviert = new RegExp('—', 'g');
 
 //function takes string and replace html line breakes
 function delumbrbine( text ){
@@ -295,13 +303,13 @@ function ecomparatioVerg( edname, teNames, BIBarray, TEXTarray, doUVlatinNeu, bo
     //read in everything
     for( var T in TEXTarray ){
         allfilenames.push( BIBarray[ T ] );
-        var c = TEXTarray[ T ].replace(cleanNEWL, " <br/>").replace(cleanRETL, " <br/>").replace(cleanstrangehochpunkt,"·").replace(cleanthisbinde," — ").replace( cleanthisleer, ' ').replace( cleanleerpunkt, '.').replace( cleanleerdoppelpunkt, ':').replace( cleanleerkoma, ',').replace( cleanleersemik, ';').replace( cleanleerausrufe, '!').replace( cleanleerfrege, '?');
+        var c = TEXTarray[ T ].replace(cleanNEWL, " <br/>").replace(cleanRETL, " <br/>").replace(cleanstrangehochpunkt,"·").replace(cleanthisbinde," — ").replace( cleanthisleer, ' ').replace( cleanleerpunkt, '.').replace( cleanleerdoppelpunkt, ':').replace( cleanleerkoma, ',').replace( cleanleersemik, ';').replace( cleanleerausrufe, '!').replace( cleanleerfrege, '?').replace(cleangeviert, '-').replace(cleanhalbgeviert, '-').replace(cleanziffbreitergeviert, '-').replace(cleanviertelgeviert, '-').replace(cleanklgeviert, '-').replace(cleanklbindstrichkurz, '-').replace(cleanklbindstrichvollbreit, '-');
         var ws = c.split(" "); //keep convention with newlines
         var ca = [];
         var halfw = "";
         var secondhalf = "";
         for( var w in ws ){
-            if( ws[w].indexOf( "-" ) != -1 ){
+            if( ws[w].indexOf( "-" ) != -1 ){ //
                 var h = ws[w].split( "-" );
                 halfw = h[0].replace(" ", "");
                 secondhalf = h[1].replace(" ", "");
@@ -420,5 +428,4 @@ function ecomparatioVerg( edname, teNames, BIBarray, TEXTarray, doUVlatinNeu, bo
         //break;
     }
 }  
-
 
