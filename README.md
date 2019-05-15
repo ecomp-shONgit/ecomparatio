@@ -18,6 +18,7 @@ http://www.ecomparatio.net/
 ###### Firefox 
 
 Firefox Quantum 57.0 - Win 10 64-Bit (24.11.2017)
+
 Firefox Quantum 66.0.3 - Linux 64-Bit, (15.05.2019)
 
 ###### Opera
