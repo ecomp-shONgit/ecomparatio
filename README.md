@@ -3,7 +3,7 @@ The main objective of the eComparatio project was to develop a software that is 
 
 # How to
 Use manual: [manual/README.md](manual/README.md)
-Use video tutorials: [U-tube](https://www.youtube.com/channel/UCTQYat_3rrkpOm_lcl8ckkg)
+or use video tutorials: [U-tube](https://www.youtube.com/channel/UCTQYat_3rrkpOm_lcl8ckkg)
 
 # Change Log / Software Version
 Consult the change log for the pre-GitHub Development. This Github Repository starts with the version 1.0.
@@ -17,8 +17,8 @@ http://www.ecomparatio.net/
 
 ###### Firefox 
 
-Firefox Quantum 57.0 - Linux 64-Bit, Win 10 64-Bit (24.11.2017)
-Firefox Quantum 58.0.2 - Linux 64-Bit, (20.02.2018)
+Firefox Quantum 57.0 - Win 10 64-Bit (24.11.2017)
+Firefox Quantum 66.0.3 - Linux 64-Bit, (15.05.2019)
 
 ###### Opera
 
@@ -26,7 +26,7 @@ Opera 46.0 - Linux 64-Bit, Win 10 64-Bit (24.11.2017)
 
 Opera 49 - Win 10 64 Bit (28.11.2017)
 
-Opera 51.0.2830.34 - Linux 64-Bit (20.02.2018)
+Opera 60.0.3255.70 - Linux 64-Bit (15.05.2019)
 
 ###### Chrome / Chromium
 
