@@ -5,6 +5,8 @@ The main objective of the eComparatio project was to develop a software that is 
 Use manual: [manual/README.md](manual/README.md)
 or use video tutorials: [U-tube](https://www.youtube.com/channel/UCTQYat_3rrkpOm_lcl8ckkg)
 
+Usecases and manuals in german language: [Handbuch](http://ecomparatio.net/~khk/ecomparatio-info/)
+
 # Change Log / Software Version
 Consult the change log for the pre-GitHub Development. This Github Repository starts with the version 1.0.
 
