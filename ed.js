@@ -27,54 +27,54 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "use strict"; 
 
 /*GLOBALS*/
-var theautosavevar = null;
-var autosaveinervall = 10000; //10 secF
-var IdoliveIN = null;
+let theautosavelet = null;
+let autosaveinervall = 10000; //10 secF
+let IdoliveIN = null;
 //transmitted from local store or server store (via json saved as html doc), holding the bibliographical data
-var bibdynvars = new Object(); 
+let bibdynvars = new Object(); 
 //coloring of differences between text, also a storage of switches (if colored or not)
-var TU ='G';
-var TUleg ='ganzer Unterschied';
-var GK ='C';
-var GKleg ='Unterschied d. Gr.- und Kl.schreibung';
-var DK ='D';
-var DKleg ='Unterschied d. diakritischen Zeichen';
-var LI ='L';
-var LIleg ='Ligatur Unterschied';
-var UM ='U';
-var UMleg ='Umbruch Unterschied';
-var INTERP ='I';
-var INTERPleg ='Unterschied d. Interpunktion';
-var ZK ='Z';
-var ZKleg ='Unterschied d. Z&auml;hlung';
-var ME ='M';
-var MEleg ='Mehr als im anderen Text';
-var WE ='W';
-var WEleg ='Weniger als im anderen Text';
-var KK ='K';
-var KKleg ='Klammerung unterschiedlich';
-var UV ='V';
-var UVleg ='lateinisches U und V';
-var VERT='VERT'; 
-var VERTleg = 'Vertauschung Verdrehung'; 
-var VERDRE = "VERD";
-var VERDREleg = "Verdrehung von Passagen.";
-var MIAT='MIAT'; 
-var MIATleg='Mehr im Referenztext'; 
-var EIN='E'; 
-var EINleg='einzelner Buchstabe'; 
-var DIST='DIST'; 
-var DISTleg='wenige Buchstaben anders'; 
-var WTN='get'; 
-var WTNleg='erster Teil einer Trennung'; 
-var VWT='get'; 
-var VWTleg='zweiter Teil einer Trennung'; 
-var colorofdiffclasses = 'rgb(0, 0, 255)';
-var bonbon = "🍬";
-var bonbonT = "Lücken";
-var csvtrenner = ";;";
+let TU ='G';
+let TUleg ='ganzer Unterschied';
+let GK ='C';
+let GKleg ='Unterschied d. Gr.- und Kl.schreibung';
+let DK ='D';
+let DKleg ='Unterschied d. diakritischen Zeichen';
+let LI ='L';
+let LIleg ='Ligatur Unterschied';
+let UM ='U';
+let UMleg ='Umbruch Unterschied';
+let INTERP ='I';
+let INTERPleg ='Unterschied d. Interpunktion';
+let ZK ='Z';
+let ZKleg ='Unterschied d. Z&auml;hlung';
+let ME ='M';
+let MEleg ='Mehr als im anderen Text';
+let WE ='W';
+let WEleg ='Weniger als im anderen Text';
+let KK ='K';
+let KKleg ='Klammerung unterschiedlich';
+let UV ='V';
+let UVleg ='lateinisches U und V';
+let VERT='VERT'; 
+let VERTleg = 'Vertauschung Verdrehung'; 
+let VERDRE = "VERD";
+let VERDREleg = "Verdrehung von Passagen.";
+let MIAT='MIAT'; 
+let MIATleg='Mehr im Referenztext'; 
+let EIN='E'; 
+let EINleg='einzelner Buchstabe'; 
+let DIST='DIST'; 
+let DISTleg='wenige Buchstaben anders'; 
+let WTN='get'; 
+let WTNleg='erster Teil einer Trennung'; 
+let VWT='get'; 
+let VWTleg='zweiter Teil einer Trennung'; 
+let colorofdiffclasses = 'rgb(0, 0, 255)';
+let bonbon = "🍬";
+let bonbonT = "Lücken";
+let csvtrenner = ";;";
 
-var coloerdclass = new Object();
+let coloerdclass = new Object();
 coloerdclass["T"] = 1; //sign of the compleat dissence between texts
 coloerdclass["C"] = 1; //sign of capitalization difference
 coloerdclass["D"] = 1; //sign of the difference of diacritica
@@ -93,100 +93,100 @@ coloerdclass["EiN"] = 1; //
 coloerdclass["dist"] = 1; //
 coloerdclass["wtn"] = 1; //
 coloerdclass["vwt"] = 1; //
-var colorindex = null;
+let colorindex = null;
 
 //global values repersenting the fitting of text to screen
-var moretextoffset = 0;
-var lineheight = 0;
-var linewidth = 0;
-var textscreenheight = 0;
-var textscreenwidth = 0;
-var parallelpartwidth = 300; //also hard coded in css
-var maxlines = 0;
-var howlogtowaitfirstlineheightrender = 500;//wait alittel until everything is loaded, than scale every column
-var offlineedit = false; //controll if edit is done localy - than overwrite, else copy
-var notmodiffunction = true;
+let moretextoffset = 0;
+let lineheight = 0;
+let linewidth = 0;
+let textscreenheight = 0;
+let textscreenwidth = 0;
+let parallelpartwidth = 300; //also hard coded in css
+let maxlines = 0;
+let howlogtowaitfirstlineheightrender = 500;//wait alittel until everything is loaded, than scale every column
+let offlineedit = false; //controll if edit is done localy - than overwrite, else copy
+let notmodiffunction = true;
 
 //selected text series
-var currentedseries = 0; //index or string !!! not the 
-var currented = 0;
-var currentvergleicht = 0;
-var alltexts = null;
-var textnames = null;
+let currentedseries = 0; //index or string !!! not the 
+let currented = 0;
+let currentvergleicht = 0;
+let alltexts = null;
+let textnames = null;
 
 //data store of comparison results
-var comparatiotogether = [];
-var comparatiotogethertemp = [];
-var tog = undefined;
-var wico = undefined;
-var comparatio = null;
+let comparatiotogether = [];
+let comparatiotogethertemp = [];
+let tog = undefined;
+let wico = undefined;
+let comparatio = null;
 
 //menu rendering
-var oncemenu = 0;
+let oncemenu = 0;
 
 //text view and render options
-var whichview = 0; //0 - detailview, 1 - parallel view, 2 Buch view, 3 Bild, 4 Digramm, 5 Matrix, 6 interlinear
-var renderstyle = 0;
-var rendercount = 1;
-var oldrendercount = 1;
+let whichview = 0; //0 - detailview, 1 - parallel view, 2 Buch view, 3 Bild, 4 Digramm, 5 Matrix, 6 interlinear
+let renderstyle = 0;
+let rendercount = 1;
+let oldrendercount = 1;
 
 //current postion in thext
-var lastwordindex = 0;
-var firstwordindex = 0;
-var linecount = 0;
-var lastvisibleline = 0;
-var firstvisibleline = 0;
-var linehinstory = [];
-var blockhistory = [];
+let lastwordindex = 0;
+let firstwordindex = 0;
+let linecount = 0;
+let lastvisibleline = 0;
+let firstvisibleline = 0;
+let linehinstory = [];
+let blockhistory = [];
 
 
-var pos0 = [10,10];
-var doverk = true;
-var r = 0; //scroll config
+let pos0 = [10,10];
+let doverk = true;
+let rscrollconfig = 0; //scroll config
 
-var ctsanswersXML = []; //CTS Request results
+let ctsanswersXML = []; //CTS Request results
 
-var buchstGRI = {"α":1, "β": 1, "γ":1, "δ":1, "ε":1, "ζ":1, "η":1, "θ":1, "ι":1, "κ":1, "λ":1, "μ":1, "ν":1, "ξ":1, "ο":1, "π":1, "ρ":1, "σ":1, "ς": 1, "τ":1, "υ":1, "φ":1, "χ":1, "ψ":1, "ω":1};
+let buchstGRI = {"α":1, "β": 1, "γ":1, "δ":1, "ε":1, "ζ":1, "η":1, "θ":1, "ι":1, "κ":1, "λ":1, "μ":1, "ν":1, "ξ":1, "ο":1, "π":1, "ρ":1, "σ":1, "ς": 1, "τ":1, "υ":1, "φ":1, "χ":1, "ψ":1, "ω":1};
 
 
-var dodebug = 0;
-var menuzoom = 100; //in %
+let dodebug = 0;
+let menuzoom = 100; //in %
 
 /*BETACODE TO UNICODE first VERSION*/
 /*we use total canonical representation - no combined unicode letters*/
-var betacode = new Array("a","b","g","d","e","z","h","q","i","k","l","m","n","c","o","p","r","s","j","t","u","f","x","y","w");
-var smallunicode = new Array("\u03B1", "\u03B2", "\u03B3", "\u03B4",  "\u03B5",
+let betacode = new Array("a","b","g","d","e","z","h","q","i","k","l","m","n","c","o","p","r","s","j","t","u","f","x","y","w");
+let smallunicode = new Array("\u03B1", "\u03B2", "\u03B3", "\u03B4",  "\u03B5",
 "\u03B6",  "\u03B7",  "\u03B8",  "\u03B9",  "\u03BA",  "\u03BB",
 "\u03BC",  "\u03BD",  "\u03BE",  "\u03BF",  "\u03C0", "\u03C1",
 "\u03C3","\u03C2", "\u03C4", "\u03C5", "\u03C6", "\u03C7",
 "\u03C8", "\u03C9");
-var bigunicode = new Array("\u0391", "\u0392", "\u0393", "\u0394",  "\u0395",
+let bigunicode = new Array("\u0391", "\u0392", "\u0393", "\u0394",  "\u0395",
 "\u0396",  "\u0397",  "\u0398",  "\u0399",  "\u039A",  "\u039B",
 "\u039C",  "\u039D",  "\u039E",  "\u039F",  "\u03A0", "\u03A1",
 "\u03A3","\u03C2", "\u03A4", "\u03A5", "\u03A6", "\u03A7",
 "\u03A8", "\u03A9");
-var disnames = new Array("Spiritus lenis", "Spiritus asper", "Akut","Gravis", "Zirkumflex", "Iota subscriptum", "Dihaeresis", "Macron" , "Breve", "Perispomeni", "PRechts");
-var diacritics = new Array(")", "(", "\\","\/", "=", "|", "+","%", "&", "$", "!");
-var diacriticsunicode = new Array( "\u0313", "\u0314", "\u0300","\u0301", "\u0302", "\u0345", "\u0308", "\u0304", "\u0306", "\u0342", "\u2027");
-var logicop = new Array( "-", "\u2217", "\u2227","\u2228");
+let disnames = new Array("Spiritus lenis", "Spiritus asper", "Akut","Gravis", "Zirkumflex", "Iota subscriptum", "Dihaeresis", "Macron" , "Breve", "Perispomeni", "PRechts");
+let diacritics = new Array(")", "(", "\\","\/", "=", "|", "+","%", "&", "$", "!");
+let diacriticsunicode = new Array( "\u0313", "\u0314", "\u0300","\u0301", "\u0302", "\u0345", "\u0308", "\u0304", "\u0306", "\u0342", "\u2027");
+let logicop = new Array( "-", "\u2217", "\u2227","\u2228");
 
-var ligatur = new Array("\u0222", "\u03DB", "\u03D7", "\uA64B");
-var ligaturB = new Array("\u0223", "\u03DA", "\u03CF", "\uA64A");
+let ligatur = new Array("\u0222", "\u03DB", "\u03D7", "\uA64B");
+let ligaturB = new Array("\u0223", "\u03DA", "\u03CF", "\uA64A");
 
-var useunicode = 0; //grosz-klein buchsaben umschalter
-var lasttextuni = "";
-var lasttextbeta = "";
+let useunicode = 0; //grosz-klein buchsaben umschalter
+let lasttextuni = "";
+let lasttextbeta = "";
 
 /*precompiled regexp*/
-var cleanundamplt = new RegExp('&amp;amp;amp;lt;', 'g');
-var cleanundampgt = new RegExp('&amp;amp;amp;gt;', 'g');
-var cleanundamplt2 = new RegExp('&amp;lt;', 'g');
-var cleanundampgt2 = new RegExp('&amp;gt;', 'g');
-var cleanundamplt3 = new RegExp('&lt;', 'g');
-var cleanundampgt3 = new RegExp('&gt;', 'g');
-var cleanundamponly = new RegExp('&amp;amp;amp;', 'g');
-var cleanundamponly2 = new RegExp('&amp;', 'g');
-var regBonBon = new RegExp( '🍬', 'g' );
+let cleanundamplt = new RegExp('&amp;amp;amp;lt;', 'g');
+let cleanundampgt = new RegExp('&amp;amp;amp;gt;', 'g');
+let cleanundamplt2 = new RegExp('&amp;lt;', 'g');
+let cleanundampgt2 = new RegExp('&amp;gt;', 'g');
+let cleanundamplt3 = new RegExp('&lt;', 'g');
+let cleanundampgt3 = new RegExp('&gt;', 'g');
+let cleanundamponly = new RegExp('&amp;amp;amp;', 'g');
+let cleanundamponly2 = new RegExp('&amp;', 'g');
+let regBonBon = new RegExp( '🍬', 'g' );
 
 /*INITIAL FUNCTION BUILDS BASE HTML AND CALL THE CHAIN of ecomparatio*/
 function restartecomparatio( ){
@@ -195,7 +195,7 @@ function restartecomparatio( ){
 
 function requestfirstrender( ){
     if(localStorage.getItem( 'ECOMPfirstrun' ) == null){
-        var r = window.confirm("Wollen Sie ein Beispiel gleich rechnen lassen? Ansonsten finden Sie die Beispiele im Menü 'ADD' -> 'Test Cases ...'! (Diese Nachricht wird nur beim ersten Start von eComparatio angezeigt.)");
+        let r = window.confirm("Wollen Sie ein Beispiel gleich rechnen lassen? Ansonsten finden Sie die Beispiele im Menü 'ADD' -> 'Test Cases ...'! (Diese Nachricht wird nur beim ersten Start von eComparatio angezeigt.)");
         if( r ) {
           
           addED( );
@@ -207,15 +207,15 @@ function requestfirstrender( ){
 
 function startecomparatio( elemIDtoputitin ){ //untested by 17.10.2017 - is pure AJAX VERSION
     IdoliveIN = elemIDtoputitin;
-    var toputinelem = document.getElementById( IdoliveIN );
+    let toputinelem = document.getElementById( IdoliveIN );
 
     //get elementtoput in
-    var div1 = document.createElement('div');
+    let div1 = document.createElement('div');
     div1.id = "intome"; 
     toputinelem.appendChild( div1 );
 
     //append all needed to intome 
-    var d10 = document.createElement( 'div');
+    let d10 = document.createElement( 'div');
     d10.id = "allmenu";
 
     //create static main menu
@@ -276,19 +276,19 @@ function startecomparatio( elemIDtoputitin ){ //untested by 17.10.2017 - is pure
 			+'</g></g></g></g></svg>'
             +'</p><p class="clickable" id="ecompbutton" onclick="editionsaction( this );" style="background: rgb(216, 65, 62);">eComparatio</p><p class="clickable" onclick="hilfeaktion( this );" style="background: rgb(176, 47, 44);">Hilfe / Dokumentation</p></nav>';
 
-    var d11 = document.createElement( 'div');
+    let d11 = document.createElement( 'div');
     d11.id = "edinto";
-    var d12 = document.createElement( 'div');
+    let d12 = document.createElement( 'div');
     d12.id = 'alledmenu';
-    var d13 = document.createElement( 'div');
+    let d13 = document.createElement( 'div');
     d13.id = 'edmenu';
-    var d14 = document.createElement( 'div');
+    let d14 = document.createElement( 'div');
     d14.id = 'viewmenu';
-    var d15 = document.createElement( 'div');
+    let d15 = document.createElement( 'div');
     d15.id = 'info';
-    var d16 = document.createElement( 'div');
+    let d16 = document.createElement( 'div');
     d16.id = 'vergleich';
-    var d17 = document.createElement( 'div');
+    let d17 = document.createElement( 'div');
     d17.id = 'comparatiodata';
     div1.appendChild( d10 );
     div1.appendChild( d11 );
@@ -302,19 +302,19 @@ function startecomparatio( elemIDtoputitin ){ //untested by 17.10.2017 - is pure
     //append the help divs
     
     
-    var hi1 = document.createElement( 'div');
+    let hi1 = document.createElement( 'div');
     hi1.id = "hilfe";
-    var hi2 = document.createElement( 'div');
+    let hi2 = document.createElement( 'div');
     hi2.id = 'hilfe2';
-    var hi3 = document.createElement( 'div');
+    let hi3 = document.createElement( 'div');
     hi3.id = 'hilfe3';
-    var hi4 = document.createElement( 'div');
+    let hi4 = document.createElement( 'div');
     hi4.id = 'hilfe4';
-    var hi5 = document.createElement( 'div');
+    let hi5 = document.createElement( 'div');
     hi5.id = 'hilfe5';
-    var hi6 = document.createElement( 'div');
+    let hi6 = document.createElement( 'div');
     hi6.id = 'hilfe6';
-    var hi7 = document.createElement( 'div');
+    let hi7 = document.createElement( 'div');
     hi7.id = 'hilfe7';
     toputinelem.appendChild( hi1 );
     toputinelem.appendChild( hi2 );
@@ -441,14 +441,14 @@ function openHelpAdd(){
 
 //bildschirmtastatur
 function setchar( index, idoftextfeald, historxdivid ){
-    var cursorpos = document.getElementById( idoftextfeald ).selectionStart;
-    var text = "";
+    let cursorpos = document.getElementById( idoftextfeald ).selectionStart;
+    let text = "";
     try{
          text = lasttextuni;
     } catch( err ){ }
 
-    var token = "";
-    var makebig = 0;
+    let token = "";
+    let makebig = 0;
     if( useunicode == 0 ){
         token = smallunicode[ index ];
     }
@@ -457,24 +457,24 @@ function setchar( index, idoftextfeald, historxdivid ){
         useunicode = 0;
 	    makebig = 1;
     }
-    var textfirst = text.slice( 0, cursorpos );
-    var textsecond = text.slice( cursorpos, text.length );
-    var resulttext = textfirst + token + textsecond;
+    let textfirst = text.slice( 0, cursorpos );
+    let textsecond = text.slice( cursorpos, text.length );
+    let resulttext = textfirst + token + textsecond;
     document.getElementById( idoftextfeald ).value = resulttext;
     setCursor( document.getElementById( idoftextfeald ), cursorpos+1, cursorpos+1 );
     lasttextuni = resulttext;
 
     //betacode history
-    var textbeta = "";
+    let textbeta = "";
     try{
          textbeta = lasttextbeta;
     } catch( err ){ }
 
-    var textfirstbeta = textbeta.slice( 0, cursorpos );    
-    var textsecondbeta = textbeta.slice( cursorpos, textbeta.length );
+    let textfirstbeta = textbeta.slice( 0, cursorpos );    
+    let textsecondbeta = textbeta.slice( cursorpos, textbeta.length );
 
     
-    var resulttextbeta = "";
+    let resulttextbeta = "";
     if( makebig == 1 ){
          resulttextbeta = textfirstbeta + betacode[index].toUpperCase() + textsecondbeta;
          document.getElementById( historxdivid ).value = resulttextbeta;
@@ -491,37 +491,37 @@ function setbig( ){
 }
 
 function setdia( index, idoftextfeald, historxdivid ){
-    var cursorpos = document.getElementById( idoftextfeald ).selectionStart;
-    var text = "";
+    let cursorpos = document.getElementById( idoftextfeald ).selectionStart;
+    let text = "";
     try{
          text = lasttextuni;
     } catch( err ){ }
     
-    var textfirst = text.slice( 0, cursorpos );
-    var textsecond = text.slice( cursorpos, text.length );
-    var resulttext = textfirst + diacriticsunicode[index] + textsecond;
+    let textfirst = text.slice( 0, cursorpos );
+    let textsecond = text.slice( cursorpos, text.length );
+    let resulttext = textfirst + diacriticsunicode[index] + textsecond;
     document.getElementById( idoftextfeald ).value = resulttext;
     setCursor( document.getElementById( idoftextfeald ), cursorpos+1, cursorpos+1 );
     lasttextuni = resulttext;
 
     //betacode history
-    var textbeta = lasttextbeta;
-    var textfirstbeta = textbeta.slice( 0, cursorpos );    
-    var textsecondbeta = textbeta.slice( cursorpos, textbeta.length );
-    var resulttextbeta = textfirstbeta + diacritics[index] + textsecondbeta;
+    let textbeta = lasttextbeta;
+    let textfirstbeta = textbeta.slice( 0, cursorpos );    
+    let textsecondbeta = textbeta.slice( cursorpos, textbeta.length );
+    let resulttextbeta = textfirstbeta + diacritics[index] + textsecondbeta;
     document.getElementById( historxdivid ).value = resulttextbeta;
     lasttextbeta = resulttextbeta;
 }
 
 function setligatur( index, idoftextfeald, historxdivid ){
-    var cursorpos = document.getElementById( idoftextfeald ).selectionStart;
-    var text = "";
+    let cursorpos = document.getElementById( idoftextfeald ).selectionStart;
+    let text = "";
     try{
          text = lasttextuni;
     } catch( err ){ }
 
-    var token = "";
-    var makebig = 0;
+    let token = "";
+    let makebig = 0;
     if( useunicode == 0 ){
         token = ligatur[ index ];
     }
@@ -530,23 +530,23 @@ function setligatur( index, idoftextfeald, historxdivid ){
         useunicode = 0;
 	    makebig = 1;
     }
-    var textfirst = text.slice( 0, cursorpos );
-    var textsecond = text.slice( cursorpos, text.length );
-    var resulttext = textfirst + token + textsecond;
+    let textfirst = text.slice( 0, cursorpos );
+    let textsecond = text.slice( cursorpos, text.length );
+    let resulttext = textfirst + token + textsecond;
     document.getElementById( idoftextfeald ).value = resulttext;
     setCursor( document.getElementById( idoftextfeald ), cursorpos+1, cursorpos+1 );
     lasttextuni = resulttext;
 
     //betacode history
-    var textbeta = "";
+    let textbeta = "";
     try{
          textbeta = lasttextbeta;
     } catch( err ){ }
-    var textfirstbeta = textbeta.slice( 0, cursorpos );    
-    var textsecondbeta = textbeta.slice( cursorpos, textbeta.length );
+    let textfirstbeta = textbeta.slice( 0, cursorpos );    
+    let textsecondbeta = textbeta.slice( cursorpos, textbeta.length );
 
     
-    var resulttextbeta = "";
+    let resulttextbeta = "";
     if( makebig == 1 ){
          resulttextbeta = textfirstbeta + ligaturB[ index ] + textsecondbeta;
          document.getElementById( historxdivid ).value( resulttextbeta );
@@ -566,34 +566,34 @@ function delallTast( idoftextfeald, historxdivid ) {
 }
 
 function delone( idoftextfeald, historxdivid ) {
-    var text = document.getElementById( idoftextfeald ).value;
-    var cursorpos = document.getElementById( idoftextfeald ).selectionStart;
-    var textfirst = text.slice( 0, cursorpos-1 );
-    var textsecond = text.slice( cursorpos, text.length );
-    var resulttext = textfirst + textsecond;
+    let text = document.getElementById( idoftextfeald ).value;
+    let cursorpos = document.getElementById( idoftextfeald ).selectionStart;
+    let textfirst = text.slice( 0, cursorpos-1 );
+    let textsecond = text.slice( cursorpos, text.length );
+    let resulttext = textfirst + textsecond;
     document.getElementById( idoftextfeald).value = resulttext;
     setCursor( document.getElementById( idoftextfeald ), cursorpos-1, cursorpos-1 );
     lasttextuni = resulttext;
 
-    var textbeta = "";
+    let textbeta = "";
     try{
          textbeta = lasttextbeta;
     } catch( err ){ }
     
-    var textfirstbeta = textbeta.slice( 0, cursorpos-1 );    
-    var textsecondbeta = textbeta.slice( cursorpos, textbeta.length );
-    var resulttextbeta = textfirstbeta + textsecondbeta;
+    let textfirstbeta = textbeta.slice( 0, cursorpos-1 );    
+    let textsecondbeta = textbeta.slice( cursorpos, textbeta.length );
+    let resulttextbeta = textfirstbeta + textsecondbeta;
     document.getElementById( historxdivid ).value = resulttextbeta; 
     lasttextbeta = resulttextbeta;
 }
 
 function makebildschirmtatstatur( useunicode, idnameofdiv, idoftextfeald, historxdivid ){
-    var st = "<ul>";
-    for(var i = 0; i < betacode.length; i++){
+    let st = "<ul>";
+    for(let i = 0; i < betacode.length; i++){
         st = st + "<li class='clickable' style='border: 1px solid gray; border-right: 3px solid gray;border-bottom: 2px solid gray;'onclick='setchar("+i+",\""+idoftextfeald+"\",\""+historxdivid+"\");'>"+betacode[i]+ "<br>" +smallunicode[i]+ "</li>";
     }
     st = st + "</ul><ul><li class='clickable' style='border: 1px solid gray;border-right: 3px solid gray;border-bottom: 2px solid gray;'onclick='setbig();'>*<br>Gr</li>";
-    for(var i = 0; i < diacritics.length; i++){
+    for(let i = 0; i < diacritics.length; i++){
         st = st + "<li class='clickable' style='border: 1px solid gray;border-right: 3px solid gray;border-bottom: 2px solid gray;' onclick='setdia("+i+",\""+idoftextfeald+"\",\""+historxdivid+"\");'>" +diacritics[i]+"<br>"+diacriticsunicode[i]+ "</li>";
     }
     //delete
@@ -610,9 +610,9 @@ function changeTastatur( idoftextfeald, historxdivid ){
 	    makebildschirmtatstatur( "useunicode","betacodemapping","searchinput", "betacodehistory" );
     }
 
-    var st = document.getElementById( "betacodemapping").innerHTML;
+    let st = document.getElementById( "betacodemapping").innerHTML;
 	st = st + "<ul>";
-    var refreshdiv = 0;
+    let refreshdiv = 0;
     if( document.getElementById("uselogic").checked == true ){
 	    refreshdiv = 1;
 	    st = st + "<li class='clickable' style='border: 1px solid gray;' onclick='setlog( 0,\""+idoftextfeald+"\",\""+historxdivid+"\");'>NOT<br>-</li>";
@@ -665,11 +665,11 @@ function setCursor( el, st, end ){
 }
 
 window.onscroll = function(e) {
-	var therefdiv = document.getElementById( "ref" );
+	let therefdiv = document.getElementById( "ref" );
 	if( therefdiv ){
-        var refauthordiv = document.getElementById( "info" ).children[0];
-        if(r == 0){
-            var wid =  therefdiv.offsetWidth;
+        let refauthordiv = document.getElementById( "info" ).children[0];
+        if(rscrollconfig == 0){
+            let wid =  therefdiv.offsetWidth;
             refauthordiv.style.display = "block";
 	        refauthordiv.style.position = "absolute";	
             refauthordiv.style.marginLeft = "8px";
@@ -677,12 +677,12 @@ window.onscroll = function(e) {
             therefdiv.style.display = "block";
 	        therefdiv.style.position = "absolute";	
             therefdiv.style.marginLeft = "-4px";
-            var tdivs = document.getElementsByClassName( "verglt" );
+            let tdivs = document.getElementsByClassName( "verglt" );
             tdivs[0].style.paddingLeft = wid.toString() + "px";
-            r = 1;
+            rscrollconfig = 1;
         }
         
-        var scroL = document.body.scrollLeft || window.pageXOffset || document.documentElement.scrollLeft;
+        let scroL = document.body.scrollLeft || window.pageXOffset || document.documentElement.scrollLeft;
         refauthordiv.style.left = scroL.toString() + "px";
 	    therefdiv.style.left = (pos0[1] +2+ scroL).toString() + "px";
 	}
@@ -690,11 +690,11 @@ window.onscroll = function(e) {
 
 function getpositiononpage( element ){
     if( element.nodeType ){
-        var rect = element.getBoundingClientRect( );
-        var elementLeft, elementTop; //x F y
-        var scrollTop = document.documentElement.scrollTop ?
+        let rect = element.getBoundingClientRect( );
+        let elementLeft, elementTop; //x F y
+        let scrollTop = document.documentElement.scrollTop ?
                         document.documentElement.scrollTop:document.body.scrollTop;
-        var scrollLeft = document.documentElement.scrollLeft ?                   
+        let scrollLeft = document.documentElement.scrollLeft ?                   
                          document.documentElement.scrollLeft:document.body.scrollLeft;
         elementTop = rect.top+scrollTop;
         elementLeft = rect.left+scrollLeft;
@@ -716,7 +716,7 @@ function nextel( elem ) {
 }
 
 function showhelpwithstr( str ){
-    var hilf1 = document.getElementById("hilfe");
+    let hilf1 = document.getElementById("hilfe");
     hilf1.style.visibility = "visible";
     hilf1.style.position = "absolute";
     hilf1.style.top = (window.pageYOffset+100).toString() +"px";
@@ -725,10 +725,10 @@ function showhelpwithstr( str ){
 }
 
 function showelemname( elem ){
-	var hilf1 = document.getElementById("hilfe");
+	let hilf1 = document.getElementById("hilfe");
     hilf1.style.visibility = "visible";
     hilf1.style.position = "absolute";
-	var pooo = getpositiononpage( elem );
+	let pooo = getpositiononpage( elem );
     hilf1.style.top = pooo[0].toString() +"px";
     hilf1.style.left = (pooo[1]+10).toString() +"px";
     hilf1.style.width = "200px";
@@ -745,7 +745,7 @@ function hideelemname( ){
 }
 
 function escapeAStr(str) {
-    var div = document.createElement('div');
+    let div = document.createElement('div');
     div.appendChild( document.createTextNode(str) );
     return div.innerHTML;
 }
@@ -755,12 +755,12 @@ function log10(val) {
 }
 
 function dodownit( contentof, nameoffile, type ){
-    var af = new Blob( [ contentof ], {type: type} );
-    var theIE = false || !!document.documentMode;
+    let af = new Blob( [ contentof ], {type: type} );
+    let theIE = false || !!document.documentMode;
     if ( theIE ){
         window.navigator.msSaveOrOpenBlob( af, nameoffile );
     } else {
-        var alink = document.createElement( 'a' );
+        let alink = document.createElement( 'a' );
         alink.href = URL.createObjectURL( af );
         alink.download = nameoffile;
         document.body.appendChild( alink )
@@ -774,18 +774,18 @@ function dodownit( contentof, nameoffile, type ){
 - buildsection of initial menus is given below */
 /**************************************************************/
 function showinputstyle( ){
-      var s = "<b>Eingabe</b><br/>Mit * gekennzeichnete Felder m&uuml;ssen ausgef&uuml;llt werden.<br/><br/><b>Eingabe Konvention (<i>Namen/Titel</i> ):</b><div>a) erleubte Zeichen: ., Leerzeichen, Großbuchstaben, Kleinbuchstaben, andere Sonderzeichen und Zahlen</div><div>b) unbrauchbare Zeichen: /, \<, \>, |, :, \&</div><br/><b>Eingabe Konvention (<i>Text</i> ):</b> <br/><div>a) Zeilenumbruch = ein Zeilenumbruch</div><div>b) Absatz = zwei Zeilenumbrüche</div><div>c) Spaltenumbruch = drei Zeilenumbrüche</div><div>d) Seite = vier Zeilenumbrüche</div> <br/><i>(Dient zur expliziten Paginierung und Navigation - es geht auch ohne.)</i><br/><br/><div class='clickableED' onclick='closediv( \"hilfe\" );'>&#9746;</div>";
+      let s = "<b>Eingabe</b><br/>Mit * gekennzeichnete Felder m&uuml;ssen ausgef&uuml;llt werden.<br/><br/><b>Eingabe Konvention (<i>Namen/Titel</i> ):</b><div>a) erleubte Zeichen: ., Leerzeichen, Großbuchstaben, Kleinbuchstaben, andere Sonderzeichen und Zahlen</div><div>b) unbrauchbare Zeichen: /, \<, \>, |, :, \&</div><br/><b>Eingabe Konvention (<i>Text</i> ):</b> <br/><div>a) Zeilenumbruch = ein Zeilenumbruch</div><div>b) Absatz = zwei Zeilenumbrüche</div><div>c) Spaltenumbruch = drei Zeilenumbrüche</div><div>d) Seite = vier Zeilenumbrüche</div> <br/><i>(Dient zur expliziten Paginierung und Navigation - es geht auch ohne.)</i><br/><br/><div class='clickableED' onclick='closediv( \"hilfe\" );'>&#9746;</div>";
       showhelpwithstr(s);
 }
 
 function coloralledmenu( posinmenu ){
     //decolor
-    var menuelem = document.getElementById( "alledmenu" );
+    let menuelem = document.getElementById( "alledmenu" );
     if(oncemenu == 0){
         menuelem.style.height = (menuelem.offsetHeight+10).toString() + "px";
         oncemenu = 1;
     }
-    for( var c in menuelem.children ){
+    for( let c in menuelem.children ){
         if( menuelem.children[ c ].style ){
             menuelem.children[ c ].style.background = "#D8413E";
             menuelem.children[ c ].style.position = "relative";
@@ -795,77 +795,77 @@ function coloralledmenu( posinmenu ){
     }
     //color selected
     if( posinmenu.toLowerCase ){ //string to index
-        var chi = document.getElementById( posinmenu );
+        let chi = document.getElementById( posinmenu );
         document.getElementById( posinmenu ).style.background = "#8AC2D1";
         document.getElementById( posinmenu ).style.position = "absolute";
-        var hl = getpositiononpage( document.getElementById( "edmenu" ) );
+        let hl = getpositiononpage( document.getElementById( "edmenu" ) );
         document.getElementById( posinmenu ).style.top = (hl[0]-16).toString() + "px"; 
         document.getElementById( posinmenu ).style.left = (hl[1]+10).toString() + "px";
         
     } else {
         menuelem.children[ posinmenu ].style.background = "#8AC2D1";
         menuelem.children[ posinmenu ].style.position = "absolute";
-        var hl = getpositiononpage( document.getElementById( "edmenu" ) );
+        let hl = getpositiononpage( document.getElementById( "edmenu" ) );
         menuelem.children[ posinmenu ].style.top = (hl[0]-16).toString() + "px"; 
         menuelem.children[ posinmenu ].style.left = (hl[1]+10).toString() + "px";
     }
 }
 
 function decolorviewmenu( ){
-    var edmenu = document.getElementById( "viewmenu" );
-    for( var i = 0; i < edmenu.children.length; i += 1){
+    let edmenu = document.getElementById( "viewmenu" );
+    for( let i = 0; i < edmenu.children.length; i += 1){
         edmenu.children[ i ].style.background = "#D8413E";//"rgb(249, 249, 249)";
     }
 }
 
 function showAllEdMenu( ){
-    var menuelem = document.getElementById( "alledmenu" );
+    let menuelem = document.getElementById( "alledmenu" );
     menuelem.style.display = 'block';
     document.getElementById( "edmenu" ).style.display = 'block';
 }
 
 function hideAllEdMenu( ){
-    var menuelem = document.getElementById( "alledmenu" );
+    let menuelem = document.getElementById( "alledmenu" );
     menuelem.style.display = 'none';
     document.getElementById( "edmenu" ).style.display = 'none';
 }
 
 function showViewMenu( ){
-    var menuelem = document.getElementById( "viewmenu" );
+    let menuelem = document.getElementById( "viewmenu" );
     menuelem.style.display = 'block';
 }
 
 function hideViewMenu( ){
-    var menuelem = document.getElementById( "viewmenu" );
+    let menuelem = document.getElementById( "viewmenu" );
     menuelem.style.display = 'none';
 }
 
 function showhelp2withmenu( e ){
-    var hilf2 = document.getElementById("hilfe2");
-    var viewmenucopydiv = document.getElementById( "hilfe2" );
+    let hilf2 = document.getElementById("hilfe2");
+    let viewmenucopydiv = document.getElementById( "hilfe2" );
     hilf2.style.visibility = "visible";
     hilf2.style.position = "absolute";
     hilf2.style.top = e.pageY.toString()+"px";
     hilf2.style.left = e.pageX.toString()+"px";
     hilf2.style.width = "500px";
     hilf2.innerHTML = "";
-    var s = document.createElement("div");
+    let s = document.createElement("div");
     s.className = "clickableED";
     s.innerHTML = "Textstatistik"; 
     s.onclick = function(){ textSTAT( 0 ); };
     hilf2.appendChild( s );
-    var de = document.createElement("div");
+    let de = document.createElement("div");
     de.className = "clickableED";
     de.innerHTML = "Debug (Indices einzeichnen)"; 
     de.onclick = function(){ if(dodebug == 1){dodebug=0;} else {dodebug=1;} };
     hilf2.appendChild( de );
-    var zei = document.createElement("div");
+    let zei = document.createElement("div");
     zei.className = "clickableED";
     zei.innerHTML = "Zeilen der Synopse nicht verkürzen<br><br>"; 
     zei.onclick = function(){ if(doverk){doverk=false;} else {doverk=true;}  comparatioparallel( 0 ); };
     
     hilf2.appendChild( zei );
-    var c = document.createElement("div");
+    let c = document.createElement("div");
     c.className = "clickableED";
     c.innerHTML = "&#9746;"; 
     c.onmouseenter = function(){ closediv("hilfe2"); };
@@ -873,12 +873,12 @@ function showhelp2withmenu( e ){
 }
 
 function showmenubuttonhilf2( ){
-    var viewmenucopydiv = document.getElementById("hilfe2");
+    let viewmenucopydiv = document.getElementById("hilfe2");
     viewmenucopydiv.innerHTML = "<div onmouseenter='showhelp2withmenu( e )'>&#9881;</div>";
 }
 
 function showhelp3withmenu( e ){
-    var h = document.getElementById("hilfe3");
+    let h = document.getElementById("hilfe3");
     h.style.visibility = "visible";
     h.style.position = "absolute";
     h.style.top = e.pageY.toString()+"px";
@@ -886,87 +886,87 @@ function showhelp3withmenu( e ){
     h.style.width = "500px";
     h.style.display = "block";
     h.innerHTML = "";
-    var t = document.createElement("div");
+    let t = document.createElement("div");
     t.className = "clickableED";
     t.innerHTML = "<sup>"+TU+"</sup>"+TUleg;
     t.onclick = function(){ coloradiff("T"); };
     h.appendChild( t );
-    var cc = document.createElement("div");
+    let cc = document.createElement("div");
     cc.className = "clickableED";
     cc.innerHTML = "<sup>"+GK+"</sup>"+GKleg;
     cc.onclick = function(){ coloradiff("C"); };
     h.appendChild( cc );
-    var d = document.createElement("div");
+    let d = document.createElement("div");
     d.className = "clickableED";
     d.innerHTML = "<sup>"+DK+"</sup>"+DKleg;
     d.onclick = function(){ coloradiff("D"); };
     h.appendChild( d );
-    var l = document.createElement("div");
+    let l = document.createElement("div");
     l.className = "clickableED";
     l.innerHTML = "<sup>"+LI+"</sup>"+LIleg;
     l.onclick = function(){ coloradiff("L"); };
     h.appendChild( l );
-    var i = document.createElement("div");
+    let i = document.createElement("div");
     i.className = "clickableED";
     i.innerHTML = "<sup>"+INTERP+"</sup>"+ INTERPleg;
     i.onclick = function(){ coloradiff("I"); };
     h.appendChild( i );
-    var k = document.createElement("div");
+    let k = document.createElement("div");
     k.className = "clickableED";
     k.innerHTML = "<sup>"+KK+"</sup>"+KKleg;
     k.onclick = function(){ coloradiff("K"); };
     h.appendChild( k );
-    var v = document.createElement("div");
+    let v = document.createElement("div");
     v.className = "clickableED";
     v.innerHTML = "<sup>"+UV+"</sup>"+UVleg;
     v.onclick = function(){ coloradiff("V"); };
     h.appendChild( v );
-    var m = document.createElement("div");
+    let m = document.createElement("div");
     m.className = "clickableED";
     m.innerHTML = "<sup>"+ME+"</sup>"+MEleg;
     m.onclick = function(){ coloradiff("M"); };
     h.appendChild( m );
-    var mia = document.createElement("div");
+    let mia = document.createElement("div");
     mia.className = "clickableED";
     mia.innerHTML = "<sup>"+MIAT+"</sup>"+MIATleg;
     mia.onclick = function(){ coloradiff("mIAT"); };
     h.appendChild( mia );
-    var ve = document.createElement("div");
+    let ve = document.createElement("div");
     ve.className = "clickableED";
     ve.innerHTML = "<sup>"+VERT+"</sup>"+VERTleg;
     ve.onclick = function(){ coloradiff("vERT"); };
     h.appendChild( ve );
-    var ved = document.createElement("div");
+    let ved = document.createElement("div");
     ved.className = "clickableED";
     ved.innerHTML = "<sup>"+VERDRE+"</sup>"+VERDREleg;
     ved.onclick = function(){ coloradiff("vErdRE"); };
     h.appendChild( ved );
-    var u = document.createElement("div");
+    let u = document.createElement("div");
     u.className = "clickableED";
     u.innerHTML = "<sup>"+DIST+"</sup>"+DISTleg;
     u.onclick = function(){ coloradiff("dist"); };
     h.appendChild( u );
-    var w = document.createElement("div");
+    let w = document.createElement("div");
     w.className = "clickableED";
     w.innerHTML = "<sup>"+EIN+"</sup>"+EINleg;
     w.onclick = function(){ coloradiff("EiN"); };
     h.appendChild( w ); 
-    var z = document.createElement("div");
+    let z = document.createElement("div");
     z.className = "clickableED";
     z.innerHTML = "<sup>"+WTN+"</sup>"+WTNleg;
     z.onclick = function(){ coloradiff("wtn"); };
     h.appendChild( z );
-    var zd = document.createElement("div");
+    let zd = document.createElement("div");
     zd.className = "clickableED";
     zd.innerHTML = "<sup>"+VWT+"</sup>"+VWTleg;
     zd.onclick = function(){ coloradiff("vwt"); };
     h.appendChild( zd );
-    var gld = document.createElement( "div" );
+    let gld = document.createElement( "div" );
     gld.className = "clickableED";
     gld.innerHTML = "Gleiches<br><br>";
     gld.onclick = function(){ colorasame(); };
     h.appendChild( gld );
-    var c = document.createElement("div");
+    let c = document.createElement("div");
     c.className = "clickableED";
     c.innerHTML = "&#9746;";  
     c.onmouseenter = function(){ closediv("hilfe3"); };
@@ -974,27 +974,27 @@ function showhelp3withmenu( e ){
 }
 
 function showmenubuttonhilf3( ){
-    var viewmenucopydiv = document.getElementById("hilfe3");
+    let viewmenucopydiv = document.getElementById("hilfe3");
     viewmenucopydiv.style.width = "auto";
     viewmenucopydiv.innerHTML = "<div onmouseenter='showhelp3withmenu( e )'>&#9997;</div>";
 }
 
 function hidetextmenus( ){
-    var m1 = document.getElementById( "hilfe2" );
+    let m1 = document.getElementById( "hilfe2" );
     m1.style.visibility = "hidden";
-	var m2 = document.getElementById( "hilfe3" );
+	let m2 = document.getElementById( "hilfe3" );
     m2.style.visibility = "hidden";
-	var m3 = document.getElementById( "hilfe4" );
+	let m3 = document.getElementById( "hilfe4" );
     m3.style.visibility = "hidden";
-	var m4 = document.getElementById( "hilfe5" );
+	let m4 = document.getElementById( "hilfe5" );
     m4.style.visibility = "hidden";
-	var m5 = document.getElementById( "hilfe6" );
+	let m5 = document.getElementById( "hilfe6" );
     m5.style.visibility = "hidden";
 }
 
 function takedatafrommenuLC( ){ 
     rendercount = parseInt( document.getElementById("LC").value );
-    var newrenderstyle = parseInt( document.getElementById("LS").value);
+    let newrenderstyle = parseInt( document.getElementById("LS").value);
 
     if( renderstyle !=  newrenderstyle && newrenderstyle != 0 ){
         blockhistory = [];
@@ -1008,15 +1008,15 @@ function takedatafrommenuLC( ){
 }
 
 function showhelptextnav( e ){
-    var m = document.getElementById( "hilfe4" );
+    let m = document.getElementById( "hilfe4" );
     m.innerHTML = "";
-    var hp = getpositiononpage(document.getElementById( "vergleich" ))[0];
+    let hp = getpositiononpage(document.getElementById( "vergleich" ))[0];
     m.style.visibility = "visible";
     m.style.position = "absolute";
 
     m.style.top = e.pageY.toString()+"px";
     m.style.left = e.pageX.toString()+"px";
-    var t = "<input style='margin-right:10px; width:120px;' id='LC' value='"+rendercount.toString()+"'/><select style='margin-right:20px; width:auto;' id='LS' >";
+    let t = "<input style='margin-right:10px; width:120px;' id='LC' value='"+rendercount.toString()+"'/><select style='margin-right:20px; width:auto;' id='LS' >";
 
     if(renderstyle == 0){
         t = t + "<option value='0' selected>Bildschirmzeile</option><option value='1'>Absatz (d. Vorlage)</option><option value='2'>Spalte (d. Vorlage)</option><option value='3'>Seite (d. Vorlage)</option>";
@@ -1033,26 +1033,26 @@ function showhelptextnav( e ){
 }
 
 function debuggemail( astring ){
-    var concon = confirm("Wollen Sie ein Issue auf Github eröffnen (click OK) oder eine email an die Entwickler senden (click Cancel)");   
+    let concon = confirm("Wollen Sie ein Issue auf Github eröffnen (click OK) oder eine email an die Entwickler senden (click Cancel)");   
     if( concon == true ) {
-        var somemore = prompt( "Beschreiben Sie den Fehler kurz." );
+        let somemore = prompt( "Beschreiben Sie den Fehler kurz." );
         if( somemore ){
-            var nono = "OS: "+ window.navigator.platform +", Agent: "+window.navigator.userAgent+ ", Reason: " +astring+", Besch: "+ somemore;
-            var ll = "https://github.com/ecomp-shONgit/ecomparatio/issues/new?title="+astring+"&body="+encodeURIComponent(nono); 
+            let nono = "OS: "+ window.navigator.platform +", Agent: "+window.navigator.userAgent+ ", Reason: " +astring+", Besch: "+ somemore;
+            let ll = "https://github.com/ecomp-shONgit/ecomparatio/issues/new?title="+astring+"&body="+encodeURIComponent(nono); 
             window.open( ll, "_blank");   
         }       
     } else {
-        var somemore = prompt( "Beschreiben Sie den Fehler, wenn Sie Rückmeldung wünschen geben Sie auch Ihre email an (die wird nicht gespeichert oder sich gemerkt)!" );
+        let somemore = prompt( "Beschreiben Sie den Fehler, wenn Sie Rückmeldung wünschen geben Sie auch Ihre email an (die wird nicht gespeichert oder sich gemerkt)!" );
         if( somemore ){
-            var nono = "OS: "+ window.navigator.platform +", Agent: "+window.navigator.userAgent+", Reason: "+astring +", Besch: "+ somemore;
-            var l = "mailto:hannes.kahl@uni-leipzig.de?subject=eComparatio sagt&body=" + encodeURIComponent(nono); 
+            let nono = "OS: "+ window.navigator.platform +", Agent: "+window.navigator.userAgent+", Reason: "+astring +", Besch: "+ somemore;
+            let l = "mailto:hannes.kahl@uni-leipzig.de?subject=eComparatio sagt&body=" + encodeURIComponent(nono); 
             window.open( l, "_blank");  
         } 
     }
 }
 
 function buggreport( ){ // buggreport from inputform
-    var astring = submitneweds( true ); //collect data from input form  
+    let astring = submitneweds( true ); //collect data from input form  
     debuggemail( astring ); //call mailto
 }
 
@@ -1075,28 +1075,28 @@ function dezoommenu( ){
 /**************************************************************/
 function loadallmenu( ){
     //load alledmenu from server
-    var xmlHttp = new XMLHttpRequest();
+    let xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() { 
         if (xmlHttp.readyState == 4 ){
             if(xmlHttp.status == 200){
-                var elemtofill = document.getElementById( "alledmenu" );
+                let elemtofill = document.getElementById( "alledmenu" );
                 elemtofill.innerHTML = xmlHttp.responseText;
                 //add offline information to menu, from local storage
-                var menuadd = localStorage.getItem("ecompmenuADD");
+                let menuadd = localStorage.getItem("ecompmenuADD");
                 if( menuadd ){
                     elemtofill.innerHTML = elemtofill.innerHTML+'<span class="clickablesec offlmenu" style="display: inline-block; background: #D8413E none repeat scroll 0% 0%; position: relative;" id="delofflstore"  onclick="modEDoffline();">+&#1421;</span>';
                     elemtofill.innerHTML =  elemtofill.innerHTML + menuadd;  
                 }
 
 	            oncemenu = 0;
-                var serc = window.location.href.split("?");
+                let serc = window.location.href.split("?");
             
 	            typographmessure();
                 if( serc.length > 1 ){ //handel urn and cts input via url, BUT not availabl offline - clearly
                     eCompURN( serc[1] );
                 } else {
 		        //load first not archived ed series
-		            for(var a = 0; a < elemtofill.children.length-8; a++){
+		            for(let a = 0; a < elemtofill.children.length-8; a++){
 			            if( elemtofill.children[ a ].style.display  == "inline-block" || 
                             elemtofill.children[ a ].className.indexOf("archive") == -1){ //take first edition series and load this comparatio
                             //load comarioson result
@@ -1129,12 +1129,12 @@ function loadallmenu( ){
 
 function buildcomparatiowico( ri ){
     wico = {};
-    for( var R = 0; R <= comparatio.length-1; R = R +1 ){
+    for( let R = 0; R <= comparatio.length-1; R = R +1 ){
       if( ri == comparatio[ R ][0] ){ //refid
-      var co = comparatio[ R ][1]; //pro text
-      for( var T in co ){
-        var ti = co[T][0][1] //textid
-        for( var w in co[T] ){
+      let co = comparatio[ R ][1]; //pro text
+      for( let T in co ){
+        let ti = co[T][0][1] //textid
+        for( let w in co[T] ){
           if(w > 0){ //scip first just indices
             if( wico[ co[T][ w ][1].toString() ] ){
                 wico[ co[T][ w ][1].toString() ].push([ti, co[T][ w ][0],co[T][ w ][2]]);
@@ -1155,12 +1155,12 @@ function buildcomparatiotogether( ri ){
   //ein unterschied ist ein tripel aus textindex, wortindex und unterschiedskalsse
     if( comparatio ){
         tog = {};
-        for( var R = 0; R <= comparatio.length-1; R = R +1 ){
+        for( let R = 0; R <= comparatio.length-1; R = R +1 ){
           if( ri == comparatio[ R ][0] ){ //refid
-          var co = comparatio[ R ][1]; //pro text
-          for( var T in co ){
-            var ti = co[T][0][1] //textid
-            for( var w in co[T] ){
+          let co = comparatio[ R ][1]; //pro text
+          for( let T in co ){
+            let ti = co[T][0][1] //textid
+            for( let w in co[T] ){
               if(w > 0){ //scip first just indices
                 if( co[T][ w ][2] != "" ){//take just differences
                   if( tog[ co[T][ w ][1].toString() ] ){
@@ -1197,14 +1197,14 @@ function loadcomparatio( numofeds ){
         
         execloadcomparatioCHAIN( );
     } else { //online data
-        var menuelem = document.getElementById( "alledmenu" );
-        for( var c = 0; c < menuelem.children.length; c++ ){
+        let menuelem = document.getElementById( "alledmenu" );
+        for( let c = 0; c < menuelem.children.length; c++ ){
             if( c == numofeds ){
-                var xmlHttp = new XMLHttpRequest( );
+                let xmlHttp = new XMLHttpRequest( );
                 xmlHttp.onreadystatechange = function( ){ 
                     if( xmlHttp.readyState == 4 ){
                         if( xmlHttp.status == 200 ){
-                            var s = document.createElement( "script" );
+                            let s = document.createElement( "script" );
                             s.innerHTML = xmlHttp.responseText.replace( "<script>", "" ).replace( "</script>", "" );
                             document.getElementById( "comparatiodata" ).appendChild( s );
                             
@@ -1224,8 +1224,8 @@ function loadcomparatio( numofeds ){
 
 function cleanalltextarray( ){
     if( alltexts ){
-	    for( var i = 0; i < alltexts.length; i++ ){
-		    var last = "";
+	    for( let i = 0; i < alltexts.length; i++ ){
+		    let last = "";
 		    while( last == "" ){
 			    last = alltexts[ i ].pop();
 		    }
@@ -1235,32 +1235,32 @@ function cleanalltextarray( ){
 }
 
 function buildedmenu( ){
-  	var edmenu = document.getElementById( "edmenu" );
-	var menuelem = document.getElementById( "alledmenu" );
+  	let edmenu = document.getElementById( "edmenu" );
+	let menuelem = document.getElementById( "alledmenu" );
   	edmenu.innerHTML = "";
-	var thebib = "";
+	let thebib = "";
     if( currentedseries.toLowerCase ){ //currentedseries is string
         thebib = bibdynvars[currentedseries];
     } else { //currentedseries is index
-        for( var c in menuelem.children ){
+        for( let c in menuelem.children ){
     	    if( c == currentedseries ){
         	    thebib = bibdynvars[ menuelem.children[c].innerHTML ];
 		    }
 	    }
     }
 	if( thebib ){
-		for( var i = 0; i < thebib.length; i++ ){
-			for( var ii = 0; ii < thebib.length; ii++ ){
-				var b = thebib[ ii ];
+		for( let i = 0; i < thebib.length; i++ ){
+			for( let ii = 0; ii < thebib.length; ii++ ){
+				let b = thebib[ ii ];
 				if( i == b[0] ){
-  					var d = document.createElement("div");
+  					let d = document.createElement("div");
     				d.className = "clickableED";
     				d.style.background = "#8AC2D1";
     				d.style.float = "left";
     				d.style.margin = "10px";
     				d.style.marginTop = "0px";
-					var n =  b[2].split( "_" );
-    				var nn = n.join( "." );
+					let n =  b[2].split( "_" );
+    				let nn = n.join( "." );
     				d.innerHTML = nn + " |"; //name author 
     				d.name = b[0].toString();
     				d.onclick = function(){ selectED( this ); };
@@ -1269,15 +1269,15 @@ function buildedmenu( ){
 			}
 		}
 	} else {
-  		for( var m in textnames ){
+  		for( let m in textnames ){
     		if( !textnames[ m ][1] ){
       			continue;
     		}
-    		var n = textnames[ m ][1].split(" _ ");
-    		var nn = n.join( ", " );
-    		var nnn = nn.split( "_" );
-    		var nnnn = nnn.join( "." );
-    		var d = document.createElement("div");
+    		let n = textnames[ m ][1].split(" _ ");
+    		let nn = n.join( ", " );
+    		let nnn = nn.split( "_" );
+    		let nnnn = nnn.join( "." );
+    		let d = document.createElement("div");
     		d.className = "clickableED";
     		d.style.background = "#8AC2D1";
     		d.style.float = "left";
@@ -1293,9 +1293,9 @@ function buildedmenu( ){
 
 
 function buildviewmenu( ){
-    var edmenu = document.getElementById( "viewmenu" );
+    let edmenu = document.getElementById( "viewmenu" );
     edmenu.innerHTML = "";
-    var p = document.createElement( "span" );
+    let p = document.createElement( "span" );
     p.className = "clickableED";
     p.title = "Die Darstellung legt die verglichenen Texte nebeneinander.";
     p.innerHTML = "Synopse";//"Paralell-Darstellung"; 
@@ -1305,7 +1305,7 @@ function buildviewmenu( ){
     p.onclick = function( ){ decolorviewmenu( ); this.style.background = "#8AC2D1"; comparatioparallel( 0 ); };
     p.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#synopse-", "_blank"); };
     edmenu.appendChild( p );
-    var d = document.createElement( "span" );
+    let d = document.createElement( "span" );
     d.className = "clickableED";
     d.title = "Die Darstellung legt die verglichenen Texte zusammen.";
     d.innerHTML = "DetailD";  
@@ -1315,7 +1315,7 @@ function buildviewmenu( ){
     	d.style.background = "#8AC2D1";
 	}
     edmenu.appendChild( d );
-    var b = document.createElement( "span" );
+    let b = document.createElement( "span" );
     b.className = "clickableED";
     b.title = "Die Darstellung bietet einen Variantenapparat an.";
     b.innerHTML = "BuchD"; 
@@ -1326,7 +1326,7 @@ function buildviewmenu( ){
     b.onclick = function( ){ decolorviewmenu( ); this.style.background = "#8AC2D1";comparatiobuch( 0 ); };
     b.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#buch-darstellung-", "_blank"); };
     edmenu.appendChild( b );
-    var ma = document.createElement( "span" );
+    let ma = document.createElement( "span" );
     ma.className = "clickableED";
     ma.title = "Die Darstellung zeigt die Vergleiche von allen zu allen anderen Texten in einer rechteckigen Matrix.";
     ma.innerHTML = "MatrixD";
@@ -1336,7 +1336,7 @@ function buildviewmenu( ){
     ma.onclick = function(){ decolorviewmenu( ); this.style.background = "#8AC2D1"; comparatiomatrix( ); };
     ma.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#matrix-darstellung-", "_blank"); };
     edmenu.appendChild( ma );
-	var dia = document.createElement( "span" );
+	let dia = document.createElement( "span" );
     dia.className = "clickableED";
     dia.title = "Die Darstellung zeigt den Vergleich in Zahlen und Diagrammen."
     dia.innerHTML = "DiagrammD"; 
@@ -1347,7 +1347,7 @@ function buildviewmenu( ){
     dia.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#diagramm-darstellung-", "_blank"); };
     edmenu.appendChild( dia );
 
-    var intl = document.createElement( "span" );
+    let intl = document.createElement( "span" );
     intl.className = "clickableED";
     intl.title = "Die Darstellung zeigt den Vergleich als interlinearen Text."
     intl.innerHTML = "InterlinearD"; 
@@ -1358,7 +1358,7 @@ function buildviewmenu( ){
     intl.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#interlinear-darstellung-", "_blank"); };
     edmenu.appendChild( intl );
     
-    var e = document.createElement( "span" );
+    let e = document.createElement( "span" );
     e.className = "clickableED";
     e.title = "Drucken";
     e.innerHTML = "&#9113;"; 
@@ -1366,56 +1366,56 @@ function buildviewmenu( ){
     e.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#drucken-", "_blank"); };
     
     edmenu.appendChild( e );
-	var ee = document.createElement( "span" );
+	let ee = document.createElement( "span" );
     ee.className = "clickableED";
     ee.title = "Die Synopse als Latex Tabelle exportieren.";
     ee.innerHTML = "LATEX"; 
     ee.onclick = function( ){ tolatex( ); };
     ee.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#latex-", "_blank"); };
     edmenu.appendChild( ee );
-    var eVe = document.createElement( "span" );
+    let eVe = document.createElement( "span" );
     eVe.className = "clickableED";
     eVe.title = "Die Synopse im CSV Format exportieren.";
     eVe.innerHTML = "CSV"; 
     eVe.onclick = function( ){ tocsv( ); };
     eVe.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#csv-", "_blank"); };
     edmenu.appendChild( eVe );
-    var jsonb = document.createElement( "span" );
+    let jsonb = document.createElement( "span" );
     jsonb.className = "clickableED";
     jsonb.title = "Texte und Eregbnisse als JSON Exportieren.";
     jsonb.innerHTML = "JSON"; 
     jsonb.onclick = function( ){ calljsonphp( ); };
     jsonb.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#json--dump-", "_blank"); };
     edmenu.appendChild( jsonb );
-	var teib = document.createElement( "span" );
+	let teib = document.createElement( "span" );
     teib.className = "clickableED";
     teib.title = "Die Ergebnisse als TEI Apparatus Tag verwendendes XML exportieren.";
     teib.innerHTML = "TEI"; 
     teib.onclick = function( ){ buildteixml( ); };
     teib.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#tei-", "_blank"); };
     edmenu.appendChild( teib );
-    var htmlb = document.createElement( "span" );
+    let htmlb = document.createElement( "span" );
     htmlb.className = "clickableED";
     htmlb.title = "Die Ergebnisse werden als digitale Edition exportiert.";
     htmlb.innerHTML = "HTML"; 
     htmlb.onclick = function( ){ buildhtml( ); };
     htmlb.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#digitale-edition-", "_blank"); };
     edmenu.appendChild( htmlb );
-    var addelem = document.createElement( "span" );
+    let addelem = document.createElement( "span" );
     addelem.className = "clickableED";
     addelem.title = "Textreihe in der verglichen werden soll hinzufügen und vergleichen.";
     addelem.innerHTML = "ADD"; 
     addelem.onclick = function( ){ addED( ); };
     addelem.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#hinzuf%C3%BCgen-", "_blank"); };
     edmenu.appendChild( addelem );
-    var modelem = document.createElement( "span" );
+    let modelem = document.createElement( "span" );
     modelem.className = "clickableED";
     modelem.title = "Texte einer Textreihe modifizieren und neu vergleichen.";
     modelem.innerHTML = "MOD"; 
     modelem.onclick = function( ){ modEDoffline( ); }; //that is just for the first version of ecomparatio - without server com
     modelem.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#%C3%84ndern-", "_blank"); };
     edmenu.appendChild( modelem );
-    var delelem = document.createElement( "span" );
+    let delelem = document.createElement( "span" );
     delelem.className = "clickableED";
     delelem.title = "Diese Textreihe löschen.";
     delelem.innerHTML = "DEL"; 
@@ -1423,7 +1423,7 @@ function buildviewmenu( ){
     delelem.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#l%C3%B6schen-", "_blank"); };
     edmenu.appendChild( delelem );
     
-    var inelem = document.createElement( "span" );
+    let inelem = document.createElement( "span" );
     inelem.className = "clickableED";
     inelem.title = "Eingabe von Ergebnissen in Form von JSON files.";
     inelem.innerHTML = "IN"; 
@@ -1431,59 +1431,59 @@ function buildviewmenu( ){
     inelem.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#in-", "_blank"); };
     edmenu.appendChild( inelem );
 
-    var deselem = document.createElement( "span" );
+    let deselem = document.createElement( "span" );
     deselem.className = "clickableED";
     deselem.title = "Bezeichnung und Färbung der Unterschiede verändern.";
     deselem.innerHTML = "DES"; 
     deselem.onclick = function( ){ modDIFFDES( ); };
     deselem.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#ecomparatio-customizing-", "_blank"); };
     edmenu.appendChild( deselem );
-    var Einst1 = document.createElement( "span" );
+    let Einst1 = document.createElement( "span" );
     Einst1.className = "clickableED";
     Einst1.title = "Debug, Textstatistik etc.";
     Einst1.innerHTML = "&#9881;"; 
     Einst1.onclick = function( e ){ showhelp2withmenu( e ); };
     Einst1.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#unterschiede--anderes", "_blank"); };
     edmenu.appendChild( Einst1 );
-    var unterschkl = document.createElement( "span" );
+    let unterschkl = document.createElement( "span" );
     unterschkl.className = "clickableED";
     unterschkl.title = "Unterschiede ein- und ausblenden.";
     unterschkl.innerHTML = "&#9997;"; 
     unterschkl.onclick = function( e ){ showhelp3withmenu( e ); };
     unterschkl.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#unterschiede--anderes", "_blank"); };
     edmenu.appendChild( unterschkl );
-    var zurueckelem = document.createElement( "span" );
+    let zurueckelem = document.createElement( "span" );
     zurueckelem.className = "clickableED";
     zurueckelem.innerHTML = "&#8593;"; 
     zurueckelem.titel = "Zurück, Text Scroll Funktion, auch via Mouserad und SHIFT+ALT"; 
     zurueckelem.onclick = function( ){ prevSTEP( ); };
     edmenu.appendChild( zurueckelem );
-    var stepelem = document.createElement( "span" );
+    let stepelem = document.createElement( "span" );
     stepelem.className = "clickableED";
     stepelem.title = "Schrittweite der Textnavigation einstellen.";
     stepelem.innerHTML = "&#9863;"; 
     stepelem.onclick = function( e ){ showhelptextnav( e ); };
     stepelem.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#navigation", "_blank"); };
     edmenu.appendChild( stepelem );
-    var vorelem = document.createElement( "span" );
+    let vorelem = document.createElement( "span" );
     vorelem.className = "clickableED";
     vorelem.innerHTML = "&#8595;"; 
     vorelem.titel = "Vor, Text Scroll Funktion, auch via Mouserad und SHIFT+ALT"; 
     vorelem.onclick = function( ){ nextSTEP( ); };
     edmenu.appendChild( vorelem );
-    var zooelem = document.createElement( "span" );
+    let zooelem = document.createElement( "span" );
     zooelem.className = "clickableED";
     zooelem.innerHTML = "&#128269;"; 
     zooelem.title = "Vergrößern der Menüs.";
     zooelem.onclick = function(){ zoommenu( ); };
     edmenu.appendChild( zooelem );
-    var zooOelem = document.createElement( "span" );
+    let zooOelem = document.createElement( "span" );
     zooOelem.className = "clickableED";
     zooOelem.innerHTML = "-&#128270;"; 
     zooOelem.title = "Verkleinern der Menüs.";
     zooOelem.onclick = function( ){ dezoommenu( ); };
     edmenu.appendChild( zooOelem );
-    var emailelem = document.createElement( "span" );
+    let emailelem = document.createElement( "span" );
     emailelem.className = "clickableED";
     emailelem.innerHTML = "&#128231;"; 
     emailelem.title = "Email an den Admin bezüglich erkannter Fehler versenden.";
@@ -1493,36 +1493,36 @@ function buildviewmenu( ){
 }
 
 function buildtextmenu1( ){
-    var viewmenucopydiv = document.getElementById( "hilfe2" );
+    let viewmenucopydiv = document.getElementById( "hilfe2" );
     viewmenucopydiv.style.visibility = "visible";
     viewmenucopydiv.style.position = "absolute";
-    var ih = "<div onmouseenter='showhelp2withmenu( e )' class='cklickableW'>&#9881;</div>";
+    let ih = "<div onmouseenter='showhelp2withmenu( e )' class='cklickableW'>&#9881;</div>";
     viewmenucopydiv.innerHTML = ih;
-    var hp = getpositiononpage(document.getElementById( "vergleich" ))[0] + 3;
+    let hp = getpositiononpage(document.getElementById( "vergleich" ))[0] + 3;
     viewmenucopydiv.style.top = hp.toString() +"px"; 
     viewmenucopydiv.style.left = (window.pageXOffset) +"px";
 }
 
 function buildtextmenu2( ){
-    var md = document.getElementById( "hilfe3" );
+    let md = document.getElementById( "hilfe3" );
     md.style.visibility = "visible";
     md.style.position = "absolute";
-    var ih = "<div onmouseenter='showhelp3withmenu(e)' class='cklickableW'>&#9997;</div>";
+    let ih = "<div onmouseenter='showhelp3withmenu(e)' class='cklickableW'>&#9997;</div>";
     md.innerHTML = ih;
-    var hp = getpositiononpage(document.getElementById( "vergleich" ))[0] + 30;
+    let hp = getpositiononpage(document.getElementById( "vergleich" ))[0] + 30;
     md.style.top = hp.toString() +"px"; 
     md.style.left = (window.pageXOffset) +"px";
 }
 
 function buildtextmenu3( ){
-    var hp = getpositiononpage(document.getElementById( "vergleich" ))[0];
-    var mr = document.getElementById( "hilfe5" );
+    let hp = getpositiononpage(document.getElementById( "vergleich" ))[0];
+    let mr = document.getElementById( "hilfe5" );
     mr.style.visibility = "visible";
     mr.style.position = "absolute";
     mr.innerHTML = "<div onclick='prevSTEP()' class='cklickableW'>&#8593;</div>";
     mr.style.top = (hp+105).toString() +"px"; 
     mr.style.left = window.pageXOffset +"px";
-    var mt = document.getElementById( "hilfe6" );
+    let mt = document.getElementById( "hilfe6" );
     mt.style.visibility = "visible";
     mt.style.position = "absolute";
     mt.innerHTML = "<div onclick='nextSTEP()' class='cklickableW'>&#8595;</div>";
@@ -1535,62 +1535,62 @@ function buildtextmenu3( ){
 /**************************************************************/
 function makeueberschriftDundB( ){
 	document.getElementById( "info" ).innerHTML = "";
-	var menuelem = document.getElementById( "alledmenu" );
-    var thebib = "";
+	let menuelem = document.getElementById( "alledmenu" );
+    let thebib = "";
     if( currentedseries.toLowerCase ){ //currentedseries is string
         thebib = bibdynvars[ currentedseries ];
     } else {
-        for( var c in menuelem.children ){
+        for( let c in menuelem.children ){
     	    if( c == currentedseries ){
         	    thebib = bibdynvars[ menuelem.children[c].innerHTML ];
 		    }
 	    }
     }
 	if( thebib ){
-		for( var i = 0; i < thebib.length; i++ ){
+		for( let i = 0; i < thebib.length; i++ ){
 	        if( thebib[ i ][0] == currented ){
-	            var b = thebib[ i ];
-	            var ielem = document.getElementById( "info" );
+	            let b = thebib[ i ];
+	            let ielem = document.getElementById( "info" );
 	            ielem.style.height = "auto";
-	            var editor = document.createElement("div");
+	            let editor = document.createElement("div");
 	            editor.className = "reditor";
 	            editor.innerHTML = b[2];
 	            ielem.appendChild( editor );
-	            var titel = document.createElement("div");
+	            let titel = document.createElement("div");
 	            titel.className = "redtitle";
 	            titel.innerHTML = b[3];
 	            ielem.appendChild( titel );
-	            var tuo = document.createElement("div");
+	            let tuo = document.createElement("div");
 	            tuo.className = "rtuo";
 	            tuo.innerHTML = b[4] +" "+ b[5];
 	            ielem.appendChild( tuo );
-	            var beleg = document.createElement("div");
+	            let beleg = document.createElement("div");
 	            beleg.className = "beleg";
 	            beleg.innerHTML = b[6];
 	            ielem.appendChild( beleg );
-	            var sou = document.createElement("div");
+	            let sou = document.createElement("div");
 	            sou.className = "onlinesource";
 	            sou.innerHTML = b[1];
 	            ielem.appendChild( sou );
 	        }
 		}
 	} else if( textnames ) {
-  		var ielem = document.getElementById( "info" );
+  		let ielem = document.getElementById( "info" );
   		ielem.style.height = "auto";
-  		var n = textnames[ currented ][1].split("_");
-  		var nn = n.join( "." );
-  		var editor = document.createElement("div");
+  		let n = textnames[ currented ][1].split("_");
+  		let nn = n.join( "." );
+  		let editor = document.createElement("div");
   		editor.className = "reditor";
   		editor.innerHTML = nn;
   		ielem.appendChild( editor );
   		n = textnames[ currented ][2].split("_");
   		nn = n.join( "." );
-  		var titel = document.createElement("div");
+  		let titel = document.createElement("div");
   		titel.className = "redtitle";
   		titel.innerHTML = nn;
   		ielem.appendChild( titel );
   		n = textnames[ currented ][3].split(".")[0];
-  		var tuo = document.createElement("div");
+  		let tuo = document.createElement("div");
   		tuo.className = "rtuo";
   		tuo.innerHTML = n;
   		ielem.appendChild( tuo );
@@ -1602,7 +1602,7 @@ function comparatiodetail( aindex ){
     whichview = 0;
     linecount = 0;
     linehinstory = [];
-    var velem = document.getElementById( "vergleich" );
+    let velem = document.getElementById( "vergleich" );
     velem.innerHTML = "";
     velem.style.height = "100%";
     velem.style.width = "99%";
@@ -1618,7 +1618,7 @@ function comparatiointerlin( aindex ){
     linecount = 0;
     linehinstory = [];
     document.getElementById( "info" ).innerHTML = "";
-    var vergelem = document.getElementById( "vergleich" );
+    let vergelem = document.getElementById( "vergleich" );
     vergelem.innerHTML = "";
     vergelem.style.width = "100000px";
     vergelem.style.height = "100%";
@@ -1628,33 +1628,33 @@ function comparatiointerlin( aindex ){
 }
 
 function comparatiomatrix( ){
-    var r = window.confirm("Diese Darstellung eignet sich nur für kürzere Text, denn alle Texte, werden mit all ihren Vergleichsergebnissen dargestellt. Bei großen Texten könnte dies ihren Browser erheblich belasten.");
+    let r = window.confirm("Diese Darstellung eignet sich nur für kürzere Text, denn alle Texte, werden mit all ihren Vergleichsergebnissen dargestellt. Bei großen Texten könnte dies ihren Browser erheblich belasten.");
     if (r == false) {
       comparatioparallel( 0 );
       return;
     } 
     linecount = 0;
     document.getElementById( "info" ).innerHTML = "";
-    var vergelem = document.getElementById( "vergleich" );
+    let vergelem = document.getElementById( "vergleich" );
     vergelem.innerHTML = "";
     vergelem.style.width = "100000px";
     vergelem.style.height = "100%";
-    var menuelem = document.getElementById( "alledmenu" );
+    let menuelem = document.getElementById( "alledmenu" );
     whichview = 5;
-    var savecurrented = currented;
+    let savecurrented = currented;
     //renderlinesparallel for all
-    for( var edid = 0; edid <= alltexts.length-1; edid = edid + 1 ){
+    for( let edid = 0; edid <= alltexts.length-1; edid = edid + 1 ){
             currented = edid;
             buildcomparatiowico( currented );
-            var infoma = document.createElement("div");
+            let infoma = document.createElement("div");
             infoma.className = "mainfo";
             vergelem.appendChild( infoma );
             //info
-            var thebib = "";
+            let thebib = "";
             if( currentedseries.toLowerCase ){ //currentedseries is string
                 thebib = bibdynvars[currentedseries];
             } else {
-                for( var c in menuelem.children ){
+                for( let c in menuelem.children ){
         	        if( c == currentedseries ){
             	        thebib = bibdynvars[ menuelem.children[c].innerHTML ];
 		            }
@@ -1663,15 +1663,15 @@ function comparatiomatrix( ){
             
 
             if( thebib ){
-                 var b = thebib[ currented ];
-                 var editor = document.createElement("div");
+                 let b = thebib[ currented ];
+                 let editor = document.createElement("div");
       		        editor.className = "reditorPma";
       		        editor.innerHTML = b[2] +"; " + b[4] +" "+ b[5] + "<br/>"+ b[3] +"; "+b[6];
       		        infoma.appendChild( editor );
-                for( var i = 0; i < thebib.length; i++ ){
+                for( let i = 0; i < thebib.length; i++ ){
 			        if( i != currented ){
             		    b = thebib[ i ];
-                        var editor = document.createElement("div");
+                        let editor = document.createElement("div");
       		            editor.className = "reditorPma";
       		            editor.innerHTML = b[2] +"; " + b[4] +" "+ b[5] + "<br/>"+ b[3] +"; "+b[6];
       		            infoma.appendChild( editor );
@@ -1679,14 +1679,14 @@ function comparatiomatrix( ){
 		        }
             } else {
                 
-                 var editor = document.createElement("div");
+                 let editor = document.createElement("div");
       		        editor.className = "reditorPma";
       		        editor.innerHTML = textnames[ currented ][1]+"; "+ textnames[ currented ][2] +" "+ textnames[ currented ][3].split(".txt")[0];
       		        infoma.appendChild( editor );
-                for( var i = 0; i < textnames.length; i++ ){
+                for( let i = 0; i < textnames.length; i++ ){
 			        if( i != currented ){
             		    b = textnames[ i ];
-                        var editor = document.createElement("div");
+                        let editor = document.createElement("div");
       		            editor.className = "reditorPma";
       		            editor.innerHTML =  b[1]+"; "+ b[2] +" "+ b[3].split(".txt")[0];
       		            infoma.appendChild( editor );
@@ -1694,22 +1694,22 @@ function comparatiomatrix( ){
 		        }
 
             }
-            var zeile = document.createElement("div");
+            let zeile = document.createElement("div");
             zeile.className = "mazeile";
             vergelem.appendChild( zeile );
-            var refspan = document.createElement("span");
+            let refspan = document.createElement("span");
             refspan.className = "maref";
             zeile.appendChild( refspan );
-            for( var e = 0; e < alltexts.length; e = e + 1 ){
+            for( let e = 0; e < alltexts.length; e = e + 1 ){
                 if( e != currented ){
-                    var elem = document.createElement("span");
+                    let elem = document.createElement("span");
                     elem.className = "maverglt";
                     elem.id = e.toString( );
                     zeile.appendChild( elem );
                 }
             } 
             renderlinesparallel( 0, 100000000000, zeile.children );
-            for( var e = 0; e < alltexts.length; e++ ){
+            for( let e = 0; e < alltexts.length; e++ ){
                 infoma.children[e].style.width = (zeile.children[e].offsetWidth-13).toString() + "px";
             }
      }
@@ -1717,24 +1717,24 @@ function comparatiomatrix( ){
 }
 
 function comparatioparallel( aindex ){
-    r = 0;
+    rscrollconfig = 0;
     moretextoffset = 0;
     buildcomparatiowico( currented );
-    var vergelem = document.getElementById( "vergleich" );
+    let vergelem = document.getElementById( "vergleich" );
     vergelem.innerHTML = "";
     whichview = 1;
     linecount = 0;
     linehinstory = [];
     vergelem.style.width = "100000px";
-    var thetextelems = [];
+    let thetextelems = [];
   
-    var refspan = document.createElement("span");
+    let refspan = document.createElement("span");
     refspan.className = "ref";
     refspan.id = "ref";
     vergelem.appendChild( refspan );
-      for( var edid = 0; edid <= alltexts.length-1; edid = edid + 1 ){
+      for( let edid = 0; edid <= alltexts.length-1; edid = edid + 1 ){
           if(edid != currented ){
-                var elem = document.createElement("span");
+                let elem = document.createElement("span");
                 elem.className = "verglt";
                 elem.id = edid.toString( );
                 vergelem.appendChild( elem );
@@ -1745,74 +1745,74 @@ function comparatioparallel( aindex ){
     colornewonscreen();
     /*build the hearder*/
     document.getElementById( "info" ).innerHTML = "";
-    var menuelem = document.getElementById( "alledmenu" );
-    var ielem = document.getElementById( "info" );
+    let menuelem = document.getElementById( "alledmenu" );
+    let ielem = document.getElementById( "info" );
     ielem.style.height = "50px";
-    var thebib = "";
+    let thebib = "";
     if( currentedseries.toLowerCase ){ //currentedseries is string
         thebib = bibdynvars[currentedseries];
     } else {
-        for( var c in menuelem.children ){
+        for( let c in menuelem.children ){
         	if( c == currentedseries ){
             	thebib = bibdynvars[ menuelem.children[c].innerHTML ];
 		    }
 	    }
     }
 	if( thebib ){
-		var b = thebib[currented];
-        for(var i = 0; i < thebib.length; i++){
+		let b = thebib[currented];
+        for(let i = 0; i < thebib.length; i++){
 			if( thebib[ i ][0] == currented ){
         		b = thebib[ i ];
 			}	
 		}
-  		var editor = document.createElement("div");
+  		let editor = document.createElement("div");
   		editor.className = "reditorP";
   		editor.style.position = "absolute";
-  		var posofreftext = getpositiononpage( vergelem.children[0] );
+  		let posofreftext = getpositiononpage( vergelem.children[0] );
   		editor.style.left = posofreftext[1].toString() + "px";
   		editor.innerHTML = b[2] +"; " + b[4] +" "+ b[5] + "<br/>"+ b[3] +"; "+b[6];
   		ielem.appendChild( editor );
-  		for( var tn = 1; tn < vergelem.children.length; tn++ ){
-			var indexverg = parseInt( vergelem.children[ tn ].id );
+  		for( let tn = 1; tn < vergelem.children.length; tn++ ){
+			let indexverg = parseInt( vergelem.children[ tn ].id );
 
-			for(var i = 0; i < thebib.length; i++){
+			for(let i = 0; i < thebib.length; i++){
 				if( thebib[ i ][0] == indexverg ){
         			b = thebib[ i ];
 				}
 			}
-     		var editor = document.createElement("div");
+     		let editor = document.createElement("div");
       		editor.className = "reditorP";
       		editor.style.position = "absolute";
       
-      		var posofreftext = getpositiononpage( vergelem.children[ tn ] );
+      		let posofreftext = getpositiononpage( vergelem.children[ tn ] );
       		editor.style.left = posofreftext[1].toString() + "px";
       		editor.innerHTML = b[2] +"; " + b[4] +" "+ b[5] + "<br/>"+ b[3] +"; "+b[6];
       		ielem.appendChild( editor );
 		}
     } else {
-  		var n = textnames[ currented ][1].split("_");
-  		var nn = n.join( "." );
-  		var rtuo = textnames[ currented ][3].split(".")[0];
-  		var editor = document.createElement("div");
+  		let n = textnames[ currented ][1].split("_");
+  		let nn = n.join( "." );
+  		let rtuo = textnames[ currented ][3].split(".")[0];
+  		let editor = document.createElement("div");
   		editor.className = "reditorP";
   		editor.style.position = "absolute";
-  		var posofreftext = getpositiononpage( vergelem.children[0] );
+  		let posofreftext = getpositiononpage( vergelem.children[0] );
   		editor.style.left = posofreftext[1].toString() + "px";
 
-		var t = textnames[ currented ][2].split("_");
-  		var tt = n.join( "." );
+		let t = textnames[ currented ][2].split("_");
+  		let tt = n.join( "." );
   		editor.innerHTML = nn +"; <br/> "+ tt + "; " + rtuo;
   		ielem.appendChild( editor );
-  		for( var tn = 1; tn < vergelem.children.length; tn++ ){
+  		for( let tn = 1; tn < vergelem.children.length; tn++ ){
       		n = textnames[ parseInt( vergelem.children[ tn ].id ) ][1].split("_");
       		nn = n.join( "." );
       		rtuo = textnames[ parseInt( vergelem.children[ tn ].id ) ][3].split(".")[0];
-      		var editor = document.createElement("div");
+      		let editor = document.createElement("div");
       		editor.className = "reditorP";
       		editor.style.position = "absolute";
-      		var t = textnames[ currented ][2].split("_");
-  			var tt = n.join( "." );
-     		var posofreftext = getpositiononpage( vergelem.children[ tn ] );
+      		let t = textnames[ currented ][2].split("_");
+  			let tt = n.join( "." );
+     		let posofreftext = getpositiononpage( vergelem.children[ tn ] );
       		editor.style.left = posofreftext[1].toString() + "px";
       		editor.innerHTML = nn +"; <br/> "+ tt + "; " + rtuo;
       		ielem.appendChild( editor );
@@ -1823,10 +1823,10 @@ function comparatioparallel( aindex ){
 }
 
 function correctpositionofInfoparallel( ){
-	var vergelem = document.getElementById( "vergleich" );
-	var infoelem = document.getElementById( "info" );
-	for( var tn = 0; tn < vergelem.children.length; tn++ ){
-        var posofreftext = getpositiononpage( vergelem.children[ tn ] );
+	let vergelem = document.getElementById( "vergleich" );
+	let infoelem = document.getElementById( "info" );
+	for( let tn = 0; tn < vergelem.children.length; tn++ ){
+        let posofreftext = getpositiononpage( vergelem.children[ tn ] );
         if(tn == 1){
             infoelem.children[ tn ].style.width = (vergelem.children[ tn ].offsetWidth-16).toString() + "px";
             infoelem.children[ tn ].style.left = (posofreftext[1]+vergelem.children[ tn ].style.paddingLeft).toString() + "px";
@@ -1836,7 +1836,7 @@ function correctpositionofInfoparallel( ){
         }
     }
 	//correct lenght of vergleich box
-	var l = vergelem.children[0].children.length;
+	let l = vergelem.children[0].children.length;
 	lineheight = vergelem.children[0].children[0].offsetHeight;
   	vergelem.style.height = ((lineheight*l) +moretextoffset).toString() + "px";
 }
@@ -1846,16 +1846,16 @@ function comparatiobuch( aindex ){
     linecount = 0;
     linehinstory = [];
     whichview = 2;
-    var velem = document.getElementById( "vergleich" );
+    let velem = document.getElementById( "vergleich" );
     velem.innerHTML = "";
     velem.style.height = "100%";
     velem.style.width = "99%";
     makeueberschriftDundB( );
-    var apparatelem = document.createElement( "div" );
+    let apparatelem = document.createElement( "div" );
     apparatelem.id = "apparat";
-    var al = document.createElement( "div" );
+    let al = document.createElement( "div" );
     al.id = "apparatline";
-    var textverelem = document.createElement( "div" );
+    let textverelem = document.createElement( "div" );
     textverelem.id = "textver";
     //define height of thext elems 
     apparatelem.style.height = "auto";
@@ -1872,39 +1872,39 @@ function comparatiobuch( aindex ){
 
 function comparatiodiagramm( aindex ){
 	whichview = 4;
-	var velem = document.getElementById( "vergleich" );
+	let velem = document.getElementById( "vergleich" );
     velem.innerHTML = "";
 	velem.style.height = "100%";
   	velem.style.width = "99%";
 	makeueberschriftDundB( );
 	//tabelle
-  	var labeltabellendiv = document.createElement( "div" );
+  	let labeltabellendiv = document.createElement( "div" );
 	labeltabellendiv.className = "dialabel";
 	labeltabellendiv.innerHTML = "<br>Unterschiede in Zahlen:";
-	var tabellendiv = document.createElement( "div" );
+	let tabellendiv = document.createElement( "div" );
 	tabellendiv.innerHTML = textSTAT( 1 );
 	velem.appendChild( labeltabellendiv );
 	velem.appendChild( tabellendiv );
 	//balkendiagramm
-	var labelXYdiv = document.createElement( "div" );
+	let labelXYdiv = document.createElement( "div" );
     labelXYdiv.style.width = "420px";
 	labelXYdiv.className = "dialabel";
 	labelXYdiv.innerHTML = "Nach Unterschieden gezählt:";
-	var XYdiv = document.createElement( "div" );
+	let XYdiv = document.createElement( "div" );
 	XYdiv.appendChild( getunterschSVG() );
 	velem.appendChild( labelXYdiv );
 	velem.appendChild( XYdiv );
 	//dichte und lokalisation
 	buildcomparatiowico( currented );
-	var labelDichtediv = document.createElement( "div" );
+	let labelDichtediv = document.createElement( "div" );
 	labelDichtediv.className = "dialabel";
 	labelDichtediv.innerHTML = "Vergleich der Vergleiche:";
-	var Dichtediv = document.createElement( "div" );
+	let Dichtediv = document.createElement( "div" );
 	Dichtediv.appendChild( getposdichteSVG() );
     Dichtediv.id = "svgtodownload";
 	velem.appendChild( labelDichtediv );
 	velem.appendChild( Dichtediv );
-    var downbuttDivv = document.createElement( "div" );
+    let downbuttDivv = document.createElement( "div" );
     downbuttDivv.innerHTML = "Download SVG";
     downbuttDivv.className = "clickable";
     downbuttDivv.title = "Mit dieser Funktion können sie den Vergleich der Vergleiche herunter laden.";
@@ -1918,7 +1918,7 @@ function comparatiodiagramm( aindex ){
 /**************************************************************/
 
 function typographmessure( ){
-    var velem = document.getElementById( "vergleich" );
+    let velem = document.getElementById( "vergleich" );
     velem.style.fontFamily = "gentiumplus";
     velem.innerHTML = "Test";
     lineheight = velem.offsetHeight;
@@ -1927,13 +1927,13 @@ function typographmessure( ){
     linewidth = velem.offsetWidth;
     velem.innerHTML = "";
     velem.style.width = "99%";
-    var v = 0;
+    let v = 0;
     try{
         v = document.getElementById( "allmenu" ).offsetHeight;
     } catch (e){ } //allmenu is only available in mothership 
-    var vv = document.getElementById( "alledmenu" ).offsetHeight;
-    var vvv = document.getElementById( "edmenu" ).offsetHeight;
-    var vvvv = document.getElementById( "viewmenu" ).offsetHeight;
+    let vv = document.getElementById( "alledmenu" ).offsetHeight;
+    let vvv = document.getElementById( "edmenu" ).offsetHeight;
+    let vvvv = document.getElementById( "viewmenu" ).offsetHeight;
     textscreenheight = screen.height - (v + vv + vvv + vvvv + 50);
     textscreenwidth = screen.width;
     maxlines = Math.floor( textscreenheight / lineheight );
@@ -1977,18 +1977,18 @@ function hidevarianten( id, elem, oldhtml ){
 function showvarianten( id, elem ){
 	document.getElementById( id ).style.display = "block";
 	document.getElementById( id ).style.position = "absolute";
-	var posofmarker = getpositiononpage( elem );
+	let posofmarker = getpositiononpage( elem );
 	document.getElementById( id ).style.left = (posofmarker[1]+10) + "px";
 	document.getElementById( id ).style.top = (posofmarker[0]+10) + "px";
-	var numberof = document.getElementById( id ).children[ 0 ].getAttribute("name");
-	var theallhtml = "";
-	var thetemphtml = "";
-	var oldhtml = "";
-	for( var c = 0; c < document.getElementById( id ).children.length; c++ ){
+	let numberof = document.getElementById( id ).children[ 0 ].getAttribute("name");
+	let theallhtml = "";
+	let thetemphtml = "";
+	let oldhtml = "";
+	for( let c = 0; c < document.getElementById( id ).children.length; c++ ){
 		if( document.getElementById( id ).children[ c ].getAttribute("name") != numberof ){
-			var tn = textnames[ parseInt(numberof) ];
-			var name = "<div class='st'>("+tn[1].replace(/ _ /g,",").replace(/_/g,".") +")</div>";
-			var currenthtml = thetemphtml + name;
+			let tn = textnames[ parseInt(numberof) ];
+			let name = "<div class='st'>("+tn[1].replace(/ _ /g,",").replace(/_/g,".") +")</div>";
+			let currenthtml = thetemphtml + name;
 			theallhtml = theallhtml + currenthtml;
 			thetemphtml = "";
 		} 
@@ -1996,9 +1996,9 @@ function showvarianten( id, elem ){
 		numberof = document.getElementById( id ).children[ c ].getAttribute( "name" );
 	}
 	if( thetemphtml != "" ){
-		var tn = textnames[ parseInt(numberof) ];
-			var name = "<div class='st'>("+tn[1].replace(/_/g,".") +")</div>";
-			var currenthtml = thetemphtml+name;
+		let tn = textnames[ parseInt(numberof) ];
+			let name = "<div class='st'>("+tn[1].replace(/_/g,".") +")</div>";
+			let currenthtml = thetemphtml+name;
 			theallhtml = theallhtml + currenthtml.replace(/\<br\>\<\/br\>/g,"UMBRUCH<br></br>");
 			thetemphtml = "";
 	}
@@ -2011,9 +2011,9 @@ function showvarianten( id, elem ){
 }
 
 function sizeline( id, sizeinpercent ){
-    var elem = document.getElementById( id );
+    let elem = document.getElementById( id );
     elem.style.fontSize = sizeinpercent;
-    for( var c = 0; c <= elem.children.length-1; c = c+1 ){
+    for( let c = 0; c <= elem.children.length-1; c = c+1 ){
         if( elem.children[ c ].style != undefined && 
             elem.children[ c ] != undefined ){
                 elem.children[ c ].style.fontSize = sizeinpercent;
@@ -2023,23 +2023,23 @@ function sizeline( id, sizeinpercent ){
 
 function prevSTEP( ){
     //finde anzahl der worte in den lines zuvor
-    var vergelem = document.getElementById( "vergleich" );
+    let vergelem = document.getElementById( "vergleich" );
     if( whichview == 2 ){
         vergelem = document.getElementById( "textver" );
     }  
-    var verl = vergelem.children.length;
+    let verl = vergelem.children.length;
     if( whichview == 1 ){
          verl = document.getElementById( "ref" ).children.length;
     }
-    var ddd = rendercount; //how much is rendered
-    var diffof = linehinstory.length - verl;
+    let ddd = rendercount; //how much is rendered
+    let diffof = linehinstory.length - verl;
     
     if( rendercount > diffof ){
         ddd = diffof;
     }
-    var NEWINDEX = 0;
+    let NEWINDEX = 0;
     if( renderstyle == 0 ){
-        for( var v = 0; v < verl+ddd; v += 1 ){
+        for( let v = 0; v < verl+ddd; v += 1 ){
             if(linehinstory.length != 0){
                 //console.log("eine");
                 linehinstory.pop();
@@ -2052,7 +2052,7 @@ function prevSTEP( ){
         }
     } else {
         if( blockhistory.length > 0 ){
-            var n = blockhistory.pop( );
+            let n = blockhistory.pop( );
             NEWINDEX = blockhistory[ blockhistory.length-1 ][0];
             verl = blockhistory[ blockhistory.length-1 ][1];
             linecount -= vergelem.children.length+verl-2;
@@ -2068,7 +2068,7 @@ function prevSTEP( ){
         vergelem.innerHTML = "";
         lastwordindex = renderlines( NEWINDEX, verl );
     } else if( whichview == 1 ){ //parallelview
-        for( var elemi = 0; elemi < vergelem.children.length; elemi = elemi + 1){
+        for( let elemi = 0; elemi < vergelem.children.length; elemi = elemi + 1){
             while ( vergelem.children[elemi].hasChildNodes( ) ) { 
                 vergelem.children[elemi].removeChild( vergelem.children[elemi].firstChild ); 
             }
@@ -2098,9 +2098,9 @@ function nextSTEP( ){
 			return;
 	}
     //render screenlines
-    var vergelem = document.getElementById( "vergleich" );
-    var goon = 0;
-    var ddd = rendercount;
+    let vergelem = document.getElementById( "vergleich" );
+    let goon = 0;
+    let ddd = rendercount;
     if( oldrendercount != rendercount ){
         ddd = oldrendercount;
     }
@@ -2111,14 +2111,14 @@ function nextSTEP( ){
                 goon += 1; 
             }
         }
-        var indexlength = [ lastwordindex ];
+        let indexlength = [ lastwordindex ];
         lastwordindex = renderlines( lastwordindex, rendercount );
         indexlength.push( vergelem.children.length );
         if( renderstyle != 0 ){
             blockhistory.push( indexlength );
         }
     } else if( whichview == 1 ){ //parallelview
-        for( var elemi = 0; elemi < vergelem.children.length; elemi = elemi + 1 ){
+        for( let elemi = 0; elemi < vergelem.children.length; elemi = elemi + 1 ){
             goon = 0;
             while ( vergelem.children[elemi].hasChildNodes() && goon < ddd) { 
                 vergelem.children[ elemi ].removeChild( vergelem.children[elemi].firstChild ); 
@@ -2127,7 +2127,7 @@ function nextSTEP( ){
                 }                
             }
         }
-        var indexlength = [ lastwordindex ];
+        let indexlength = [ lastwordindex ];
         lastwordindex = renderlinesparallel( lastwordindex+1, rendercount, vergelem.children ); 
         indexlength.push( document.getElementById( "ref" ).children.length );
 		correctpositionofInfoparallel( );
@@ -2135,8 +2135,8 @@ function nextSTEP( ){
             blockhistory.push( indexlength );
         }
     } else if( whichview == 2 ) { //buchview
-        var aelem = document.getElementById( "apparat" );
-        var indexlength = [lastwordindex];
+        let aelem = document.getElementById( "apparat" );
+        let indexlength = [lastwordindex];
         while( vergelem.children[0].hasChildNodes() && goon < ddd ){ 
             vergelem.children[0].removeChild( vergelem.children[0].firstChild ); 
             if( renderstyle == 0 ){
@@ -2164,7 +2164,7 @@ function nextSTEP( ){
             }
         }
         //console.log("lastwordindex", lastwordindex, rendercount);
-        var indexlength = [ lastwordindex ];
+        let indexlength = [ lastwordindex ];
         lastwordindex = renderlinesinterlin( lastwordindex+1, rendercount );
         //console.log(lastwordindex);
         indexlength.push( vergelem.children.length );
@@ -2191,19 +2191,19 @@ function handelaTOOlonPline( elem ){
 }
 
 function renderlinesinterlin( wordstart, howmanylines ){
-    var templinecount = 0;
-    var container = document.getElementById( "vergleich" );
-    var perlinecontainer = document.createElement("div");
+    let templinecount = 0;
+    let container = document.getElementById( "vergleich" );
+    let perlinecontainer = document.createElement("div");
     perlinecontainer.className = "interlline";
-    var templinewidth = 200;
-    var wordnumtoreturn = 0;
+    let templinewidth = 200;
+    let wordnumtoreturn = 0;
     /**/
     
-    var thebib = "";
+    let thebib = "";
     if( currentedseries.toLowerCase ){ //currentedseries is string
         thebib = bibdynvars[currentedseries];
     } else {
-        for( var c in menuelem.children ){
+        for( let c in menuelem.children ){
         	if( c == currentedseries ){
             	thebib = bibdynvars[ menuelem.children[c].innerHTML ];
 		    }
@@ -2214,19 +2214,19 @@ function renderlinesinterlin( wordstart, howmanylines ){
         thebib = textnames;
     }
 
-    var editorstack = document.createElement("div");
+    let editorstack = document.createElement("div");
         editorstack.className = "editorstack";
         
-    var aed =  document.createElement("div");
+    let aed =  document.createElement("div");
         aed.innerHTML = thebib[ currented ][2];
         aed.style.height = lineheight.toString()+"px";
         aed.style.overflow = "hidden";
         aed.className = "stacked";
     editorstack.appendChild( aed );
     
-    for(var reihe = 0; reihe < alltexts.length; reihe++ ){
+    for(let reihe = 0; reihe < alltexts.length; reihe++ ){
         if( currented != reihe ){
-            var aed =  document.createElement("div");
+            let aed =  document.createElement("div");
             aed.innerHTML = thebib[ reihe ][2];
             aed.style.height = lineheight.toString()+"px";
             aed.style.overflow = "hidden";
@@ -2234,19 +2234,19 @@ function renderlinesinterlin( wordstart, howmanylines ){
             editorstack.appendChild( aed );
         }
     }
-    var linenumelem = document.createElement("span");
+    let linenumelem = document.createElement("span");
             linenumelem.className = "linenum wordstack";
             linenumelem.innerHTML = linecount+templinecount;
             
             perlinecontainer.appendChild( linenumelem );
     perlinecontainer.appendChild( editorstack );
 
-    for( var wi = wordstart; wi < alltexts[ currented ].length; wi = wi+1 ){
+    for( let wi = wordstart; wi < alltexts[ currented ].length; wi = wi+1 ){
         
-        var wordstack = document.createElement("div");
+        let wordstack = document.createElement("div");
         wordstack.className = "wordstack";
         perlinecontainer.appendChild( wordstack );
-        var refword = document.createElement("div");
+        let refword = document.createElement("div");
         refword.innerHTML = alltexts[ currented ][wi] + " ";
         refword.className = "stacked";
         refword.style.height = lineheight.toString()+"px";
@@ -2256,16 +2256,16 @@ function renderlinesinterlin( wordstart, howmanylines ){
 
         
 
-        var Us = wico[ wi.toString() ];
+        let Us = wico[ wi.toString() ];
         
         if( Us != undefined ){  
-            for(var reihe = 0; reihe < alltexts.length; reihe++ ){
+            for(let reihe = 0; reihe < alltexts.length; reihe++ ){
             
             if( currented != reihe  ){
-                var dispan = document.createElement("div");
+                let dispan = document.createElement("div");
                 dispan.className = "stacked";
                 dispan.style.height = lineheight.toString()+"px";
-                for( var di in Us ){
+                for( let di in Us ){
 
                 
                     if( reihe == Us[di][0] ){
@@ -2283,9 +2283,9 @@ function renderlinesinterlin( wordstart, howmanylines ){
                     dispan.innerHTML = dispan.innerHTML+ " " + alltexts[ Us[di][0] ][ Us[di][1] ];
                 }
 				if( Us[di][2] != "" ){
-                    var disup = document.createElement("sup");
-				    var tempclasssup = "";
-				    var givvenclasssup = Us[di][2];
+                    let disup = document.createElement("sup");
+				    let tempclasssup = "";
+				    let givvenclasssup = Us[di][2];
 				    if( givvenclasssup.indexOf(" T") != -1 ){
 					    tempclasssup = tempclasssup + " " + TU;
 						dispan.className = "diffil" + Us[di][2];
@@ -2381,7 +2381,7 @@ function renderlinesinterlin( wordstart, howmanylines ){
             container.appendChild( perlinecontainer );
             perlinecontainer = document.createElement("div");
             perlinecontainer.className = "interlline";
-            var linenumelem = document.createElement("span");
+            let linenumelem = document.createElement("span");
             linenumelem.className = "linenum wordstack";
             linenumelem.innerHTML = linecount+ templinecount;
             
@@ -2412,40 +2412,40 @@ function renderlinesinterlin( wordstart, howmanylines ){
 }
 
 function renderlinesparallel( wordstart, howmanylines, elemarray ){
-    var templinecount = 0;
-    var templinelength = 0;
-    var wocount = 0;
-    var linearray = []; 
-    var countfreelines = 0;
-    var howlong = alltexts[ currented ].length-1;
+    let templinecount = 0;
+    let templinelength = 0;
+    let wocount = 0;
+    let linearray = []; 
+    let countfreelines = 0;
+    let howlong = alltexts[ currented ].length-1;
     if( !( wordstart < howlong ) ){
         return;
     }
-    for( var elemi = 0; elemi < elemarray.length; elemi = elemi + 1 ){
-        var linediv = document.createElement("div");
+    for( let elemi = 0; elemi < elemarray.length; elemi = elemi + 1 ){
+        let linediv = document.createElement("div");
         linediv.className = "pline";
-        var linenumelem = document.createElement("span");
+        let linenumelem = document.createElement("span");
         linenumelem.className = "linenum";
         linenumelem.innerHTML = linecount + templinecount;
         linediv.appendChild( linenumelem );
         elemarray[ elemi ].appendChild( linediv );
     }
-    for( var wi = wordstart; wi < alltexts[ currented ].length; wi = wi+1 ){
+    for( let wi = wordstart; wi < alltexts[ currented ].length; wi = wi+1 ){
 
         if( renderstyle == 0 ){
             if( Math.abs( howmanylines ) <= templinecount || wi ==  alltexts[ currented ].length ){
                 linecount = linecount + templinecount;
                 lastvisibleline = linecount; 
-				for( var elemi = 0; elemi < elemarray.length; elemi = elemi + 1){
+				for( let elemi = 0; elemi < elemarray.length; elemi = elemi + 1){
 		            if(elemarray[ elemi ].lastChild.offsetWidth > (parallelpartwidth+140) && doverk ){
-			            var toolongspan = document.createElement("span");
+			            let toolongspan = document.createElement("span");
 			            toolongspan.innerHTML = " ⥤";
 			            toolongspan.style.cursor = "pointer";
 			            toolongspan.className = "toolong";
-			            var aid = elemarray[ elemi ].lastChild.firstChild.innerHTML+"toolo"+elemi.toString();
+			            let aid = elemarray[ elemi ].lastChild.firstChild.innerHTML+"toolo"+elemi.toString();
 			            toolongspan.name = aid;
 			            toolongspan.onclick = function(){ handelaTOOlonPline( this ); };
-			            var hidetoolong = document.createElement("span");
+			            let hidetoolong = document.createElement("span");
 			            hidetoolong.id = aid;
 			            hidetoolong.style.display = "none";
 			            while ( elemarray[ elemi ].lastChild.childNodes.length > 2 ) {
@@ -2478,14 +2478,14 @@ function renderlinesparallel( wordstart, howmanylines, elemarray ){
                 return wi;
             }
         }
-        var intoit = alltexts[ currented ][ wi ];
+        let intoit = alltexts[ currented ][ wi ];
         if( intoit == "" || intoit == " " ){
             countfreelines += 1;
         } else {
             countfreelines = 0;
         }
-        var cuwo = intoit;
-        var refword = document.createElement("span");
+        let cuwo = intoit;
+        let refword = document.createElement("span");
         if(dodebug == 1){
             refword.innerHTML = " " + cuwo + "<sub> " + wi.toString() + "</sub>";
         } else {
@@ -2501,16 +2501,16 @@ function renderlinesparallel( wordstart, howmanylines, elemarray ){
         }
         elemarray[ 0 ].lastChild.appendChild( refword );
         templinelength = templinelength + refword.offsetWidth;
-        var Us = wico[ wi.toString() ]; //in der wico scheint das letzte wort zu fehlen
-        var dojustonce = 0;
+        let Us = wico[ wi.toString() ]; //in der wico scheint das letzte wort zu fehlen
+        let dojustonce = 0;
         if( Us != undefined ){  
-            for( var di in Us ){
+            for( let di in Us ){
 			    if(alltexts[ Us[di][0] ][ Us[di][1] ] == undefined){
-                    var dispan = document.createElement("span");
+                    let dispan = document.createElement("span");
                     dispan.innerHTML = "GAB";
 				    continue;
 			    }
-				var dispan = document.createElement("span");
+				let dispan = document.createElement("span");
                 dispan.setAttribute("name", Us[di][0].toString()); 
                 dispan.setAttribute("title", wi.toString());
                 if(dodebug == 1){
@@ -2519,9 +2519,9 @@ function renderlinesparallel( wordstart, howmanylines, elemarray ){
                     dispan.innerHTML = " " + alltexts[ Us[di][0] ][ Us[di][1] ];
                 }
 				if( Us[di][2] != "" ){
-                    var disup = document.createElement("sup");
-				    var tempclasssup = "";
-				    var givvenclasssup = Us[di][2];
+                    let disup = document.createElement("sup");
+				    let tempclasssup = "";
+				    let givvenclasssup = Us[di][2];
 				    if( givvenclasssup.indexOf(" T") != -1 ){
 					    tempclasssup = tempclasssup + " " + TU;
 						dispan.className = "diffil" + Us[di][2];
@@ -2597,10 +2597,17 @@ function renderlinesparallel( wordstart, howmanylines, elemarray ){
                     disup.innerHTML = tempclasssup;
                     dispan.appendChild( disup );
                 }
-				for(var e in elemarray){
-                    if(parseInt( elemarray[ e ].id ) == Us[di][0] ){
-					    if( parseInt(dispan.title) - parseInt( elemarray[ e ].lastChild.children[ elemarray[ e ].lastChild.children.length-1 ].title) > 1 ){
-                            var aa = document.createElement("span");
+				for( let e in elemarray ){
+                    if( parseInt( elemarray[ e ].id ) == Us[di][0] ){
+                        let miau = parseInt(dispan.title)- parseInt( elemarray[ e ].lastChild.children[ elemarray[ e ].lastChild.children.length-1 ].title);
+                        
+                        if( isNaN(miau) && elemarray[ e ].children.length > 1 ){
+                            miau = parseInt(dispan.title) - parseInt(elemarray[ e ].children[elemarray[ e ].children.length-2].children[ elemarray[ e ].children[elemarray[ e ].children.length-2].children.length-1 ].title);
+                        }
+                        
+                        
+					    if( miau > 1 ){
+                            let aa = document.createElement("span");
                             aa.className = "diffil T bonbon"
                             aa.innerHTML = " "+bonbon+" ";
                             elemarray[ e ].lastChild.appendChild(aa);
@@ -2610,7 +2617,7 @@ function renderlinesparallel( wordstart, howmanylines, elemarray ){
 						if( wi == alltexts[ currented ].length-1 &&
 							alltexts[ Us[di][0] ].length-1 > Us[di][1] &&
 							dojustonce == 0 ){
-							var t = getresttext( Us[di][0], Us[di][1] );
+							let t = getresttext( Us[di][0], Us[di][1] );
 							elemarray[ e ].lastChild.lastChild.innerHTML = elemarray[ e ].lastChild.lastChild.innerHTML + "<br/><span class='moretext'> "+ t +" </span>";
 							if( moretextoffset < t.length){
 								moretextoffset = t.length;
@@ -2630,17 +2637,17 @@ function renderlinesparallel( wordstart, howmanylines, elemarray ){
                 linecount = linecount + templinecount;
                 return wi;
             }
-            for( var elemi = 0; elemi < elemarray.length; elemi = elemi + 1){
+            for( let elemi = 0; elemi < elemarray.length; elemi = elemi + 1){
                 if(elemarray[ elemi ].lastChild.offsetWidth > (parallelpartwidth+130) && doverk ){
-			        var toolongspan = document.createElement("span");
+			        let toolongspan = document.createElement("span");
 			        toolongspan.innerHTML = " ⥤";
 			        toolongspan.style.cursor = "pointer";
 			        toolongspan.className = "toolong";
-			        var aid = elemarray[ elemi ].lastChild.firstChild.innerHTML+"toolo"+elemi.toString();
+			        let aid = elemarray[ elemi ].lastChild.firstChild.innerHTML+"toolo"+elemi.toString();
 			        toolongspan.name = aid;
 			        toolongspan.onclick = function(){ handelaTOOlonPline(this); };
 			
-			        var hidetoolong = document.createElement("span");
+			        let hidetoolong = document.createElement("span");
 			        hidetoolong.id = aid;
 			        hidetoolong.style.display = "none";
 			        while ( elemarray[ elemi ].lastChild.childNodes.length > 2 ) {
@@ -2649,9 +2656,9 @@ function renderlinesparallel( wordstart, howmanylines, elemarray ){
 			        elemarray[ elemi ].lastChild.appendChild( hidetoolong );
 			        elemarray[ elemi ].lastChild.appendChild( toolongspan );
 		        }
-                var linediv = document.createElement("div");
+                let linediv = document.createElement("div");
                 linediv.className = "pline";
-                var linenumelem = document.createElement("span");
+                let linenumelem = document.createElement("span");
                 linenumelem.className = "linenum";
                 linenumelem.innerHTML = linecount + templinecount;
                 linediv.appendChild( linenumelem );
@@ -2664,8 +2671,8 @@ function renderlinesparallel( wordstart, howmanylines, elemarray ){
 }
 
 function getresttext( tid, wid ){
-	var thestring = "";
-	for( var i = wid+1; i < alltexts[tid].length; i++ ){
+	let thestring = "";
+	for( let i = wid+1; i < alltexts[tid].length; i++ ){
 		thestring = thestring + " " +alltexts[tid][i];
 	}
 	return thestring
@@ -2673,21 +2680,21 @@ function getresttext( tid, wid ){
 
 function renderlines( wordstart, howmanylines ){
     if(alltexts){
-        var velem = document.getElementById( "vergleich" );
-        var templinelength = 0;
-        var templinecount = 0;
-        var wordcount = 0;
-        var countempty = 0;
-        var linediv = document.createElement("div");
+        let velem = document.getElementById( "vergleich" );
+        let templinelength = 0;
+        let templinecount = 0;
+        let wordcount = 0;
+        let countempty = 0;
+        let linediv = document.createElement("div");
         linediv.className = "line";
-        var linenumelem = document.createElement("span");
+        let linenumelem = document.createElement("span");
         linenumelem.className = "linenum";
         linenumelem.innerHTML = linecount + templinecount;
         linediv.appendChild( linenumelem );
-        var countfreelines = 0;
-        var howlong = alltexts[ currented ].length-1;
+        let countfreelines = 0;
+        let howlong = alltexts[ currented ].length-1;
 
-        for( var wi = wordstart; wi <= howlong; wi = wi+1 ){
+        for( let wi = wordstart; wi <= howlong; wi = wi+1 ){
 
             if(renderstyle == 0){
                 if( Math.abs( howmanylines ) <= templinecount || wi ==  alltexts[ currented ].length ){
@@ -2717,14 +2724,14 @@ function renderlines( wordstart, howmanylines ){
                     return wi;
                 }
             } 
-            var intoit = alltexts[ currented ][ wi ];
+            let intoit = alltexts[ currented ][ wi ];
             if( intoit == "" || intoit == " " ){
                 countfreelines += 1;
             } else {
                 countfreelines = 0;
             }
 
-            var sspan = document.createElement("span");
+            let sspan = document.createElement("span");
             if(colorindex != null && colorindex == wi){
                 sspan.className = "same urn";
             } else {
@@ -2739,27 +2746,27 @@ function renderlines( wordstart, howmanylines ){
             linediv.appendChild( sspan );
             velem.appendChild( linediv );
             templinelength += sspan.offsetWidth;
-            var Us = tog[ wi.toString() ];
+            let Us = tog[ wi.toString() ];
             if( Us != undefined ){
               templinelength += 5;
-              var dmspan = document.createElement("span");
+              let dmspan = document.createElement("span");
               dmspan.className = "diffmarker";
               dmspan.setAttribute("name", wi.toString()); 
               dmspan.setAttribute("onclick", "showvarianten(this.getAttribute('name'), this)");
               dmspan.innerHTML = "&#9660;";
-              var dspan = document.createElement("span");
+              let dspan = document.createElement("span");
               dspan.className = "diffbundel";
               dspan.id = wi.toString();
-              for( var di in Us ){
-                var dispan = document.createElement("span");
+              for( let di in Us ){
+                let dispan = document.createElement("span");
                 dispan.setAttribute("name", Us[di][0].toString()); 
                 //dispan.className = "diff" + Us[di][2];
-                var innertext = alltexts[ Us[di][0] ][ Us[di][1] ];
+                let innertext = alltexts[ Us[di][0] ][ Us[di][1] ];
                 if(innertext != undefined){
                 dispan.innerHTML = innertext;
-                var disup = document.createElement("sup");
-                var tempclasssup = "";
-                var givvenclasssup = Us[di][2];
+                let disup = document.createElement("sup");
+                let tempclasssup = "";
+                let givvenclasssup = Us[di][2];
                 if( givvenclasssup.indexOf(" T") != -1 ){
 	                tempclasssup = tempclasssup + " " + TU;
 	                dispan.className = "diff" + Us[di][2];
@@ -2847,7 +2854,7 @@ function renderlines( wordstart, howmanylines ){
             }
             if( templinelength >= linewidth ){
                 linehinstory.push( wi );
-                var wc = document.createElement("span");
+                let wc = document.createElement("span");
                 wc.className = "wordsinline"; 
                 wc.innerHTML = wordcount.toString();
                 linediv.appendChild( wc );
@@ -2858,7 +2865,7 @@ function renderlines( wordstart, howmanylines ){
                 linediv.className = "line";
                 templinelength = 0;
                 templinecount += 1;
-                var linenumelem = document.createElement("span");
+                let linenumelem = document.createElement("span");
                 linenumelem.className = "linenum";
                 linenumelem.innerHTML = linecount + templinecount;
                 linediv.appendChild( linenumelem );
@@ -2872,30 +2879,30 @@ function renderlines( wordstart, howmanylines ){
 }
 
 function renderlinesBuch( wordstart, howmanylines ){
-    var aelem = document.getElementById( "apparat" ); //children of vergleich
-    var velem = document.getElementById( "textver" );
+    let aelem = document.getElementById( "apparat" ); //children of vergleich
+    let velem = document.getElementById( "textver" );
     //contoll vars      
-    var howlong = alltexts[ currented ].length-1;
-    var templinelength = 0;
-    var templinecount = 0;
-    var wordcount = 0;
-    var countfreelines = 0;
-    var linediv = document.createElement("div");
-    var appline = document.createElement("span");
-    var reflinenum = document.createElement("span");
+    let howlong = alltexts[ currented ].length-1;
+    let templinelength = 0;
+    let templinecount = 0;
+    let wordcount = 0;
+    let countfreelines = 0;
+    let linediv = document.createElement("div");
+    let appline = document.createElement("span");
+    let reflinenum = document.createElement("span");
     reflinenum.className = "refline clickableED";
-    var lnum = linecount + templinecount;
+    let lnum = linecount + templinecount;
     reflinenum.innerHTML = lnum;
     reflinenum.onclick = function(){ showbuchline(this); };
     appline.appendChild( reflinenum );
     linediv.className = "line";
-    var linenumelem = document.createElement("span");
+    let linenumelem = document.createElement("span");
     linenumelem.className = "linenum clickableED";
     linenumelem.onclick = function(){ showbuchline(this); };
     linenumelem.innerHTML = linecount + templinecount;
     linediv.appendChild( linenumelem );
     //line numerbers
-    for( var wi = wordstart; wi < alltexts[ currented ].length; wi = wi+1 ){
+    for( let wi = wordstart; wi < alltexts[ currented ].length; wi = wi+1 ){
         if( renderstyle == 0 ){
             if( Math.abs( howmanylines ) <= templinecount || wi ==  alltexts[ currented ].length ){
                 linecount = linecount + templinecount;
@@ -2925,14 +2932,14 @@ function renderlinesBuch( wordstart, howmanylines ){
                 return wi;
             }
          }
-         var intoit = alltexts[ currented ][ wi ];
+         let intoit = alltexts[ currented ][ wi ];
          if(intoit == "" || intoit == " "){
             countfreelines += 1;
          } else {
             countfreelines = 0;
          }
         //
-        var sspan = document.createElement("span");
+        let sspan = document.createElement("span");
         if(colorindex != null && colorindex == wi){
 			    sspan.className = "same urn";
 		    } else {
@@ -2947,10 +2954,10 @@ function renderlinesBuch( wordstart, howmanylines ){
         linediv.appendChild( sspan );
         velem.appendChild( linediv );
         templinelength += sspan.offsetWidth;
-        var Us = tog[ wi.toString() ];
+        let Us = tog[ wi.toString() ];
         if( Us != undefined ){
-          for( var di in Us ){
-                var dispan = document.createElement("span");
+          for( let di in Us ){
+                let dispan = document.createElement("span");
                 dispan.style.cursor = "pointer";
                 if( currentedseries.toLowerCase ){
                     dispan.id = "buchv:app:"+currentedseries+":"+(Us[di][0]+1).toString()+":"+(Us[di][1]+1).toString();
@@ -2960,14 +2967,14 @@ function renderlinesBuch( wordstart, howmanylines ){
 			        dispan.name = "buchv:"+(currentedseries+1)+":"+(currented+1)+":"+(wi+1).toString();
                 }
 			    dispan.onclick = function(){ buchshowword( this ); };
-                var ttn = textnames[ Us[di][0] ];
+                let ttn = textnames[ Us[di][0] ];
 
-			    var innertext = alltexts[ Us[di][0] ][ Us[di][1] ];
+			    let innertext = alltexts[ Us[di][0] ][ Us[di][1] ];
 			    if(innertext != undefined ){
                 dispan.innerHTML = innertext;
-                var disup = document.createElement("sup");
-			    var tempclasssup = "";
-			    var givvenclasssup = Us[di][2];
+                let disup = document.createElement("sup");
+			    let tempclasssup = "";
+			    let givvenclasssup = Us[di][2];
 			    if( givvenclasssup.indexOf("T") != -1 ){
 				    tempclasssup = tempclasssup + " " + TU;
 				    dispan.className = "diffil" + Us[di][2];
@@ -3043,7 +3050,7 @@ function renderlinesBuch( wordstart, howmanylines ){
 			    }
                 disup.innerHTML = tempclasssup;//Us[di][2];
                 dispan.appendChild( disup );
-                var tedelem = document.createElement("span");
+                let tedelem = document.createElement("span");
                 tedelem.className = "st";
                 //console.log(ttn)
                 tedelem.innerHTML = " ("+ttn[1].replace(/ _ /g,",").replace(/_/g,".") +") ";
@@ -3057,7 +3064,7 @@ function renderlinesBuch( wordstart, howmanylines ){
         }
           if( templinelength >= linewidth ){
                 linehinstory.push( wi );
-                var wc = document.createElement("span");
+                let wc = document.createElement("span");
                 wc.className = "wordsinline"; 
                 wc.innerHTML = wordcount.toString();
                 linediv.appendChild( wc );
@@ -3071,15 +3078,15 @@ function renderlinesBuch( wordstart, howmanylines ){
               templinelength = 0;
               templinecount += 1;
               appline = document.createElement("span");
-              var reflinenum = document.createElement("span");
+              let reflinenum = document.createElement("span");
               reflinenum.className = "refline clickableED";
-              var lnum = linecount + templinecount;
+              let lnum = linecount + templinecount;
           	  reflinenum.innerHTML = lnum;
           	  reflinenum.onclick = function(){ showbuchline(this); };
               appline.appendChild( reflinenum );
                 
               aelem.appendChild( appline );
-              var linenumelem = document.createElement("span");
+              let linenumelem = document.createElement("span");
               linenumelem.className = "linenum clickableED";
 		      linenumelem.onclick = function(){ showbuchline(this); };
               linenumelem.innerHTML = linecount + templinecount;
@@ -3108,7 +3115,7 @@ function killTASTAT( ){
 }
 
 function svgline( x1, y1, x2, y2, w, c, xmlns ){
- 	var aline = document.createElementNS( xmlns, 'line');
+ 	let aline = document.createElementNS( xmlns, 'line');
     aline.setAttribute('x1', x1);
     aline.setAttribute('y1', y1);
     aline.setAttribute('x2', x2);
@@ -3118,7 +3125,7 @@ function svgline( x1, y1, x2, y2, w, c, xmlns ){
 	return aline;
 }
 function svgtext( x, y, r, fs, texttext, c, xmlns ){
-	var atextelem = document.createElementNS( xmlns, 'text');
+	let atextelem = document.createElementNS( xmlns, 'text');
 	atextelem.setAttribute('x', x);
     atextelem.setAttribute('y', y);
 	atextelem.setAttribute('fill', c);
@@ -3128,7 +3135,7 @@ function svgtext( x, y, r, fs, texttext, c, xmlns ){
 	return atextelem;
 } 
 function svgrect( x, y, w, h, c, xmlns ){
-	var arec = document.createElementNS( xmlns, 'rect');
+	let arec = document.createElementNS( xmlns, 'rect');
     arec.setAttribute('x', x);
     arec.setAttribute('y', y);
     arec.setAttribute('width', w);
@@ -3137,74 +3144,74 @@ function svgrect( x, y, w, h, c, xmlns ){
 	return arec;
 }
 function getunterschSVG( ){
-	var w = 2000;
-	var h = 400;
-	var xmlns = "http://www.w3.org/2000/svg";
-	var mainsvgelem = document.createElementNS (xmlns, "svg");
+	let w = 2000;
+	let h = 400;
+	let xmlns = "http://www.w3.org/2000/svg";
+	let mainsvgelem = document.createElementNS (xmlns, "svg");
 	mainsvgelem.setAttributeNS(null, "viewBox", "0 0 " + w + " " + h);
     mainsvgelem.setAttributeNS(null, "width", w);
     mainsvgelem.setAttributeNS(null, "height", h);
     mainsvgelem.style.display = "block";
 	mainsvgelem.style.background = "white";
-	var cx = 15;
-	var cy = 10;
-	var cw = 16;
-	var cd = 2;
-	var diaH = 300;
-	var diaW = ((cw+cd)*alltexts.length)*12;
+	let cx = 15;
+	let cy = 10;
+	let cw = 16;
+	let cd = 2;
+	let diaH = 300;
+	let diaW = ((cw+cd)*alltexts.length)*12;
 	mainsvgelem.appendChild( svgline( 10, 5, 10, diaH, 1, "black", xmlns) ); //yachse
 	mainsvgelem.appendChild( svgtext( 8, 22, -90, "10px", "0.0", "black", xmlns) ); //0.0 text
 	mainsvgelem.appendChild( svgline( 5, Math.round(diaH/2), 10, Math.round(diaH/2)-1, 1, "black", xmlns) ); //0.5 strich
 	mainsvgelem.appendChild( svgtext( 8, Math.round(diaH/2), -90, "10px", "0.5", "black", xmlns) ); //0.5 text
 
-	var ml = svgline( 10, Math.round(diaH/2), diaW, Math.round(diaH/2), 1, "black", xmlns)
+	let ml = svgline( 10, Math.round(diaH/2), diaW, Math.round(diaH/2), 1, "black", xmlns)
 	ml.setAttribute( "stroke-dasharray","3, 3" );
 	mainsvgelem.appendChild( ml );
 	mainsvgelem.appendChild( svgline( 10, 10, diaW, 10, 1, "black", xmlns) ); //xachse
 	mainsvgelem.appendChild( svgtext( 8, diaH, -90, "10px", "1.0", "black", xmlns) ); //1.0 text
-	var ll = svgline( 10, diaH, diaW, diaH, 1, "black", xmlns)
+	let ll = svgline( 10, diaH, diaW, diaH, 1, "black", xmlns)
 	ll.setAttribute( "stroke-dasharray","3, 3" );
 	mainsvgelem.appendChild( ll );
 
-	var t = 0;
-    var d = 0;
-    var c = 0;
-    var l = 0;
-    var z = 0;
-    var i = 0;
-	var m = 0;
-	var k = 0; 
-	var v = 0;
-	var vert = 0;
-    var verdre = 0; 
-	var miat = 0;
-	var ein = 0;
-    var dist = 0;
-    var wtn = 0;
-	var countpertext = [];
-	for( var R = 0; R < comparatio.length; R++ ){
+	let t = 0;
+    let d = 0;
+    let c = 0;
+    let l = 0;
+    let z = 0;
+    let i = 0;
+	let m = 0;
+	let k = 0; 
+	let v = 0;
+	let vert = 0;
+    let verdre = 0; 
+	let miat = 0;
+	let ein = 0;
+    let dist = 0;
+    let wtn = 0;
+	let countpertext = [];
+	for( let R = 0; R < comparatio.length; R++ ){
         if( currented == comparatio[ R ][0] ){ //refid
-        	var co = comparatio[ R ][1]; //pro text
-        	for( var T in co ){
-           		var ti = co[T][0][1] //textid
+        	let co = comparatio[ R ][1]; //pro text
+        	for( let T in co ){
+           		let ti = co[T][0][1] //textid
 
-		   		var cwordcount = alltexts[ ti ].length-1;
-				var tt = 0;
-      			var dd = 0;
-      			var cc = 0;
-      			var ll = 0;
-      			var zz = 0;
-      			var ii = 0;
-				var mm = 0;
-	 	 		var kk = 0; 
-	  			var vv = 0;
-	  			var miatmiat = 0;
-	  			var einein = 0;
-      			var distdist = 0;
-      			var wtnwtn = 0;
-                var vertvert = 0;
-                var verdreverdre = 0;
-           		for( var w in co[T] ){
+		   		let cwordcount = alltexts[ ti ].length-1;
+				let tt = 0;
+      			let dd = 0;
+      			let cc = 0;
+      			let ll = 0;
+      			let zz = 0;
+      			let ii = 0;
+				let mm = 0;
+	 	 		let kk = 0; 
+	  			let vv = 0;
+	  			let miatmiat = 0;
+	  			let einein = 0;
+      			let distdist = 0;
+      			let wtnwtn = 0;
+                let vertvert = 0;
+                let verdreverdre = 0;
+           		for( let w in co[T] ){
             		if(w > 0){ //scip first elem in array is just indices
              
 						if( co[T][ w ][2].indexOf(" T") != -1 ){
@@ -3282,19 +3289,19 @@ function getunterschSVG( ){
 		}
 	}
 	console.log(countpertext[0].length-2, "u klassen");
-	for(var uk = 1; uk < 16; uk++ ){
-		var randcolor = '#' + Math.random().toString(16).substring(2, 8);
-		for(var pt = 0; pt < countpertext.length; pt++ ){
-			var n = textnames[ countpertext[pt][16] ][2].split("_");
-  			var nn = n.join( "." );
-			var editorname = textnames[ countpertext[pt][16] ][1].split("_");
-			var mh =  (diaH* (countpertext[pt][uk]/countpertext[pt][0]));
-			var ccy = cy;
+	for(let uk = 1; uk < 16; uk++ ){
+		let randcolor = '#' + Math.random().toString(16).substring(2, 8);
+		for(let pt = 0; pt < countpertext.length; pt++ ){
+			let n = textnames[ countpertext[pt][16] ][2].split("_");
+  			let nn = n.join( "." );
+			let editorname = textnames[ countpertext[pt][16] ][1].split("_");
+			let mh =  (diaH* (countpertext[pt][uk]/countpertext[pt][0]));
+			let ccy = cy;
 			if( countpertext[pt][uk] < 1){
 				mh = 3;
 				ccy = cy-4;
 			}
-			var balken = svgrect( cx, ccy, cw, mh, randcolor, xmlns );
+			let balken = svgrect( cx, ccy, cw, mh, randcolor, xmlns );
 			balken.name = editorname + "; " + nn;
 			balken.onmouseout = function(){ hideelemname( ); };
 			balken.onmouseenter = function(){ showelemname( this ); };
@@ -3303,7 +3310,7 @@ function getunterschSVG( ){
 		}
 		mainsvgelem.appendChild( svgline( cx, 10, cx, diaH, 1, "black", xmlns) );
 
-		var stringtodisp = "";
+		let stringtodisp = "";
 		if(uk == 1){
 			stringtodisp = TUleg;
 		} else if(uk == 2){
@@ -3342,65 +3349,65 @@ function getunterschSVG( ){
 } 
 
 function getposdichteSVG( ){
-	var w = 10000;
-	var h = 500;
-	var xmlns = "http://www.w3.org/2000/svg";
-	var mainsvgelem = document.createElementNS (xmlns, "svg");
+	let w = 10000;
+	let h = 500;
+	let xmlns = "http://www.w3.org/2000/svg";
+	let mainsvgelem = document.createElementNS (xmlns, "svg");
 	mainsvgelem.setAttributeNS (null, "viewBox", "0 0 " + w + " " + h);
     mainsvgelem.setAttributeNS (null, "width", w);
     mainsvgelem.setAttributeNS (null, "height", h);
     mainsvgelem.style.display = "block";
 	mainsvgelem.style.background = "white";
 
-	var cx = 3;
-	var cy = 10;
-	var hinc = 4;
-	var vinc = 12;
-	var hb = 6;
-	var vb = 6;
-	var maxtexts = alltexts.length-1;
-	var currenttext = 0;
-	var oldcx = 10000000;
-	var nref = textnames[ currented ][2].split("_");
-  	var nnref = nref.join( "." );
-	var editornameref = textnames[ currented ][1].split("_");
-	for( var currenttext = 0; currenttext < alltexts.length; currenttext++ ){
+	let cx = 3;
+	let cy = 10;
+	let hinc = 4;
+	let vinc = 12;
+	let hb = 6;
+	let vb = 6;
+	let maxtexts = alltexts.length-1;
+	let currenttext = 0;
+	let oldcx = 10000000;
+	let nref = textnames[ currented ][2].split("_");
+  	let nnref = nref.join( "." );
+	let editornameref = textnames[ currented ][1].split("_");
+	for( let currenttext = 0; currenttext < alltexts.length; currenttext++ ){
 		if( currenttext != currented ){
-			var randcolor = '#' + Math.random().toString(16).substring(2, 8);
-			var wasin = false;
+			let randcolor = '#' + Math.random().toString(16).substring(2, 8);
+			let wasin = false;
 			//text einblenden
-			var n = textnames[ currenttext ][2].split("_");
-  			var nn = n.join( "." );
-			var editorname = textnames[ currenttext ][1].split("_");
+			let n = textnames[ currenttext ][2].split("_");
+  			let nn = n.join( "." );
+			let editorname = textnames[ currenttext ][1].split("_");
 			mainsvgelem.appendChild( svgtext( cx, cy, 0, "9px", editornameref+"; "+ nnref +" MIT "+editorname+"; "+nn, "black", xmlns ) );
 			//cy weiter setzen
 			cy = cy+10;
-			for( var wi = 0; wi < alltexts[ currented ].length; wi = wi+1 ){
-				var Us = wico[ wi.toString() ]; 
+			for( let wi = 0; wi < alltexts[ currented ].length; wi = wi+1 ){
+				let Us = wico[ wi.toString() ]; 
 				if( wasin ){
 					randcolor = '#' + Math.random().toString(16).substring(2, 8);
 					wasin = false;
 				}
-				var wordline = svgline( cx, cy, cx, cy+vb, hb, randcolor, xmlns);
+				let wordline = svgline( cx, cy, cx, cy+vb, hb, randcolor, xmlns);
 				wordline.name = alltexts[ currented ][wi]; //+" ("+ wi.toString() +"), " + currented.toString();
 				wordline.onmouseout = function(){ hideelemname( ); };
 				wordline.onmouseenter = function(){ showelemname( this ); };
 				mainsvgelem.appendChild( wordline );
     			if( Us != undefined ){
 					//console.log( Us.length, Us, alltexts[ Us[1][0] ][ Us[1][1] ] );
-					var ccx = cx;
-					var ccy = cy+vb+vb;
+					let ccx = cx;
+					let ccy = cy+vb+vb;
 					
-					for(var v = 0; v < Us.length; v++){
+					for(let v = 0; v < Us.length; v++){
 						if( Us[v][0] == currenttext ){
 							//alltexts[ Us[v][0] ][ Us[v][1] ] //diffil Us[0][2] 
-							var wordl = svgline( ccx, ccy, ccx, ccy+vb, hb, randcolor, xmlns);
+							let wordl = svgline( ccx, ccy, ccx, ccy+vb, hb, randcolor, xmlns);
 							wordl.name = alltexts[ Us[v][0] ][ Us[v][1] ]; //+ " ("+ Us[v][2] +"),"+Us[v][1].toString()+", "+currenttext.toString() ;
 							wordl.onmouseout = function(){ hideelemname( ); };
 							wordl.onmouseenter = function(){ showelemname( this ); };
 							mainsvgelem.appendChild( wordl );
 							if( Us[v][2] == "" ){
-								var sameline = svgline( ccx, ccy, cx, cy+vb, 1, "black", xmlns);
+								let sameline = svgline( ccx, ccy, cx, cy+vb, 1, "black", xmlns);
 								mainsvgelem.appendChild( sameline );
 							}
 							ccx += hb + hinc;
@@ -3426,50 +3433,50 @@ function getposdichteSVG( ){
 }
 
 function textSTAT( returnorschow ){
-      var t = 0;
-      var d = 0;
-      var c = 0;
-      var l = 0;
-      var z = 0;
-      var i = 0;
+      let t = 0;
+      let d = 0;
+      let c = 0;
+      let l = 0;
+      let z = 0;
+      let i = 0;
 
-	  var m = 0;
-	  var k = 0; 
-	  var v = 0;
-	  var vert = 0;
-        var verdre = 0;
-	  var miat = 0;
-	  var ein = 0;
-      var dist = 0;
-      var wtn = 0;
-      var vwt = 0;
-	  var wordcount = alltexts[ currented ].length-1;
+	  let m = 0;
+	  let k = 0; 
+	  let v = 0;
+	  let vert = 0;
+        let verdre = 0;
+	  let miat = 0;
+	  let ein = 0;
+      let dist = 0;
+      let wtn = 0;
+      let vwt = 0;
+	  let wordcount = alltexts[ currented ].length-1;
 	  
-      var texteinzeln = "";
-      for( var R = 0; R < comparatio.length; R = R +1 ){
+      let texteinzeln = "";
+      for( let R = 0; R < comparatio.length; R = R +1 ){
         if( currented == comparatio[ R ][0] ){ //refid
-        	var co = comparatio[ R ][1]; //pro text
-        	for( var T in co ){
-           		var ti = co[T][0][1] //textid
-		   		var cwordcount = alltexts[ ti ].length-1;
-				var tt = 0;
-      			var dd = 0;
-      			var cc = 0;
-      			var ll = 0;
-      			var zz = 0;
-      			var ii = 0;
+        	let co = comparatio[ R ][1]; //pro text
+        	for( let T in co ){
+           		let ti = co[T][0][1] //textid
+		   		let cwordcount = alltexts[ ti ].length-1;
+				let tt = 0;
+      			let dd = 0;
+      			let cc = 0;
+      			let ll = 0;
+      			let zz = 0;
+      			let ii = 0;
 			
-				var mm = 0;
-	 	 		var kk = 0; 
-	  			var vv = 0;
-	  			var vertvert = 0;
-                var verdreverdre = 0;
-	  			var miatmiat = 0;
-	  			var einein = 0;
-      			var distdist = 0;
-      			var wtnwtn = 0;
-      			var vwtvwt = 0;
-           		for( var w in co[T] ){
+				let mm = 0;
+	 	 		let kk = 0; 
+	  			let vv = 0;
+	  			let vertvert = 0;
+                let verdreverdre = 0;
+	  			let miatmiat = 0;
+	  			let einein = 0;
+      			let distdist = 0;
+      			let wtnwtn = 0;
+      			let vwtvwt = 0;
+           		for( let w in co[T] ){
             		if(w > 0){ //scip first elem in array is just indices
              
 						if( co[T][ w ][2].indexOf(" T") != -1 ){
@@ -3546,15 +3553,15 @@ function textSTAT( returnorschow ){
 						}
              		}
            		}
-				var n = textnames[ ti ][2].split("_");
-  				var nn = n.join( "." );
-				var editorname = "";//textnames[ ti ][1].split("_");
+				let n = textnames[ ti ][2].split("_");
+  				let nn = n.join( "." );
+				let editorname = "";//textnames[ ti ][1].split("_");
 				texteinzeln = texteinzeln+"<div class='tabellenspalte'><div class='tabellenkopf'>"+editorname+" "+nn+"</div><div class='tabellenzelle'><b>"+TU+"</b>: "+tt.toString()+" / "+(tt/cwordcount).toFixed(4).toString()+"</div><div class='tabellenzelle'><b>"+DK+"</b>: "+dd.toString()+" / "+(dd/cwordcount).toFixed(4).toString()+"</div><div class='tabellenzelle'><b>"+GK+"</b>: "+cc.toString()+" / "+(cc/cwordcount).toFixed(4).toString()+"</div><div class='tabellenzelle'><b>"+LI+"</b>: "+ll.toString()+" / "+(ll/cwordcount).toFixed(4).toString()+"</div><div class='tabellenzelle'><b>"+ZK+"</b>: "+zz.toString()+" / "+(zz/cwordcount).toFixed(4).toString()+"</div><div class='tabellenzelle'><b>"+INTERP+"</b>: "+ii.toString()+" / "+(ii/cwordcount).toFixed(4).toString()+"</div><div class='tabellenzelle'><b>"+ME+"</b>: "+mm.toString()+" / "+(mm/cwordcount).toFixed(4).toString()+"</div><div class='tabellenzelle'><b>"+KK+"</b>: "+kk.toString()+" / "+(kk/cwordcount).toFixed(4).toString()+"</div><div class='tabellenzelle'><b>"+UV+"</b>: "+vv.toString()+" / "+(vv/cwordcount).toFixed(4).toString()+"</div><div class='tabellenzelle'><b>"+MIAT+"</b>: "+miatmiat.toString()+" / "+(miatmiat/cwordcount).toFixed(4).toString()+"</div><div class='tabellenzelle'><b>"+EIN+"</b>: "+einein.toString()+" / "+(einein/cwordcount).toFixed(4).toString()+"</div><div class='tabellenzelle'><b>"+DIST+"</b>: "+distdist.toString()+" / "+(distdist/cwordcount).toFixed(4).toString()+"</div><div class='tabellenzelle'><b>"+VERT+"</b>: "+vertvert.toString()+" / "+(vertvert/cwordcount).toFixed(4).toString()+"</div><div class='tabellenzelle'><b>"+VERDRE+"</b>: "+verdreverdre.toString()+" / "+(verdreverdre/cwordcount).toFixed(4).toString()+"</div><div class='tabellenzelle'><b>"+VWT+"</b>: "+(wtnwtn+vwtvwt).toString()+" / "+((wtnwtn+vwtvwt)/cwordcount).toFixed(4).toString()+"</div><div class='tabellenzelle'><b>Wortanzahl</b>: "+cwordcount.toString()+"</div></div>"; 
  
        		}
 		}
 	}
-	var ganzetabelle = "<div class='tabelle'><div class='tabellenspalte'><div class='tabellenkopf'>Insgesamt: </div><div class='tabellenzelle'><b>"+TU+"</b>: "+t.toString()+"</div><div class='tabellenzelle'><b>"+DK+"</b>: "+d.toString()+"</div><div class='tabellenzelle'><b>"+GK+"</b>: "+c.toString()+"</div><div class='tabellenzelle'><b>"+LI+"</b>: "+l.toString()+"</div><div class='tabellenzelle'><b>"+ZK+"</b>: "+z.toString()+"</div><div class='tabellenzelle'><b>"+INTERP+"</b>: "+i.toString()+"</div><div class='tabellenzelle'><b>"+ME+"</b>: "+m.toString()+"</div><div class='tabellenzelle'><b>"+KK+"</b>: "+k.toString()+"</div><div class='tabellenzelle'><b>"+UV+"</b>: "+v.toString()+"</div><div class='tabellenzelle'><b>"+MIAT+"</b>: "+miat.toString()+"</div><div class='tabellenzelle'><b>"+EIN+"</b>: "+ein.toString()+"</div><div class='tabellenzelle'><b>"+DIST+"</b>: "+dist.toString()+"</div><div class='tabellenzelle'><b>"+VERT+"</b>: "+vert.toString()+"</div><div class='tabellenzelle'><b>"+VERDRE+"</b>: "+verdre.toString()+"</div><div class='tabellenzelle'><b>"+VWT+"</b>: "+(wtn+vwt)+"</div><div class='tabellenzelle'><b>Wortanzahl</b>: "+wordcount.toString()+"</div></div>"+texteinzeln+"<div class='clear'></div></div><br><br><div onclick=\"closediv( 'hilfe' )\" class='clickableED'>&#9746;</div><br>";
+	let ganzetabelle = "<div class='tabelle'><div class='tabellenspalte'><div class='tabellenkopf'>Insgesamt: </div><div class='tabellenzelle'><b>"+TU+"</b>: "+t.toString()+"</div><div class='tabellenzelle'><b>"+DK+"</b>: "+d.toString()+"</div><div class='tabellenzelle'><b>"+GK+"</b>: "+c.toString()+"</div><div class='tabellenzelle'><b>"+LI+"</b>: "+l.toString()+"</div><div class='tabellenzelle'><b>"+ZK+"</b>: "+z.toString()+"</div><div class='tabellenzelle'><b>"+INTERP+"</b>: "+i.toString()+"</div><div class='tabellenzelle'><b>"+ME+"</b>: "+m.toString()+"</div><div class='tabellenzelle'><b>"+KK+"</b>: "+k.toString()+"</div><div class='tabellenzelle'><b>"+UV+"</b>: "+v.toString()+"</div><div class='tabellenzelle'><b>"+MIAT+"</b>: "+miat.toString()+"</div><div class='tabellenzelle'><b>"+EIN+"</b>: "+ein.toString()+"</div><div class='tabellenzelle'><b>"+DIST+"</b>: "+dist.toString()+"</div><div class='tabellenzelle'><b>"+VERT+"</b>: "+vert.toString()+"</div><div class='tabellenzelle'><b>"+VERDRE+"</b>: "+verdre.toString()+"</div><div class='tabellenzelle'><b>"+VWT+"</b>: "+(wtn+vwt)+"</div><div class='tabellenzelle'><b>Wortanzahl</b>: "+wordcount.toString()+"</div></div>"+texteinzeln+"<div class='clear'></div></div><br><br><div onclick=\"closediv( 'hilfe' )\" class='clickableED'>&#9746;</div><br>";
 
 	if( returnorschow == 0 ){
 		showhelpwithstr( ganzetabelle );
@@ -3572,16 +3579,16 @@ function buchshowword( elem ){
 }
 
 function showbuchline( num ){
-    var velem = document.getElementById( "textver" );
-    for( var lelem in velem.children ){
+    let velem = document.getElementById( "textver" );
+    for( let lelem in velem.children ){
         if( velem.children[ lelem ].firstChild ){
             if( parseInt( velem.children[ lelem ].firstChild.innerHTML ) == parseInt( num.innerHTML ) ){
                     velem.children[ lelem ].style.background = "rgba(224, 224, 224, 1)";
             }
         }
     }
-	var aelem = document.getElementById( "apparat" );
-	for( var lelem in aelem.children ){
+	let aelem = document.getElementById( "apparat" );
+	for( let lelem in aelem.children ){
 		if(aelem.children[ lelem ].firstChild){
             if( parseInt( aelem.children[ lelem ].firstChild.innerHTML ) == parseInt( num.innerHTML ) ){
 			    aelem.children[ lelem ].style.background = "rgba(224, 224, 224, 1)";
@@ -3591,12 +3598,12 @@ function showbuchline( num ){
 }
 
 function colorasame( ){
-	var t = document.getElementsByClassName( "verglt" );
+	let t = document.getElementsByClassName( "verglt" );
     if( whichview == 5 ){
         t = document.getElementsByClassName( "maverglt" );
     }
-	var dothetrick = 0;
-	for( var ti = 0; ti < t.length; ti++ ){
+	let dothetrick = 0;
+	for( let ti = 0; ti < t.length; ti++ ){
 		if( t[ti].style ){
 			if( t[ti].style.color == colorofdiffclasses ){
 				dothetrick = 1;
@@ -3617,9 +3624,9 @@ function colorasame( ){
 }
 
 function decolordiff( ){
-	for( var d in coloerdclass ){
-		var t = document.getElementsByClassName(  d  ); //just the keys are the classnames
-		for( var ti in t ){
+	for( let d in coloerdclass ){
+		let t = document.getElementsByClassName(  d  ); //just the keys are the classnames
+		for( let ti in t ){
 			if( t[ti].style ){
 				t[ ti ].style.color = "black";
 			}
@@ -3629,7 +3636,7 @@ function decolordiff( ){
 }
 
 function colornewonscreen( ){ //auswahl der eingefärbten unterschiede für neu auf der Seite angezeigte inhalte herstellen, aufzu rufen, wenn neuer basistext, oder neue zeile erscheint
-	for( var ci in coloerdclass ){
+	for( let ci in coloerdclass ){
 		if( coloerdclass[ci] == 1){
 			coloerdclass[ci] = 0;
 		} else {
@@ -3641,21 +3648,21 @@ function colornewonscreen( ){ //auswahl der eingefärbten unterschiede für neu 
 }
 
 function coloradiff( classname ){
-      var t = document.getElementsByClassName( classname );
+      let t = document.getElementsByClassName( classname );
       if( coloerdclass[ classname ] == 0 ){ //color it
-            for( var ti in t ){
+            for( let ti in t ){
                   if( t[ ti ].style ){
                         t[ ti ].style.color = colorofdiffclasses;
                         if( whichview == 0 ){
-                        	var idd = t[ ti ].parentNode.getAttribute( "id" );
+                        	let idd = t[ ti ].parentNode.getAttribute( "id" );
                        		if( idd ){
-                          		var marker = document.getElementsByName( idd )[0];
+                          		let marker = document.getElementsByName( idd )[0];
                           		marker.style.background = colorofdiffclasses;
                           		marker.style.color = colorofdiffclasses;
                         	}
                         } else if( whichview == 2 ){ //hide complete entrie in buchvie apparatus
-							var apparatusline =  t[ti].parentNode;
-							var indexofnext = Array.prototype.indexOf.call(apparatusline.children, t[ti]) + 1;
+							let apparatusline =  t[ti].parentNode;
+							let indexofnext = Array.prototype.indexOf.call(apparatusline.children, t[ti]) + 1;
 							t[ti].style.display = "inline";
 							apparatusline.children[ indexofnext ].style.display = "inline";
 				  		}
@@ -3664,18 +3671,18 @@ function coloradiff( classname ){
        coloerdclass[ classname ] = 1;
       } else { //decolor it
 			//console.log(t.length, "class divs diff")
-            for( var ti in t ){
+            for( let ti in t ){
                  if( t[ ti ].style ){
                       if(whichview == 0){
                         t[ ti ].style.color = "gray";
-                        var idd = t[ ti ].parentNode.getAttribute( "id" );
+                        let idd = t[ ti ].parentNode.getAttribute( "id" );
                         if( idd ){
-                           var marker = document.getElementsByName( idd )[0];
+                           let marker = document.getElementsByName( idd )[0];
                               marker.style.color = "gray";
                         }
                       } else if( whichview == 2 ){ //hide complete entrie in buchvie apparatus
-					    var apparatusline =  t[ti].parentNode;
-					    var indexofnext = Array.prototype.indexOf.call(apparatusline.children, t[ti]) + 1;
+					    let apparatusline =  t[ti].parentNode;
+					    let indexofnext = Array.prototype.indexOf.call(apparatusline.children, t[ti]) + 1;
 					    t[ti].style.display = "none";
 					    apparatusline.children[ indexofnext ].style.display = "none";
 				      } else {
@@ -3932,7 +3939,7 @@ function realymoddiffdes( ){
 /**************************************************************/
 function printstri( astri, aLINK ){
 	//console.log(idoftextfeald);
-	var childWindow = window.open('','childWindow','location=yes, menubar=yes, toolbar=yes');
+	let childWindow = window.open('','childWindow','location=yes, menubar=yes, toolbar=yes');
         childWindow.document.open();
         childWindow.document.write('<html><head><link rel="stylesheet" type="text/css" href="ed.css"></head><body>');
         childWindow.document.write(astri);
@@ -3947,21 +3954,21 @@ function printcomparatio( ){
 
 function calljsonphp( ){
     //call PHP for online storage 
-    var name = "";
-    var menuelem = document.getElementById( "alledmenu" );
-    for( var c = 0; c < menuelem.children.length; c += 1 ){
+    let name = "";
+    let menuelem = document.getElementById( "alledmenu" );
+    for( let c = 0; c < menuelem.children.length; c += 1 ){
         if( c == currentedseries ){
             name = menuelem.children[c].innerHTML;
         }
     }
-    var xmlHttp = new XMLHttpRequest();
+    let xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() { 
         if (xmlHttp.readyState == 4 ){
             if( xmlHttp.status == 200){
                 //GOT from PHP
                 if( xmlHttp.responseText.includes( "ERROR JSON File nicht vorhanden" ) ){ //if JSON File not found
                     if( currentedseries.toLowerCase ){
-                        var dadadad = "{'textnames' :"+ localStorage.getItem("ecompTENAMES"+currentedseries)+", "+
+                        let dadadad = "{'textnames' :"+ localStorage.getItem("ecompTENAMES"+currentedseries)+", "+
                         "'alltexts' :" + localStorage.getItem("ecompALLTEX"+currentedseries) + ", " +
                         "'comparatio' :" + localStorage.getItem("ecompRES"+currentedseries)  +"}";
                 
@@ -3974,7 +3981,7 @@ function calljsonphp( ){
                 }
             } else { //if php file not found
                 //GO FOR THE DATABASE
-                var dadadad = "{'textnames' :"+ localStorage.getItem("ecompTENAMES"+currentedseries)+", "+
+                let dadadad = "{'textnames' :"+ localStorage.getItem("ecompTENAMES"+currentedseries)+", "+
                 "'alltexts' :" + localStorage.getItem("ecompALLTEX"+currentedseries) + ", " +
                 "'comparatio' :" + localStorage.getItem("ecompRES"+currentedseries)  +"}";
         
@@ -3993,7 +4000,7 @@ function buildhtml( ){
     maxlines = 100000000;
     doverk = false; //richtiger render stil
     //undisplay elemt
-    var vergelem = document.getElementById( "vergleich" );
+    let vergelem = document.getElementById( "vergleich" );
     vergelem.style.display = "hidden";
     //render specific view
     if( whichview == 1 ){//synopse
@@ -4011,7 +4018,7 @@ function buildhtml( ){
         alert("Keine digitale Edition für diese Darstellung erstallbar. Wenden Sie sich an die Entwickler, wenn diese Funktion unbedingt erforderlich ist.");
     }
     //get innerHTML, put into index.html, export and done     
-        var prehtml = '<!DOCTYPE html>\n<html lang="de">\n<head>\n<meta charset="utf-8" />\n<title>'+currentedseries+'View'+whichview.toString()+'</title>\n<style>.toolong{\
+        let prehtml = '<!DOCTYPE html>\n<html lang="de">\n<head>\n<meta charset="utf-8" />\n<title>'+currentedseries+'View'+whichview.toString()+'</title>\n<style>.toolong{\
 	color:blue;\
 }\
 .mazeile{\
@@ -4139,7 +4146,7 @@ function buildhtml( ){
       width:auto;\
     border-bottom: 4px solid gray;\
 }</style>\n<script>\
-var textnames = ' +JSON.stringify( textnames ) + ';\n \
+let textnames = ' +JSON.stringify( textnames ) + ';\n \
     function hidevarianten( id, elem, oldhtml ){\n \
 	document.getElementById( id ).style.display = "none";\n \
 	document.getElementById( id ).innerHTML = oldhtml;\n \
@@ -4149,18 +4156,18 @@ var textnames = ' +JSON.stringify( textnames ) + ';\n \
     function showvarianten( id, elem ){\n\
 	document.getElementById( id ).style.display = "block";\n\
 	document.getElementById( id ).style.position = "absolute";\n\
-	var posofmarker = getpositiononpage( elem );\n\
+	let posofmarker = getpositiononpage( elem );\n\
 	document.getElementById( id ).style.left = (posofmarker[1]+10) + "px";\n\
 	document.getElementById( id ).style.top = (posofmarker[0]+10) + "px";\n\
-	var numberof = document.getElementById( id ).children[ 0 ].getAttribute("name");\n\
-	var theallhtml = "";\n\
-	var thetemphtml = "";\n\
-	var oldhtml = "";\n\
-	for( var c = 0; c < document.getElementById( id ).children.length; c++ ){\n\
+	let numberof = document.getElementById( id ).children[ 0 ].getAttribute("name");\n\
+	let theallhtml = "";\n\
+	let thetemphtml = "";\n\
+	let oldhtml = "";\n\
+	for( let c = 0; c < document.getElementById( id ).children.length; c++ ){\n\
 		if( document.getElementById( id ).children[ c ].getAttribute("name") != numberof ){\n\
-			var tn = textnames[ parseInt(numberof) ];\n\
-			var name = "<div class=\'st>("+tn[1].replace(/ _ /g,",").replace(/_/g,".") +")</div>";\n\
-			var currenthtml = thetemphtml + name;\n\
+			let tn = textnames[ parseInt(numberof) ];\n\
+			let name = "<div class=\'st>("+tn[1].replace(/ _ /g,",").replace(/_/g,".") +")</div>";\n\
+			let currenthtml = thetemphtml + name;\n\
 			theallhtml = theallhtml + currenthtml;\n\
 			thetemphtml = "";\n\
 		} \n\
@@ -4168,9 +4175,9 @@ var textnames = ' +JSON.stringify( textnames ) + ';\n \
 		numberof = document.getElementById( id ).children[ c ].getAttribute( "name" );\n\
 	}\n\
 	if( thetemphtml != "" ){\n\
-		var tn = textnames[ parseInt(numberof) ];\n\
-			var name = "<div class=\'st\'>("+tn[1].replace(/_/g,".") +")</div>";\n\
-			var currenthtml = thetemphtml+name;\n\
+		let tn = textnames[ parseInt(numberof) ];\n\
+			let name = "<div class=\'st\'>("+tn[1].replace(/_/g,".") +")</div>";\n\
+			let currenthtml = thetemphtml+name;\n\
 			theallhtml = theallhtml + currenthtml.replace(/\<br\>\<\\/br\>/g,"UMBRUCH<br></br>");\n\
 			thetemphtml = "";\n\
 	}\n\
@@ -4183,7 +4190,7 @@ var textnames = ' +JSON.stringify( textnames ) + ';\n \
 }\n\
 </script></head>\n<body >';
        
-var posthtml = '<script>\n\
+let posthtml = '<script>\n\
     function handelaTOOlonPline( elem ){\n\
 	if( document.getElementById( elem.name ).style.display.indexOf("inline") != -1 ){\n\
 		document.getElementById( elem.name ).style.display = "none";\n\
@@ -4195,11 +4202,11 @@ var posthtml = '<script>\n\
 }\n\
 function getpositiononpage( element ){\n\
     if( element.nodeType ){\n\
-        var rect = element.getBoundingClientRect( );\n\
-        var elementLeft, elementTop; \n\
-        var scrollTop = document.documentElement.scrollTop ?\n\
+        let rect = element.getBoundingClientRect( );\n\
+        let elementLeft, elementTop; \n\
+        let scrollTop = document.documentElement.scrollTop ?\n\
                         document.documentElement.scrollTop:document.body.scrollTop;\n\
-        var scrollLeft = document.documentElement.scrollLeft ?                   \n\
+        let scrollLeft = document.documentElement.scrollLeft ?                   \n\
                          document.documentElement.scrollLeft:document.body.scrollLeft;\n\
         elementTop = rect.top+scrollTop;\n\
         elementLeft = rect.left+scrollLeft;\n\
@@ -4208,13 +4215,13 @@ function getpositiononpage( element ){\n\
         return false;\n\
     }\n\
 }\n\
-var vergelem = document.getElementById( "vergleich" );\n\
-	var infoelem = document.getElementById( "info" );\n\
-var l = vergelem.children[0].children.length;\n\
-	var lineheight = vergelem.children[0].children[0].offsetHeight;\n\
+let vergelem = document.getElementById( "vergleich" );\n\
+	let infoelem = document.getElementById( "info" );\n\
+let l = vergelem.children[0].children.length;\n\
+	let lineheight = vergelem.children[0].children[0].offsetHeight;\n\
   	vergelem.style.height = (lineheight*l).toString() + "px";\n\
-    for( var tn = 0; tn < vergelem.children.length; tn++ ){\n\
-        var posofreftext = getpositiononpage( vergelem.children[ tn ] );\n\
+    for( let tn = 0; tn < vergelem.children.length; tn++ ){\n\
+        let posofreftext = getpositiononpage( vergelem.children[ tn ] );\n\
         if(tn == 1){\n\
             infoelem.children[ tn ].style.width = (vergelem.children[ tn ].offsetWidth-16).toString() + "px";\n\
             infoelem.children[ tn ].style.left = (posofreftext[1]+vergelem.children[ tn ].style.paddingLeft).toString() + "px";\n\
@@ -4232,24 +4239,24 @@ var l = vergelem.children[0].children.length;\n\
  
 function buildteixml( ){
 	comparatioparallel( 0 );
-	var TEIout = "<TEI xmlns='http://www.tei-c.org/ns/1.0'>\n<teiHeader>\n<fileDesc>\n<titleStmt><title></title><author>eComparatio</author><respStmt><resp>Text Encoding by </resp><name>eComparatio</name></respStmt></titleStmt><publicationStmt></publicationStmt><notesStmt></notesStmt><sourceDesc></sourceDesc></fileDesc>\n<encodingDesc><editorialDecl><p>eComparatio TEI Output</p></editorialDecl>\n<variantEncoding method='parallel-segmentation' location='internal'/></encodingDesc>\n</teiHeader>\n<text>\n<front>\n<div><listWit>";
-	var wittnesseses = [];
-	var infoelem = document.getElementById( "info" );
-	for( var c = 0; c < infoelem.children.length; c += 1 ){
-		var ih = infoelem.children[c].innerHTML.replace( /<br[^>]*>/gi, ";");
+	let TEIout = "<TEI xmlns='http://www.tei-c.org/ns/1.0'>\n<teiHeader>\n<fileDesc>\n<titleStmt><title></title><author>eComparatio</author><respStmt><resp>Text Encoding by </resp><name>eComparatio</name></respStmt></titleStmt><publicationStmt></publicationStmt><notesStmt></notesStmt><sourceDesc></sourceDesc></fileDesc>\n<encodingDesc><editorialDecl><p>eComparatio TEI Output</p></editorialDecl>\n<variantEncoding method='parallel-segmentation' location='internal'/></encodingDesc>\n</teiHeader>\n<text>\n<front>\n<div><listWit>";
+	let wittnesseses = [];
+	let infoelem = document.getElementById( "info" );
+	for( let c = 0; c < infoelem.children.length; c += 1 ){
+		let ih = infoelem.children[c].innerHTML.replace( /<br[^>]*>/gi, ";");
 		wittnesseses.push(ih);
 		TEIout = TEIout + "<witness xml:id='"+ih+"'>"+ih+"</witness>\n";
 	}
 	TEIout = TEIout + "</listWit></div>\n</front><head>\n<title><app></app></title>\n</head><body>\n<lg n='1'>";
-	var vergelem = document.getElementById( "vergleich" );
-	var numOline = vergelem.children[0].children.length;
+	let vergelem = document.getElementById( "vergleich" );
+	let numOline = vergelem.children[0].children.length;
 	//get the shit and replace html markup with tei p5 markup
-	for(var l = 0; l < numOline; l++){
+	for(let l = 0; l < numOline; l++){
 		TEIout = TEIout + "<l n='"+l.toString()+"'><app>";
-		for(var c = 0; c < vergelem.children.length; c++){
-			var lineelem = vergelem.children[c].children[l];
+		for(let c = 0; c < vergelem.children.length; c++){
+			let lineelem = vergelem.children[c].children[l];
 			TEIout = TEIout + "<rdg wit='#"+wittnesseses[c]+"'>";
-			for( var w = 0; w < lineelem.children.length; w++){
+			for( let w = 0; w < lineelem.children.length; w++){
 				if(lineelem.children[w].className.indexOf( "diffil" ) != -1){
 				   TEIout = TEIout + " "+lineelem.children[w].innerHTML.split("<sup>")[0].replace( /<[^>]*span[^>]*>/gi, " ").replace( /<br[^>]*>/gi, ";")+"<note>Unterschied: "+lineelem.children[w].className+" </note>";
 				} else {
@@ -4267,44 +4274,44 @@ function buildteixml( ){
 
 function tocsv( ){
     comparatioparallel( 0 );
-    var csvout = "";
-    var infoelem = document.getElementById( "info" );
+    let csvout = "";
+    let infoelem = document.getElementById( "info" );
 	
-	for( var c = 0; c < infoelem.children.length; c += 1 ){
+	for( let c = 0; c < infoelem.children.length; c += 1 ){
 		
 		csvout = csvout + (infoelem.children[c].innerHTML.split(";").join( " - " )).split("<br>").join( "" );
         
 		csvout = csvout + csvtrenner;
 	}
     csvout = csvout + "\n";
-    var vergelem = document.getElementById( "vergleich" );
-    var numOline = vergelem.children[0].children.length;
-	for(var l = 0; l < numOline; l++){
+    let vergelem = document.getElementById( "vergleich" );
+    let numOline = vergelem.children[0].children.length;
+	for(let l = 0; l < numOline; l++){
 		
-		for(var c = 0; c < vergelem.children.length; c++){
-			var lineelem = vergelem.children[c].children[l];
-			for( var w = 0; w < lineelem.children.length; w++){
+		for(let c = 0; c < vergelem.children.length; c++){
+			let lineelem = vergelem.children[c].children[l];
+			for( let w = 0; w < lineelem.children.length; w++){
                 if( lineelem.children[w].className.indexOf( "linenum" ) == -1){ //ksip lin numbers
 				    if( lineelem.children[w].className.indexOf( "diffil" ) != -1 ){
-                        var worrr = lineelem.children[w].innerHTML.split("<sup>")[0];
+                        let worrr = lineelem.children[w].innerHTML.split("<sup>")[0];
 					    csvout = csvout + " " + worrr.toUpperCase( );
 					
 				       	
 				    } else {
 					    if(lineelem.children[w].className.indexOf( "toolong" ) == -1){
 					        if(lineelem.children[w].style.display.indexOf( "none" ) != -1){
-							    for(var r = 0; r < lineelem.children[w].children.length; r++){
+							    for(let r = 0; r < lineelem.children[w].children.length; r++){
 								    if(lineelem.children[w].children[r].className.indexOf( "diffil" ) != -1){
-									    var worrr = lineelem.children[w].children[r].innerHTML.split("<sup>")[0];
+									    let worrr = lineelem.children[w].children[r].innerHTML.split("<sup>")[0];
 									    csvout = csvout + " " + worrr.toUpperCase();
 								    } else {
-									    var worrr = lineelem.children[w].children[r].innerHTML;
+									    let worrr = lineelem.children[w].children[r].innerHTML;
 									    csvout = csvout + " " + worrr;
 									
 								    }
 							    }
 						    } else {
-							    var worrr = lineelem.children[w].innerHTML;
+							    let worrr = lineelem.children[w].innerHTML;
 							    csvout = csvout + " " + worrr;
 							
 						    }
@@ -4319,14 +4326,14 @@ function tocsv( ){
         csvout = csvout + "\n";
 	}
 	
-	var wnd = window.open("about:blank", "", "_blank");
+	let wnd = window.open("about:blank", "", "_blank");
 	wnd.document.write( csvout );	
     dodownit( csvout, currentedseries+'.csv','text/text' );
 }
 
 function tolatex( ){
 	comparatioparallel( 0 ); //does that mean only the first displayed lines could be rendered - do we need to reset the maxline count
-	var LATEXout = "\\documentclass[a0paper]{article}\n" 
+	let LATEXout = "\\documentclass[a0paper]{article}\n" 
 				  +"\\usepackage[utf8]{inputenc}"
 				  +"\\usepackage[greek.polutoniko,ngerman]{babel}\n"
 				  +"\\newcommand{\\pg}{\\textgreek} \n"
@@ -4340,15 +4347,15 @@ function tolatex( ){
 				  +"\\begin{document}\n"
 				+"\\small \\begin{center}\n"
 				+"\\begin{longtable}{\n";
-	var vergelem = document.getElementById( "vergleich" );
-	for(var c = 0; c < vergelem.children.length; c++){
+	let vergelem = document.getElementById( "vergleich" );
+	for(let c = 0; c < vergelem.children.length; c++){
 		LATEXout = LATEXout + "|l";
 	}
 	LATEXout = LATEXout + "|}\n";
 
-	var infoelem = document.getElementById( "info" );
+	let infoelem = document.getElementById( "info" );
 	LATEXout = LATEXout + "\\hline ";
-	for( var c = 0; c < infoelem.children.length; c += 1 ){
+	for( let c = 0; c < infoelem.children.length; c += 1 ){
 		
 		LATEXout = LATEXout + infoelem.children[c].innerHTML.split(";").join( " - " );
 		if(c != infoelem.children.length-1){
@@ -4358,18 +4365,18 @@ function tolatex( ){
     //recompile reexp for bonbon
     regBonBon = new RegExp( bonbon, 'g' );
 	LATEXout = LATEXout + "\\\\";
-	var numOline = vergelem.children[0].children.length;
-	for(var l = 0; l < numOline; l++){
+	let numOline = vergelem.children[0].children.length;
+	for(let l = 0; l < numOline; l++){
 		LATEXout = LATEXout + "\\hline \n";
-		for(var c = 0; c < vergelem.children.length; c++){
-			var lineelem = vergelem.children[c].children[l];
-			for( var w = 0; w < lineelem.children.length; w++){
+		for(let c = 0; c < vergelem.children.length; c++){
+			let lineelem = vergelem.children[c].children[l];
+			for( let w = 0; w < lineelem.children.length; w++){
 				if(lineelem.children[w].className.indexOf( "diffil" ) != -1){
 
-					var worrr = lineelem.children[w].innerHTML.split("<sup>")[0];
-					var buchsdewo = delall(worrr.replace(" ", "").replace(regBonBon, "---").normalize("NFD")).split( "" );
-					var howmuchgreek = 0;
-					for( var b = 0; b < buchsdewo.length; b++ ){
+					let worrr = lineelem.children[w].innerHTML.split("<sup>")[0];
+					let buchsdewo = delall(worrr.replace(" ", "").replace(regBonBon, "---").normalize("NFD")).split( "" );
+					let howmuchgreek = 0;
+					for( let b = 0; b < buchsdewo.length; b++ ){
 						if(buchstGRI[ buchsdewo[ b ].toLowerCase() ]){
 							howmuchgreek++;
 						}
@@ -4383,12 +4390,12 @@ function tolatex( ){
 				} else {
 					if(lineelem.children[w].className.indexOf( "toolong" ) == -1){
 					if(lineelem.children[w].style.display.indexOf( "none" ) != -1){
-							for(var r = 0; r < lineelem.children[w].children.length; r++){
+							for(let r = 0; r < lineelem.children[w].children.length; r++){
 								if(lineelem.children[w].children[r].className.indexOf( "diffil" ) != -1){
-									var worrr = lineelem.children[w].children[r].innerHTML.split("<sup>")[0];
-									var buchsdewo = delall(worrr.replace(" ", "").replace(regBonBon, "---").normalize("NFD")).split( "" );
-									var howmuchgreek = 0;
-									for( var b = 0; b < buchsdewo.length; b++ ){
+									let worrr = lineelem.children[w].children[r].innerHTML.split("<sup>")[0];
+									let buchsdewo = delall(worrr.replace(" ", "").replace(regBonBon, "---").normalize("NFD")).split( "" );
+									let howmuchgreek = 0;
+									for( let b = 0; b < buchsdewo.length; b++ ){
 										if(buchstGRI[ buchsdewo[b].toLowerCase() ]){
 											howmuchgreek++;
 										}
@@ -4399,10 +4406,10 @@ function tolatex( ){
 										LATEXout = LATEXout+" {\\it "+ worrr + "}";
 									}
 								} else {
-									var worrr = lineelem.children[w].children[r].innerHTML;
-									var buchsdewo = delall(worrr.replace(regBonBon, "---").normalize("NFD")).split( "" );
-									var howmuchgreek = 0;
-									for( var b = 0; b < buchsdewo.length; b++ ){
+									let worrr = lineelem.children[w].children[r].innerHTML;
+									let buchsdewo = delall(worrr.replace(regBonBon, "---").normalize("NFD")).split( "" );
+									let howmuchgreek = 0;
+									for( let b = 0; b < buchsdewo.length; b++ ){
 										if(buchstGRI[ buchsdewo[b].toLowerCase() ]){
 											howmuchgreek++
 										}
@@ -4415,10 +4422,10 @@ function tolatex( ){
 								}
 							}
 						} else {
-							var worrr = lineelem.children[w].innerHTML;
-							var buchsdewo = delall(worrr.replace(" ", "").normalize("NFD")).split( "" );
-							var howmuchgreek = 0;
-							for( var b = 0; b < buchsdewo.length; b++ ){
+							let worrr = lineelem.children[w].innerHTML;
+							let buchsdewo = delall(worrr.replace(" ", "").normalize("NFD")).split( "" );
+							let howmuchgreek = 0;
+							for( let b = 0; b < buchsdewo.length; b++ ){
 								if(buchstGRI[ buchsdewo[b].toLowerCase() ]){
 									howmuchgreek++
 								}
@@ -4441,7 +4448,7 @@ function tolatex( ){
 		LATEXout = LATEXout + "\\\\";
 	}
 	LATEXout = LATEXout + "\\hline\\end{longtable}\\end{center}\\end{document}";
-	var wnd = window.open("about:blank", "", "_blank");
+	let wnd = window.open("about:blank", "", "_blank");
 	wnd.document.write(LATEXout.replace(regBonBon, "---"));	
     dodownit( LATEXout, currentedseries+'.tex','text/text' );
 }
@@ -4454,14 +4461,14 @@ function tolatex( ){
 function autosavethe(){
     //console.log("autodone");
     
-    var allinp = document.getElementsByTagName('input');
-    for( var index = 0; index < allinp.length; ++index ) {
+    let allinp = document.getElementsByTagName('input');
+    for( let index = 0; index < allinp.length; ++index ) {
         if( allinp[ index ].value != "" ){
             allinp[ index ].placeholder = allinp[ index ].value;
         }
     }
-    var alltexe = document.getElementsByTagName('textarea');
-    for( var index = 0; index < alltexe.length; ++index ) {
+    let alltexe = document.getElementsByTagName('textarea');
+    for( let index = 0; index < alltexe.length; ++index ) {
         if( alltexe[ index ].value != "" ){
             alltexe[ index ].placeholder = alltexe[ index ].value;
         }
@@ -4476,7 +4483,7 @@ function autosavethe(){
 function addED( ){ //this loads the input forms for new eds
     hidetextmenus( );
     //earased cts inp  | <span class='clickable' id='ctsinputbutton' onclick='mkctsinput()' style='font-size:110%;' title='Wenn CTS Server abgefragt werden sollen, hier klicken.'>CTS Input</span> 
-    var rconfirm = false;
+    let rconfirm = false;
     if( localStorage.getItem( 'AS' ) != "" && notmodiffunction ){
 
         rconfirm = confirm("Wollen Sie die Autosave Daten als Ausgangspunkt ihrer Eingabe nutzen?");
@@ -4484,14 +4491,14 @@ function addED( ){ //this loads the input forms for new eds
 	
     if( rconfirm ){
         document.getElementById("intome").innerHTML = localStorage.getItem('AS');
-        var allinp = document.getElementsByTagName('input');
-        for( var index = 0; index < allinp.length; ++index ) {
+        let allinp = document.getElementsByTagName('input');
+        for( let index = 0; index < allinp.length; ++index ) {
             if( allinp[ index ].value == "" ){
                 allinp[ index ].value = allinp[ index ].placeholder;
             }
         }
-        var alltexe = document.getElementsByTagName('textarea');
-        for( var index = 0; index < alltexe.length; ++index ) {
+        let alltexe = document.getElementsByTagName('textarea');
+        for( let index = 0; index < alltexe.length; ++index ) {
             if( alltexe[ index ].value == "" ){
                  alltexe[ index ].value = alltexe[ index ].placeholder;
             }
@@ -4501,56 +4508,56 @@ function addED( ){ //this loads the input forms for new eds
     document.getElementById("intome").innerHTML = "<div id='inpmenu'> <span class='clickable' onclick='location.reload();' title='Zurück zur Hauptansicht.'>Zur&uuml;ck</span> | <span class='clickable' onclick='showinputstyle()' style='font-size:140%;' title='Eingaberichtlinien'>&#9995;</span> | <span class='clickable' id='tastbutton' onclick='mkTASTAT()' style='font-size:140%;' title='Inline Tastatur für polytonisches Griechisch. (Betacode Umwandlung)'>&#9000;</span> | <span class='clickable' id='tcbutton' onclick='loadtestcase1()' style='font-size:110%;'>Test Case 1 Anaximander</span> | <span class='clickable' id='tcbutton2' onclick='loadtestcase2()' style='font-size:110%;' title='Testcase kurz, Deutsch'>Test Case 2 Bruder Lustig</span> | <span class='clickable' id='tcbutton2' onclick='loadtestcase3()' style='font-size:110%;' title='Testcase länger, Latein'>Test Case 3 Res gestae</span> | <span class='clickable' id='buggbutton2' onclick='buggreport()' style='font-size:110%;' title='Email an den Admin.'>📧</span> | <span class='clickable' id='inputhelp' onclick='openHelpAdd();' style='font-size:110%;' title='Online Hilfe aufrufen.'>Hilfe</span></div><div id='tastetc' style='display:none;'><div id='tatst' class='tastat'></div><div class='clear'></div><textarea style='margin:2px; margin-left:50px;' id='greekout'></textarea><textarea style='margin:2px;' id='betaout'></textarea></div><div id='bildschtastat'></div><form id='newedform' name='newedform' method='post' action='scri/addED.php'><div class='persbez'><input type='text' id='aname' name='aname' placeholder='Ihr Vorname + Name*'/><input type='text' id='aemail' name='aemail' placeholder='Ihre Email-Adresse*'/><input type='text' name='edKname' id='edKname' placeholder='Kurzbezeichnung der Edition (ein Wort)*'/><br/><br/><lable>Synchronisierung der Suche im Wortabstand von </lable><input style='width:20%;' type='text' name='synchdist' id='synchdist' value='20'/><br/><lable>Latein U-V angleichen</lable> <input style='width:10px;' type='checkbox' id='latinuv' name='latinuv' value='1'/><br/><lable>Alternative Sortierung</lable> <input style='width:10px;' type='checkbox' id='altsort' name='altsort' value='1'/><br/></div><br/><div id='eds'><div class='oneed'><input type='hidden' name='ed0number' value='0' /><input type='text' name='ed0source' placeholder='Ursprung des digitalen Texts (URL / URN)'/><input type='text' name='ed0editor' placeholder='Editor(en) (Name1 Vorname1; Vorname2 Name2; ... )*'/><input type='text' name='ed0name' placeholder='Name der Edition*'/><input type='text' name='ed0publishingplace' placeholder='Erscheinungsort*'/><input type='text' name='ed0publishingdate' placeholder='Erscheinungsdatum*'/><input type='text' name='ed0belegst' placeholder='Belegstelle'/><textarea type='text' id='ed0text' name='ed0text' placeholder='Text der Edition*'></textarea></div><script></script> </div><!--eds--><div class='ednewmenu'><span class='clickable' onclick='addnewedtext()'>+ Edition</span> <span class='clickable' onclick='submitneweds( false )'>&Uuml;bernehmen!</span> <span class='clickable' onclick='editionsaction( null );'>Abbrechen</span></div></form>";
     }
     //TEXT IS IN newed.html, this is just string version
-    theautosavevar = window.setInterval( autosavethe, autosaveinervall );
+    theautosavelet = window.setInterval( autosavethe, autosaveinervall );
 }
 
 
 function addnewedtext( ){ //this assd a new inputfeald to a new ed set
-      var numberofed = document.getElementById( "eds" ).children.length/2;
-      var d = document.createElement("div");
+      let numberofed = document.getElementById( "eds" ).children.length/2;
+      let d = document.createElement("div");
       d.className = "oneed";
-      var inputnumber = document.createElement("input");
+      let inputnumber = document.createElement("input");
       inputnumber.type = "hidden";
       inputnumber.name = "ed"+numberofed.toString()+"number";
       inputnumber.value = numberofed.toString();
       d.appendChild(inputnumber);
-	  var inputsource = document.createElement("input");
+	  let inputsource = document.createElement("input");
       inputsource.type = "text";
       inputsource.name = "ed"+numberofed.toString()+"source";
       inputsource.placeholder = "Ursprung des digitalen Texts (URL / URN)";
       d.appendChild(inputsource);
-      var inputeditor = document.createElement("input");
+      let inputeditor = document.createElement("input");
       inputeditor.type = "text";
       inputeditor.name = "ed"+numberofed.toString()+"editor";
       inputeditor.placeholder = "Editor(en) (Name1 Vorname1; Name2 Vorname2; ... )";
       d.appendChild(inputeditor);
-      var inputname = document.createElement("input");
+      let inputname = document.createElement("input");
       inputname.type = "text";
       inputname.name = "ed"+numberofed.toString()+"name";
       inputname.placeholder = "Name der Edition";
       d.appendChild(inputname);
-      var inputpp = document.createElement("input");
+      let inputpp = document.createElement("input");
       inputpp.type = "text";
       inputpp.name = "ed"+numberofed.toString()+"publishingplace";
       inputpp.placeholder = "Erscheinungsort";
       d.appendChild(inputpp);
-      var inputpd = document.createElement("input");
+      let inputpd = document.createElement("input");
       inputpd.type = "text";
       inputpd.name = "ed"+numberofed.toString()+"publishingdate";
       inputpd.placeholder = "Erscheinungsdatum";
       d.appendChild(inputpd);
-	  var inputbel = document.createElement("input");
+	  let inputbel = document.createElement("input");
       inputbel.type = "text";
       inputbel.name = "ed"+numberofed.toString()+"belegst";
       inputbel.placeholder = "Belegstelle";
       d.appendChild(inputbel);
-      var text = document.createElement("textarea");
+      let text = document.createElement("textarea");
       text.id = "ed"+numberofed.toString()+"text";
       text.setAttribute("name", "ed"+numberofed.toString()+"text"); 
       text.placeholder = "Text der Edition";
       d.appendChild(text);
       document.getElementById( "eds" ).appendChild( d );
-	  var dd = document.createElement("span");
+	  let dd = document.createElement("span");
 	  document.getElementById( "eds" ).appendChild( dd );//im php wid ein script element hinzugefügt, das den inhalt läd, der index des textes sind die elemente in eds zur hälfte, dahe rkann diese funktion nicht nur eine element hinzufügen, sondern noch ein weiteres
 	  document.getElementById( "intome" ).style.height = 
 		(document.getElementById( "eds" ).offsetHeight+300).toString() + "px";
@@ -4567,7 +4574,7 @@ function submitneweds( justdata ){ //this submits the data to the server and che
                 alert("Bitte Kurzbezeichung der Editionsserie angeben (ein Wort).");
                     return;
         }
-	    var akurzbesch = document.getElementsByName( "edKname" )[0].value.split(" ");
+	    let akurzbesch = document.getElementsByName( "edKname" )[0].value.split(" ");
 	    if( akurzbesch.length > 1 ){
                 alert("Bitte nur ein Wort als Kurzbezeichnung der Textserie angeben.");
                     return;
@@ -4590,12 +4597,12 @@ function submitneweds( justdata ){ //this submits the data to the server and che
 	document.getElementsByName( "aname" )[0].value = escapeAStr(document.getElementsByName( "aname" )[0].value);
 	document.getElementsByName( "aemail" )[0].value = escapeAStr(document.getElementsByName( "aemail" )[0].value);
 	console.log(escapeAStr(document.getElementsByName( "aname" )[0].value), document.getElementsByName( "aname" )[0].value)
-	var editorennamen = {};
-	for(var c = 0; c < document.getElementById( "eds" ).children.length; c++){
+	let editorennamen = {};
+	for(let c = 0; c < document.getElementById( "eds" ).children.length; c++){
 
-		var oneed = document.getElementById( "eds" ).children[ c ];
+		let oneed = document.getElementById( "eds" ).children[ c ];
 		
-		for(var cc = 1; cc < oneed.children.length; cc++){
+		for(let cc = 1; cc < oneed.children.length; cc++){
 			//console.log(oneed.children[cc].value);
 
 			if( cc == 2 ){
@@ -4622,19 +4629,19 @@ function submitneweds( justdata ){ //this submits the data to the server and che
 			oneed.children[ cc ].value = escapeAStr( oneed.children[cc].value );
 		}
 	}
-    var DOonline = false;
+    let DOonline = false;
     if( DOonline ){
         document.getElementById( "newedform" ).submit();
     } else {
-        var BibBib = [];
-        var countrealelem = 0;
-        var TExtText = [];
-        var eeeddddsss = document.getElementsByClassName( "oneed" );
-        for( var c = 0; c < eeeddddsss.length; c++ ){
-            var oneed = eeeddddsss[c];
+        let BibBib = [];
+        let countrealelem = 0;
+        let TExtText = [];
+        let eeeddddsss = document.getElementsByClassName( "oneed" );
+        for( let c = 0; c < eeeddddsss.length; c++ ){
+            let oneed = eeeddddsss[c];
             if( oneed.nodeName != "SCRIPT" ){
                 BibBib.push( [] );
-                for(var cc = 0; cc < oneed.children.length; cc++){
+                for(let cc = 0; cc < oneed.children.length; cc++){
                     if(cc == 0){
                         BibBib[countrealelem].push( parseInt( oneed.children[cc].value ) );
                     } else if(cc < 7){
@@ -4647,11 +4654,11 @@ function submitneweds( justdata ){ //this submits the data to the server and che
             }
         }
         //sorting
-        var TEnames = [];
-        var orderedBib = [];
-        var orderedText = [];
-        for(var reihe = 0; reihe < BibBib.length; reihe++){
-            for(var b in BibBib){
+        let TEnames = [];
+        let orderedBib = [];
+        let orderedText = [];
+        for(let reihe = 0; reihe < BibBib.length; reihe++){
+            for(let b in BibBib){
                 if(BibBib[b][0] == reihe){
                     TEnames.push([BibBib[b][0], BibBib[b][2], BibBib[b][3], BibBib[b][4]+" "+BibBib[b][5]+".txt"]);
                     orderedBib.push(BibBib[b]);
@@ -4677,9 +4684,9 @@ function submitneweds( justdata ){ //this submits the data to the server and che
 function modED( ){ 
     notmodiffunction = false;
     offlineedit = false;
-    var menuelem = document.getElementById( "alledmenu" );
-    var mstr = "Bearbeiten von:<br/><form  name='edited' action='scri/editED.php'><select name='edsn' style='width:auto;'>";
-      for( var c in menuelem.children ){
+    let menuelem = document.getElementById( "alledmenu" );
+    let mstr = "Bearbeiten von:<br/><form  name='edited' action='scri/editED.php'><select name='edsn' style='width:auto;'>";
+      for( let c in menuelem.children ){
             mstr = mstr + "<option value='"+menuelem.children[c].innerHTML +"'>"+ menuelem.children[c].innerHTML +"</option>";
       }
       mstr = mstr + "</select><br/><INPUT TYPE=submit VALUE='&Ouml;ffnen'></form><span class='clickableED' onclick='closediv( \"hilfe\" )'>&#9746;</span>";
@@ -4688,11 +4695,11 @@ function modED( ){
 
 function modEDoffline( ){
     notmodiffunction =  false;
-    var menuadd = localStorage.getItem("ecompmenuADD");
+    let menuadd = localStorage.getItem("ecompmenuADD");
     if( menuadd ){
-        var spaspa = menuadd.split( "</span>" );
-        var mstr = "Offline bearbeiten von:<br/><select name='edsn' onchange='buildeditviewoffline(this);' style='width:auto;'><option value=''>?</option>";
-        for( var spispa in spaspa ){
+        let spaspa = menuadd.split( "</span>" );
+        let mstr = "Offline bearbeiten von:<br/><select name='edsn' onchange='buildeditviewoffline(this);' style='width:auto;'><option value=''>?</option>";
+        for( let spispa in spaspa ){
             if(spaspa[spispa].indexOf(">") != -1){
                 mstr = mstr + "<option value='"+ spaspa[spispa].split(">")[1] +"'>"+spaspa[spispa].split(">")[1] +"</option>";
             }
@@ -4706,15 +4713,15 @@ function buildeditviewoffline( aselection ){
     if( aselection.value != "" ){
         addED( );
         document.getElementById( "edKname" ).value = aselection.value;
-        var te = JSON.parse(localStorage.getItem("ecompPLAINTE"+aselection.value ));
+        let te = JSON.parse(localStorage.getItem("ecompPLAINTE"+aselection.value ));
         if( te == null ){ //no plain version
             te = JSON.parse(localStorage.getItem("ecompALLTEX"+aselection.value ));
         }
-        var bi = JSON.parse(localStorage.getItem("ecompBIB"+aselection.value ));
+        let bi = JSON.parse(localStorage.getItem("ecompBIB"+aselection.value ));
         if( bi == null ){
             bi = JSON.parse(localStorage.getItem("ecompTENAMES"+aselection.value ));
-            for( var b in bi ){
-                var num = bi[b][0].toString();
+            for( let b in bi ){
+                let num = bi[b][0].toString();
                 document.getElementsByName("ed"+num+"editor")[0].value = bi[b][1];
                 document.getElementsByName("ed"+num+"name")[0].value = bi[b][2];
                 document.getElementsByName("ed"+num+"publishingplace")[0].value = bi[b][3].split(".txt")[0];
@@ -4728,8 +4735,8 @@ function buildeditviewoffline( aselection ){
                 }
             }
         } else { //if bib vars present - do it, if not use textnames
-            for(var b in bi ){
-                var num = bi[b][0].toString();
+            for(let b in bi ){
+                let num = bi[b][0].toString();
                 document.getElementsByName("ed"+num+"source")[0].value = bi[b][1];
                 document.getElementsByName("ed"+num+"editor")[0].value = bi[b][2];
                 document.getElementsByName("ed"+num+"name")[0].value = bi[b][3];
@@ -4749,8 +4756,8 @@ function buildeditviewoffline( aselection ){
 }
 
 function addbibvalue( index, edsname ){
-	var b = bibdynvars[edsname];
-	for(var i = 0; i < b.length; i++){
+	let b = bibdynvars[edsname];
+	for(let i = 0; i < b.length; i++){
 		if( index == b[i][0] ){
 			console.log( b[i] );
 			document.getElementsByName( "ed"+index.toString()+"source" )[0].value = b[i][1];
@@ -4767,13 +4774,13 @@ function addbibvalue( index, edsname ){
 Um die referentielle Integrität zu wahren wird bei eComparation nicht wirklich gelöscht, sondern unbrauchbares in ein Archiv verschoben
 *******************************************************************/
 function preparedelED( edname ){
-    var mmenu = document.getElementById( "alledmenu" ).innerHTML;
-    var menuparts = mmenu.split( edname );
-    var parttomod = menuparts[0];
+    let mmenu = document.getElementById( "alledmenu" ).innerHTML;
+    let menuparts = mmenu.split( edname );
+    let parttomod = menuparts[0];
 
-    var spanof = parttomod.split('<span ');
-    var lastspan = spanof[spanof.length-1];
-    var classsplit = lastspan.split('class="clickablesec"');
+    let spanof = parttomod.split('<span ');
+    let lastspan = spanof[spanof.length-1];
+    let classsplit = lastspan.split('class="clickablesec"');
     //
     //console.log(lastspan);
     if(classsplit.length == 1){
@@ -4783,7 +4790,7 @@ function preparedelED( edname ){
     }
 
     lastspan = classsplit.join("");
-    var stylepart = lastspan.split('display: inline-block;');
+    let stylepart = lastspan.split('display: inline-block;');
     lastspan = stylepart.join('display: none;');
     spanof[spanof.length-1] = lastspan;
     parttomod = spanof.join('<span ');
@@ -4797,14 +4804,14 @@ function preparedelED( edname ){
 
 function delED( ){
       //
-    var rconfirm = confirm("Sie sind dabei eine Textreihe zu löschen, wollen Sie das wirklich tun?");
+    let rconfirm = confirm("Sie sind dabei eine Textreihe zu löschen, wollen Sie das wirklich tun?");
 	//get menu elem
     if( rconfirm ){
         //hier müssen wir nachbarbeiten - wenn es offline ist, dann richtig löschen
         
-        var alledmenuelem = document.getElementById( "alledmenu" );
+        let alledmenuelem = document.getElementById( "alledmenu" );
         
-        for(var a = 0; a < alledmenuelem.children.length; a++){
+        for(let a = 0; a < alledmenuelem.children.length; a++){
             if( alledmenuelem.children[ a ].style.position == "absolute" ){
                 
                 if( currentedseries.toLowerCase ){
@@ -4829,8 +4836,8 @@ function delED( ){
 }
 
 function showdelED( ){
-	var alledmenuelem = document.getElementById( "alledmenu" );
-	for(var a = 0; a < alledmenuelem.children.length-8; a++){
+	let alledmenuelem = document.getElementById( "alledmenu" );
+	for(let a = 0; a < alledmenuelem.children.length-8; a++){
 		if( alledmenuelem.children[ a ].style.display  != "inline-block"){
 			alledmenuelem.children[ a ].style.display = "inline-block";
 		} else {
@@ -4854,7 +4861,7 @@ function inpJSON(){ //create dialog for fileinput
 
         
         showhelpwithstr( "<div onclick='closediv( \"hilfe\" );'>x</div>" );
-        var inputelem = document.createElement("input");
+        let inputelem = document.createElement("input");
         inputelem.id = "fs";
         inputelem.name = "file";
         inputelem.type = "file";
@@ -4868,31 +4875,31 @@ function inpJSON(){ //create dialog for fileinput
 }
 
 function inpfileselected( ev ) {
-    var files = ev.target.files; // FileList object
+    let files = ev.target.files; // FileList object
 
     // files is a FileList of File objects. List some properties.
-    var output = [];
-    for (var i = 0, f; f = files[i]; i++) {
-        //var dadadad = "{'textnames' :"+ localStorage.getItem("ecompTENAMES"+currentedseries)+", "+
+    let output = [];
+    for (let i = 0, f; f = files[i]; i++) {
+        //let dadadad = "{'textnames' :"+ localStorage.getItem("ecompTENAMES"+currentedseries)+", "+
         //                "'alltexts' :" + localStorage.getItem("ecompALLTEX"+currentedseries) + ", " +
         //                "'comparatio' :" + localStorage.getItem("ecompRES"+currentedseries)  +"}";
-        var edseriename = f.name.split( ".json" )[0]; 
+        let edseriename = f.name.split( ".json" )[0]; 
         console.log(edseriename);
 
         //check if series exist??? - no why the hack
 
-        var rere = new FileReader( );
+        let rere = new FileReader( );
        
         rere.onload = ( function( theFile ) {
             return function(e) {
                  if( e.target.readyState == FileReader.DONE ) {
                     //JSON.parse often not working, maby encoding issue, what ever, splitting willhit the problem
-                    var drei = e.target.result.split("'comparatio' :");
-                    var zwei = drei[ 0 ].split("'alltexts' :");
+                    let drei = e.target.result.split("'comparatio' :");
+                    let zwei = drei[ 0 ].split("'alltexts' :");
         
-                    var inpcomparatio =  drei[1].substring( 0, drei[1].lastIndexOf("}") ).trim();//noch letze klammer raus
-                    var inpalltexts = zwei[1].substring( 0, zwei[1].lastIndexOf(",")).trim(); //alltexts, noch letzes komma raus
-                    var inptextnames = zwei[0].split("'textnames' :")[1];
+                    let inpcomparatio =  drei[1].substring( 0, drei[1].lastIndexOf("}") ).trim();//noch letze klammer raus
+                    let inpalltexts = zwei[1].substring( 0, zwei[1].lastIndexOf(",")).trim(); //alltexts, noch letzes komma raus
+                    let inptextnames = zwei[0].split("'textnames' :")[1];
                     inptextnames = inptextnames.substring( 0, inptextnames.lastIndexOf(",") ).trim();
 
                     //console.log(inptextnames);
@@ -4903,11 +4910,11 @@ function inpfileselected( ev ) {
                     localStorage.setItem("ecompALLTEX"+edseriename, inpalltexts );
                     localStorage.setItem("ecompRES"+edseriename, inpcomparatio );
 
-                    var oldadd = "";
+                    let oldadd = "";
                     if( localStorage.getItem("ecompmenuADD") ){
                         oldadd =  localStorage.getItem("ecompmenuADD");
                     }
-                    var newmenuadd = oldadd+' <span class="clickablesec offlmenu" style="position: relative;" id="'+edseriename+'" onclick="loadcomparatio(\''+edseriename+'\');">'+edseriename+'</span>';
+                    let newmenuadd = oldadd+' <span class="clickablesec offlmenu" style="position: relative;" id="'+edseriename+'" onclick="loadcomparatio(\''+edseriename+'\');">'+edseriename+'</span>';
                     localStorage.setItem("ecompmenuADD", newmenuadd );
                     location.reload();
                 }
@@ -4925,7 +4932,7 @@ function inpfileselected( ev ) {
   
 
 function mkctsinput( ){
-    var intomeelem = document.getElementById( "intome" );
+    let intomeelem = document.getElementById( "intome" );
     intomeelem.style.height = (intomeelem.offsetHeight+10).toString() + "px";
     intomeelem.innerHTML = " <form id='ctsinpdialog'><input size='80' type='text' name='ctsinput1' id='ctsinput1' value='http://folio.furman.edu/ecomp-cts/api?request=GetPassage&urn='/><lable>(URL CTS Server)</lable><div id='ctsdirecttag'><div id='ctsurnlist'><input type='text' size='80' class='thectsurn' name='thectsurn0' id='thectsurn0' placeholder='CTS URN (getPassage)' value='urn:cts:greekLit:tlg0085.tlg003.schutz1782:1-400'/><input type='text' size='80' class='thectsurn' name='thectsurn1' id='thectsurn1' placeholder='CTS URN (getPassage)' value='urn:cts:greekLit:tlg0085.tlg003.fu:1-400'/></div>	<div><span class='clickable' onclick='morectspassages()'>+ CTS URN</span> |<span class='clickable' onclick='ctsdirektinput()'>Datenabfrage</span> |<span class='clickable' id='buttonshowctsxml' onclick='showctsxml()' style='display:none;'>XML Ergebnis</span> |<span class='clickable' id='buttonrequestverg' onclick='ctsTOtextTOrequest()' style='display:none;'>Vergleich</span></div></div></form><div id='ctsrequestrawresult'></div><form style='display:none;' id='newedform' name='newedform' method='post' action='scri/addED.php'><div class='persbez'><input type='text' id='aname' name='aname' placeholder='Ihr Vorname + Name*'/><input type='text' id='aemail' name='aemail' placeholder='Ihre Email-Adresse*'/><input type='text' name='edKname' id='edKname' placeholder='Kurzbezeichnung der Edition (ein Wort)*'/><br/><br/><lable>Synchronisierung der Suche im Wortabstand von </lable><input style='width:20%;' type='text' name='synchdist' id='synchdist' value='20'/><br/><lable>Latein U-V angleichen</lable> <input style='width:10px;' type='checkbox' id='latinuv' name='latinuv' value='1'/><br/><lable>Alternative Sortierung</lable> <input style='width:10px;' type='checkbox' id='altsort' name='altsort' value='1'/><br/></div><br/><div id='eds'></div><div id='edmenucts' class='ednewmenu' style='display:none;'><span class='clickable' onclick='addnewedtext()'>+ Edition</span> <span class='clickable' onclick='submitneweds( false )'>&Uuml;bernehmen!</span> <span class='clickable' onclick='editionsaction( null );'>Abbrechen</span></div></form>";
 
@@ -4941,15 +4948,15 @@ function ctsdirektinput(){
 	
 	//"urn:cts:greekLit:tlg0085.tlg003.fu:1-10"
 	//"urn:cts:greekLit:tlg0085.tlg003.fu:1-400"
-	var urntags = document.getElementById( "ctsurnlist" ).children;
+	let urntags = document.getElementById( "ctsurnlist" ).children;
 	
-	var count = 0;
+	let count = 0;
 	
-	for( var c = 0; c < urntags.length; c++ ){
+	for( let c = 0; c < urntags.length; c++ ){
         
 		//console.log(document.getElementById( "ctsinput1" ).value + urntags[ c ].value);
 		if( urntags[ c ].value ){
-            var xmlHttp = new XMLHttpRequest();
+            let xmlHttp = new XMLHttpRequest();
             xmlHttp.onreadystatechange = function() { 
                 if (xmlHttp.readyState == 4 ){
                     if( xmlHttp.status == 200){
@@ -4975,14 +4982,14 @@ function ctsdirektinput(){
 		}
 	}
 	
-	var intomeelem = document.getElementById( "intome" );
+	let intomeelem = document.getElementById( "intome" );
 	intomeelem.style.height = (intomeelem.offsetHeight+10).toString() + "px";
 
 }
 
 function morectspassages(){
-	 var d = document.getElementById( "ctsurnlist" );
-	 var inputsource = document.createElement("input");
+	 let d = document.getElementById( "ctsurnlist" );
+	 let inputsource = document.createElement("input");
      inputsource.type = "text";
 	 inputsource.size = 80;	
      inputsource.placeholder = "CTS URN";
@@ -4991,7 +4998,7 @@ function morectspassages(){
 
 function showctsxml(){
 	//console.log(ctsanswersXML);
-	for( var x = 0; x < ctsanswersXML.length; x++ ){
+	for( let x = 0; x < ctsanswersXML.length; x++ ){
 		//console.log(x);
 		//console.log(ctsanswersXML[x]);
 		document.getElementById( "ctsrequestrawresult" ).innerHTML = document.getElementById( "ctsrequestrawresult" ).innerHTML + ctsanswersXML[x] + "<br/><br/><br/>";
@@ -5010,22 +5017,22 @@ function ctsTOtextTOrequest(){
 	document.getElementById( "edmenucts" ).style.display = "inline";
 	document.getElementById( "newedform").style.display = "inline";
 	console.log( ctsanswersXML );
-	var allctstext = [];
-	for( var x = 0; x < ctsanswersXML.length; x++ ){
-		var ctsnodes = ctsanswersXML[ x ].split( "</l>" );
-		var thewholetext = "";
-		for( var z = 0; z < ctsnodes.length; z++ ){
-			var lines = ctsnodes[ z ].split( "<l xmlns=" );
-			var outlines = "";
-			for( var y = 1; y < lines.length; y++ ){
-				var linesbereiningt = lines[ y ].split(">");
+	let allctstext = [];
+	for( let x = 0; x < ctsanswersXML.length; x++ ){
+		let ctsnodes = ctsanswersXML[ x ].split( "</l>" );
+		let thewholetext = "";
+		for( let z = 0; z < ctsnodes.length; z++ ){
+			let lines = ctsnodes[ z ].split( "<l xmlns=" );
+			let outlines = "";
+			for( let y = 1; y < lines.length; y++ ){
+				let linesbereiningt = lines[ y ].split(">");
 				linesbereiningt.shift( );
-				var linesbereiningtkurz = linesbereiningt.join(">");
-				var zeichenin = linesbereiningtkurz.split("");
-				var takeit = true;
-				var nurdieworte = "";
+				let linesbereiningtkurz = linesbereiningt.join(">");
+				let zeichenin = linesbereiningtkurz.split("");
+				let takeit = true;
+				let nurdieworte = "";
 				//console.log("zeichenin", zeichenin);
-				for( var zei = 0; zei < zeichenin.length; zei ++){
+				for( let zei = 0; zei < zeichenin.length; zei ++){
 					if( zeichenin[ zei ] == "<" ){
 							takeit = false;
 							continue;
@@ -5047,21 +5054,21 @@ function ctsTOtextTOrequest(){
 		//console.log( "thewholetext", thewholetext );
 		allctstext.push( thewholetext );
 	}
-	var urntags = document.getElementById( "ctsurnlist" ).children;
-	var baseurl = document.getElementById( "ctsinput1" ).value;
+	let urntags = document.getElementById( "ctsurnlist" ).children;
+	let baseurl = document.getElementById( "ctsinput1" ).value;
 	
-	for(var t = 0; t < allctstext.length; t++ ){
-		var eddiv = document.createElement("div");
+	for(let t = 0; t < allctstext.length; t++ ){
+		let eddiv = document.createElement("div");
 		eddiv.className = "oneed";	
 
-		var ednuminp = document.createElement("input");
+		let ednuminp = document.createElement("input");
 		ednuminp.type = "hidden";
 		ednuminp.name = "ed"+t.toString()+"number";
 		ednuminp.id = "ed"+t.toString()+"number";
 		ednuminp.value = t.toString();
 		eddiv.appendChild( ednuminp );
 
-		var edquelleinp = document.createElement("input");
+		let edquelleinp = document.createElement("input");
 		edquelleinp.type = "text";
 		edquelleinp.name = "ed"+t.toString()+"source";
 		edquelleinp.id = "ed"+t.toString()+"source";
@@ -5069,42 +5076,42 @@ function ctsTOtextTOrequest(){
 		eddiv.appendChild( edquelleinp );
 
 	
-		var ededitorinp = document.createElement("input");
+		let ededitorinp = document.createElement("input");
 		ededitorinp.type = "text";
 		ededitorinp.name = "ed"+t.toString()+"editor";
 		ededitorinp.id = "ed"+t.toString()+"editor";
 		ededitorinp.placeholder = "Editor(en) (Name1 Vorname1; Vorname2 Name2; ... )*";
 		eddiv.appendChild( ededitorinp );
 
-		var ednameinp = document.createElement("input");
+		let ednameinp = document.createElement("input");
 		ednameinp.type = "text";
 		ednameinp.name = "ed"+t.toString()+"name";
 		ednameinp.id = "ed"+t.toString()+"name";
 		ednameinp.placeholder = "Name der Edition*";
 		eddiv.appendChild( ednameinp );
 
-		var edpublishingplaceinp = document.createElement("input");
+		let edpublishingplaceinp = document.createElement("input");
 		edpublishingplaceinp.type = "text";
 		edpublishingplaceinp.name = "ed"+t.toString()+"publishingplace";
 		edpublishingplaceinp.id = "ed"+t.toString()+"publishingplace";
 		edpublishingplaceinp.placeholder = "Erscheinungsort*";
 		eddiv.appendChild( edpublishingplaceinp );
 
-      	var edpublishingdateinp = document.createElement("input");
+      	let edpublishingdateinp = document.createElement("input");
 		edpublishingdateinp.type = "text";
 		edpublishingdateinp.name = "ed"+t.toString()+"publishingdate";
 		edpublishingdateinp.id = "ed"+t.toString()+"publishingdate";
 		edpublishingdateinp.placeholder = "Erscheinungsdatum*";
 		eddiv.appendChild( edpublishingdateinp );
 
-	  	var edbelegstinp = document.createElement("input");
+	  	let edbelegstinp = document.createElement("input");
 		edbelegstinp.type = "text";
 		edbelegstinp.name = "ed"+t.toString()+"belegst";
 		edbelegstinp.id = "ed"+t.toString()+"belegst";
 		edbelegstinp.placeholder = "Belegstelle";
 		eddiv.appendChild( edbelegstinp );
 
-      	var edtextinp = document.createElement("textarea");
+      	let edtextinp = document.createElement("textarea");
 		
 		edtextinp.name = "ed"+t.toString()+"text";
 		edtextinp.id = "ed"+t.toString()+"text";
@@ -5120,7 +5127,7 @@ function ctsTOtextTOrequest(){
 
 /*USE CASE SECTION*/
 function loadtestcase3(){
-    var intomeelem = document.getElementById( "intome" );
+    let intomeelem = document.getElementById( "intome" );
 intomeelem.style.height = (intomeelem.offsetHeight+10).toString() + "px";
 
 document.getElementsByName("aname")[0].value = "hans im glück";
@@ -6768,7 +6775,7 @@ submitneweds( false );
 }
 
 function loadtestcase2(){
-var intomeelem = document.getElementById( "intome" );
+let intomeelem = document.getElementById( "intome" );
 intomeelem.style.height = (intomeelem.offsetHeight+10).toString() + "px";
 
 document.getElementsByName("aname")[0].value = "hans im glück";
@@ -6798,7 +6805,7 @@ submitneweds( false );
 }
 
 function loadtestcase1(){
-var intomeelem = document.getElementById( "intome" );
+let intomeelem = document.getElementById( "intome" );
 intomeelem.style.height = (intomeelem.offsetHeight+10).toString() + "px";
 
 document.getElementsByName("aname")[0].value = "hans im glück";
