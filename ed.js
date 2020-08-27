@@ -769,6 +769,13 @@ function dodownit( contentof, nameoffile, type ){
     }
 }
 
+function s2ab(s) { 
+    var buf = new ArrayBuffer(s.length); //convert s to arrayBuffer
+    var view = new Uint8Array(buf);  //create uint8array as viewer
+    for (var i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF; //convert to octet
+    return buf;    
+}
+
 /**************************************************************/
 /*showing buttons (hiding menus), showing menus (hiding buttons) 
 - buildsection of initial menus is given below */
@@ -1379,7 +1386,14 @@ function buildviewmenu( ){
     eVe.innerHTML = "CSV"; 
     eVe.onclick = function( ){ tocsv( ); };
     eVe.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#csv-", "_blank"); };
-    edmenu.appendChild( eVe );
+    edmenu.appendChild( eVe ); 
+    let eXe = document.createElement( "span" );
+    eXe.className = "clickableED";
+    eXe.title = "Die Synopse im xlsx Format exportieren.";
+    eXe.innerHTML = "XLSX"; 
+    eXe.onclick = function( ){ toxlsx( ); };
+    eXe.ondblclick = function(){ window.open( "https://github.com/ecomp-shONgit/ecomparatio/blob/master/manual/README.md#xlsx-", "_blank"); };
+    edmenu.appendChild( eXe );
     let jsonb = document.createElement( "span" );
     jsonb.className = "clickableED";
     jsonb.title = "Texte und Eregbnisse als JSON Exportieren.";
@@ -1546,6 +1560,7 @@ function makeueberschriftDundB( ){
 		    }
 	    }
     }
+    
 	if( thebib ){
 		for( let i = 0; i < thebib.length; i++ ){
 	        if( thebib[ i ][0] == currented ){
@@ -1589,10 +1604,11 @@ function makeueberschriftDundB( ){
   		titel.className = "redtitle";
   		titel.innerHTML = nn;
   		ielem.appendChild( titel );
-  		n = textnames[ currented ][3].split(".")[0];
+  		let nnn = textnames[ currented ][3].split(".");
+        nnn.pop();
   		let tuo = document.createElement("div");
   		tuo.className = "rtuo";
-  		tuo.innerHTML = n;
+  		tuo.innerHTML = nnn.join(".");
   		ielem.appendChild( tuo );
 	}
 }
@@ -1685,7 +1701,7 @@ function comparatiomatrix( ){
       		        infoma.appendChild( editor );
                 for( let i = 0; i < textnames.length; i++ ){
 			        if( i != currented ){
-            		    b = textnames[ i ];
+            		    let b = textnames[ i ];
                         let editor = document.createElement("div");
       		            editor.className = "reditorPma";
       		            editor.innerHTML =  b[1]+"; "+ b[2] +" "+ b[3].split(".txt")[0];
@@ -1792,7 +1808,9 @@ function comparatioparallel( aindex ){
     } else {
   		let n = textnames[ currented ][1].split("_");
   		let nn = n.join( "." );
-  		let rtuo = textnames[ currented ][3].split(".")[0];
+        let nnn = textnames[ currented ][3].split(".");
+        nnn.pop();
+  		let rtuo = nnn.join(".");
   		let editor = document.createElement("div");
   		editor.className = "reditorP";
   		editor.style.position = "absolute";
@@ -1800,18 +1818,21 @@ function comparatioparallel( aindex ){
   		editor.style.left = posofreftext[1].toString() + "px";
 
 		let t = textnames[ currented ][2].split("_");
-  		let tt = n.join( "." );
+  		let tt = t.join( "." );
   		editor.innerHTML = nn +"; <br/> "+ tt + "; " + rtuo;
   		ielem.appendChild( editor );
   		for( let tn = 1; tn < vergelem.children.length; tn++ ){
-      		n = textnames[ parseInt( vergelem.children[ tn ].id ) ][1].split("_");
+            let number = parseInt( vergelem.children[ tn ].id );
+      		n = textnames[ number ][1].split("_");
       		nn = n.join( "." );
-      		rtuo = textnames[ parseInt( vergelem.children[ tn ].id ) ][3].split(".")[0];
+            let nnn = textnames[ number ][3].split(".");
+            nnn.pop();
+      		rtuo = nnn.join( "." );
       		let editor = document.createElement("div");
       		editor.className = "reditorP";
       		editor.style.position = "absolute";
-      		let t = textnames[ currented ][2].split("_");
-  			let tt = n.join( "." );
+      		let t = textnames[ number ][2].split("_");
+  			let tt = t.join( "." );
      		let posofreftext = getpositiononpage( vergelem.children[ tn ] );
       		editor.style.left = posofreftext[1].toString() + "px";
       		editor.innerHTML = nn +"; <br/> "+ tt + "; " + rtuo;
@@ -4276,18 +4297,17 @@ function tocsv( ){
     comparatioparallel( 0 );
     let csvout = "";
     let infoelem = document.getElementById( "info" );
-	
 	for( let c = 0; c < infoelem.children.length; c += 1 ){
-		
+		csvout = csvout + csvtrenner;
+	}
+	for( let c = 0; c < infoelem.children.length; c += 1 ){
 		csvout = csvout + (infoelem.children[c].innerHTML.split(";").join( " - " )).split("<br>").join( "" );
-        
 		csvout = csvout + csvtrenner;
 	}
     csvout = csvout + "\n";
     let vergelem = document.getElementById( "vergleich" );
     let numOline = vergelem.children[0].children.length;
 	for(let l = 0; l < numOline; l++){
-		
 		for(let c = 0; c < vergelem.children.length; c++){
 			let lineelem = vergelem.children[c].children[l];
 			for( let w = 0; w < lineelem.children.length; w++){
@@ -4295,8 +4315,6 @@ function tocsv( ){
 				    if( lineelem.children[w].className.indexOf( "diffil" ) != -1 ){
                         let worrr = lineelem.children[w].innerHTML.split("<sup>")[0];
 					    csvout = csvout + " " + worrr.toUpperCase( );
-					
-				       	
 				    } else {
 					    if(lineelem.children[w].className.indexOf( "toolong" ) == -1){
 					        if(lineelem.children[w].style.display.indexOf( "none" ) != -1){
@@ -4320,8 +4338,6 @@ function tocsv( ){
                 }
 			}
             csvout = csvout + csvtrenner;
-            
-			
 		}
         csvout = csvout + "\n";
 	}
@@ -4330,6 +4346,71 @@ function tocsv( ){
 	wnd.document.write( csvout );	
     dodownit( csvout, currentedseries+'.csv','text/text' );
 }
+
+function toxlsx(){
+    comparatioparallel( 0 );
+    let csvout = "";
+    let infoelem = document.getElementById( "info" );
+	let allrows = [];
+    let row = [];
+	for( let c = 0; c < infoelem.children.length; c += 1 ){
+		row.push( (infoelem.children[c].innerHTML.split(";").join( " - " )).split("<br>").join( "" ) );
+	}
+    allrows.push(row);
+    let vergelem = document.getElementById( "vergleich" );
+    let numOline = vergelem.children[0].children.length;
+	for(let l = 0; l < numOline; l++){
+        row = [];
+		for(let c = 0; c < vergelem.children.length; c++){
+			let lineelem = vergelem.children[c].children[l];
+            let acell = "";
+			for( let w = 0; w < lineelem.children.length; w++){
+                if( lineelem.children[w].className.indexOf( "linenum" ) === -1){ //ksip lin numbers
+				    if( lineelem.children[w].className.indexOf( "diffil" ) !== -1 ){
+                        let worrr = lineelem.children[w].innerHTML;//.split("<sup>")[0];
+					    acell = acell + " " + worrr;//.toUpperCase();
+				    } else {
+					    if(lineelem.children[w].className.indexOf( "toolong" ) == -1){
+					        if(lineelem.children[w].style.display.indexOf( "none" ) != -1){
+							    for(let r = 0; r < lineelem.children[w].children.length; r++){
+								    if(lineelem.children[w].children[r].className.indexOf( "diffil" ) != -1){
+									    let worrr = lineelem.children[w].children[r].innerHTML;//.split("<sup>")[0];
+									    acell = acell + " " + worrr;//.toUpperCase();
+								    } else {
+									    let worrr = lineelem.children[w].children[r].innerHTML;
+									    acell = acell + " " + worrr;
+									
+								    }
+							    }
+						    } else {
+							    let worrr = lineelem.children[w].innerHTML;
+							    acell = acell + " " + worrr;
+							
+						    }
+					    } 
+				    }
+                }
+			}
+            row.push(  acell );
+		}
+        allrows.push(row);
+	}
+	
+    let wb = XLSX.utils.book_new( );
+    wb.Props = {
+                Title: currentedseries,
+                Subject: currentedseries,
+                Author: "eComparatio",
+                CreatedDate: new Date()
+    };
+    wb.SheetNames.push( currentedseries );
+    let ws = XLSX.utils.aoa_to_sheet( allrows, {cellHTML:true} );
+    wb.Sheets[ currentedseries ] = ws;
+    
+    let xlsxout = XLSX.write( wb, { bookType:'xlsx',  type: 'binary' } );
+    dodownit( s2ab( xlsxout ), currentedseries+'.xlsx','application/octet-stream' );
+}
+
 
 function tolatex( ){
 	comparatioparallel( 0 ); //does that mean only the first displayed lines could be rendered - do we need to reset the maxline count
@@ -4870,7 +4951,7 @@ function inpJSON(){ //create dialog for fileinput
         inputelem.addEventListener('change', inpfileselected, false);
         document.getElementById( "hilfe" ).appendChild( inputelem );
     } else {
-        alert('Benutzen Sie einen jüngeren Browser, Dateiaufruf ist in Ihrem in implementiert.');
+        alert('Benutzen Sie einen jüngeren Browser, Dateiaufruf ist in Ihrem nicht implementiert.');
     }
 }
 
@@ -4902,9 +4983,9 @@ function inpfileselected( ev ) {
                     let inptextnames = zwei[0].split("'textnames' :")[1];
                     inptextnames = inptextnames.substring( 0, inptextnames.lastIndexOf(",") ).trim();
 
-                    //console.log(inptextnames);
-                    //console.log(inpalltexts);
-                    //console.log(inpcomparatio);
+                    console.log(inptextnames);
+                    console.log(inpalltexts);
+                    console.log(inpcomparatio);
                     //put it to the local storage and do a menu add and reload page fertsch
                     localStorage.setItem("ecompTENAMES"+edseriename, inptextnames );
                     localStorage.setItem("ecompALLTEX"+edseriename, inpalltexts );
