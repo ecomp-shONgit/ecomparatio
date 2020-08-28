@@ -197,6 +197,15 @@ const regEuv = new RegExp( "u", 'g' );
 function deluv( text ){
     return text.replace( regEuv, "v" );
 }
+const dickA = new RegExp( "<b>", 'g' );
+const dickZ = new RegExp( "</b>", 'g' );
+const italA = new RegExp( "<i>", 'g' );
+const italZ = new RegExp( "</i>", 'g' );
+const gespA = new RegExp( "<gesp>", 'g' );
+const gespZ = new RegExp( "</gesp>", 'g' );
+function delsomehtml( text ){
+    return text.replace( dickA, "" ).replace( dickZ, "" ).replace( italA, "" ).replace( italZ, "" ).replace( gespA, "" ).replace( gespZ, "" );
+}
 
 //**************************************************
 // Section 3: equality checks
@@ -932,7 +941,7 @@ function EV(e){ //wrapper for the central function - just to keep it celan from 
     cheUVRT = [ ];
     //itt the ref data
     for( let inTHE in e.data.r ){
-            let itemin = e.data.r[ inTHE ];
+            let itemin = delsomehtml( e.data.r[ inTHE ]);
             if( doUVlatin ){ // classical latin
                 cheALLofRT.push( deluv( delklammern( sigmaistgleich( delgrkl( delumbrbine( delligaturen( delinterp( deldiak(  
                                     itemin)))))))));
@@ -961,7 +970,7 @@ function EV(e){ //wrapper for the central function - just to keep it celan from 
     cheUVTT = [ ];
     //itt text data
     for( let inTHE in e.data.t ){
-        let itemin = e.data.t[ inTHE ];
+        let itemin = delsomehtml( e.data.t[ inTHE ] );
         if( doUVlatin ){ // classical latin
             cheALLofTT.push( deluv( delklammern( sigmaistgleich( delgrkl( delumbrbine( delligaturen( delinterp( deldiak(  
                                 itemin)))))))));
