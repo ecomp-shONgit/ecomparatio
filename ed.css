@@ -765,3 +765,8 @@ sub{
     border-radius: 4px;
     background: white;
 }
+
+/*markup im TEXT*/
+gesp{
+    letter-spacing: 0.4em;
+}
