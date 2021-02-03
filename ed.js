@@ -204,7 +204,7 @@ function requestfirstrender( ){
                 if(xmlHttp.status == 200){
                     console.log( xmlHttp.responseText );
 
-                    let asarr = xmlHttp.responseText.split( "###############" );
+                    let asarr = xmlHttp.responseText.trim().split( "###############" );
                     let ia = [];
                     for(let g = 0; g < asarr.length-1; g+=1){
                         ia.push( asarr[g].split("#########") );
