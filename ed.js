@@ -70,7 +70,7 @@ let WTNleg='erster Teil einer Trennung';
 let VWT='get'; 
 let VWTleg='zweiter Teil einer Trennung'; 
 let colorofdiffclasses = 'rgb(0, 0, 255)';
-let bonbon = "🍬";
+let bonbon = "¿";
 let bonbonT = "Lücken";
 let csvtrenner = ";;";
 
@@ -194,14 +194,36 @@ function restartecomparatio( ){
 }
 
 function requestfirstrender( ){
-    if(localStorage.getItem( 'ECOMPfirstrun' ) == null){
-        let r = window.confirm("Wollen Sie ein Beispiel gleich rechnen lassen? Ansonsten finden Sie die Beispiele im Menü 'ADD' -> 'Test Cases ...'! (Diese Nachricht wird nur beim ersten Start von eComparatio angezeigt.)");
-        if( r ) {
-          
-          addED( );
-          loadtestcase1( );
-        } 
-        localStorage.setItem( 'ECOMPfirstrun', true ); //end first run alert
+    if(localStorage.getItem( 'ECOMPfirstrun' ) == null ){
+        
+        //request php
+        //get result and run  res )
+        let xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() { 
+            if (xmlHttp.readyState == 4 ){
+                if(xmlHttp.status == 200){
+                    console.log( xmlHttp.responseText );
+
+                    let asarr = xmlHttp.responseText.split( "###############" );
+                    let ia = [];
+                    for(let g = 0; g < asarr.length-1; g+=1){
+                        ia.push( asarr[g].split("#########") );
+                    }
+                    inpastextarray(  ia );
+                    
+                
+                    let r = window.confirm("Wollen Sie ein Beispiel gleich rechnen lassen? Ansonsten finden Sie die Beispiele im Menü 'ADD' -> 'Test Cases ...'! (Diese Nachricht wird nur beim ersten Start von eComparatio angezeigt.)");
+                    if( r ) {
+                      
+                      addED( );
+                      loadtestcase1( );
+                    } 
+                    localStorage.setItem( 'ECOMPfirstrun', true ); //end first run alert
+                }
+            }
+        }
+        xmlHttp.open("GET", 'gp.php', true); // true for asynchronous 
+        xmlHttp.send(null);
     }
 }
 
@@ -3989,7 +4011,7 @@ function calljsonphp( ){
                 //GOT from PHP
                 if( xmlHttp.responseText.includes( "ERROR JSON File nicht vorhanden" ) ){ //if JSON File not found
                     if( currentedseries.toLowerCase ){
-                        let dadadad = "{'textnames' :"+ localStorage.getItem("ecompTENAMES"+currentedseries)+", "+
+                        let dadadad = "{'textnames' :"+ localStorage.getItem("ecompBIB"+currentedseries)+", "+
                         "'alltexts' :" + localStorage.getItem("ecompALLTEX"+currentedseries) + ", " +
                         "'comparatio' :" + localStorage.getItem("ecompRES"+currentedseries)  +"}";
                 
@@ -4001,8 +4023,8 @@ function calljsonphp( ){
                     dodownit(  xmlHttp.responseText, name+'.json','text/json' );
                 }
             } else { //if php file not found
-                //GO FOR THE DATABASE
-                let dadadad = "{'textnames' :"+ localStorage.getItem("ecompTENAMES"+currentedseries)+", "+
+                //GO FOR THE DATABASE, ecompTENAMES
+                let dadadad = "{'textnames' :"+ localStorage.getItem("ecompBIB"+currentedseries)+", "+
                 "'alltexts' :" + localStorage.getItem("ecompALLTEX"+currentedseries) + ", " +
                 "'comparatio' :" + localStorage.getItem("ecompRES"+currentedseries)  +"}";
         
@@ -4955,6 +4977,35 @@ function inpJSON(){ //create dialog for fileinput
     }
 }
 
+function inpastextarray( astextarray ){
+    for(let i = 0; i < astextarray.length; i += 1 ){
+        let edseriename = astextarray[i][0].split( ".json" )[0];
+        let drei = astextarray[i][1].split("'comparatio' :");
+        let zwei = drei[ 0 ].split("'alltexts' :");
+
+        let inpcomparatio =  drei[1].substring( 0, drei[1].lastIndexOf("}") ).trim();//noch letze klammer raus
+        let inpalltexts = zwei[1].substring( 0, zwei[1].lastIndexOf(",")).trim(); //alltexts, noch letzes komma raus
+        let inptextnames = zwei[0].split("'textnames' :")[1];
+        inptextnames = inptextnames.substring( 0, inptextnames.lastIndexOf(",") ).trim();
+
+        //console.log(inptextnames);
+        //console.log(inpalltexts);
+        //console.log(inpcomparatio);
+        //put it to the local storage and do a menu add and reload page fertsch
+        localStorage.setItem("ecompTENAMES"+edseriename, inptextnames );
+        localStorage.setItem("ecompBIB"+edseriename, inptextnames );
+        localStorage.setItem("ecompALLTEX"+edseriename, inpalltexts );
+        localStorage.setItem("ecompRES"+edseriename, inpcomparatio );
+
+        let oldadd = "";
+        if( localStorage.getItem("ecompmenuADD") ){
+            oldadd = localStorage.getItem("ecompmenuADD");
+        }
+        let newmenuadd = oldadd+' <span class="clickablesec offlmenu" style="position: relative;" id="'+edseriename+'" onclick="loadcomparatio(\''+edseriename+'\');">'+edseriename+'</span>';
+        localStorage.setItem("ecompmenuADD", newmenuadd );
+    }
+}
+
 function inpfileselected( ev ) {
     let files = ev.target.files; // FileList object
 
@@ -4983,11 +5034,12 @@ function inpfileselected( ev ) {
                     let inptextnames = zwei[0].split("'textnames' :")[1];
                     inptextnames = inptextnames.substring( 0, inptextnames.lastIndexOf(",") ).trim();
 
-                    console.log(inptextnames);
-                    console.log(inpalltexts);
-                    console.log(inpcomparatio);
+                    //console.log(inptextnames);
+                    //console.log(inpalltexts);
+                    //console.log(inpcomparatio);
                     //put it to the local storage and do a menu add and reload page fertsch
                     localStorage.setItem("ecompTENAMES"+edseriename, inptextnames );
+                    localStorage.setItem("ecompBIB"+edseriename, inptextnames );
                     localStorage.setItem("ecompALLTEX"+edseriename, inpalltexts );
                     localStorage.setItem("ecompRES"+edseriename, inpcomparatio );
 
