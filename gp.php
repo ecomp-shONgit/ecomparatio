@@ -1,10 +1,6 @@
 
 
 <?php
-// curl -I https://api.github.com/users/ecomp-shONgit/repos/ecomparatio/publicdumps
-// get public
-// a simple way to get a user's repo
-
 function curlit( $githuburl ){
     $curlheader = curl_init( );
     curl_setopt( $curlheader, CURLOPT_URL, $githuburl );
@@ -15,24 +11,17 @@ function curlit( $githuburl ){
     return curl_exec($curlheader);
      
 }
-
 function downjson( $githuburl ){
     return json_decode( curlit( $githuburl ) );
 }
-
 function downtxt( $githuburl ){
     return curlit( $githuburl );
 }
 
 
 $ghurl = "https://api.github.com/repos/ecomp-shONgit/ecomparatio/contents/publicdumps?ref=master";
-
-
 $res = downjson( $ghurl );
-//print_r($res);
-
 foreach( $res as $r ){
     echo $r->{'name'}."#########".downtxt($r->{'download_url'})."###############";
 }
-
 ?>
